@@ -19,13 +19,13 @@ public class SanPhamController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+
         sanPhamDAO = new SanPhamDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
         String action = request.getParameter("action");
         // xem chi tiết sản phẩm
         if ("chiTiet".equals(action)) {
@@ -116,4 +116,5 @@ public class SanPhamController extends HttpServlet {
             e.printStackTrace();
         }
     }
+
 }
