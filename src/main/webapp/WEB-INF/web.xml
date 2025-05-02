@@ -12,10 +12,8 @@
     </servlet-mapping>
 
   <welcome-file-list>
-<<<<<<< HEAD
-=======
-    <welcome-file>views/TrangChu.jsp</welcome-file>
->>>>>>> github-main
+
+
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.htm</welcome-file>
