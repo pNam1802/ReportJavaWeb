@@ -74,14 +74,22 @@
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Sản phẩm
+                                        Danh mục
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    	<%--
                                         <a class="dropdown-item" href="#">Sofa</a>
                                         <a class="dropdown-item" href="#">Bàn trà</a>
                                         <a class="dropdown-item" href="#">Tủ Giường</a>
                                         <a class="dropdown-item" href="#">Bàn ăn</a>
                                         <a class="dropdown-item" href="#">Ghế thư giãn</a>
+                                        --%>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=sofa">Sofa</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-tra">Bàn trà</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=tu-giuong">Tủ Giường</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-an">Bàn ăn</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ghe-thu-gian">Ghế thư giãn</a>
+                                        
                                     </div>
                                 </li>
                                 <li class="nav-item">
@@ -169,6 +177,10 @@
             </div>
 
             <!-- Phân trang -->
+            <%
+            String danhMucParam = request.getParameter("danhMuc");
+   			String danhMucQuery = (danhMucParam != null && !danhMucParam.isEmpty()) ? "&danhMuc=" + danhMucParam : "";
+			%>
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
                     <%
@@ -182,7 +194,7 @@
                     if (currentPage > 1) {
                     %>
                     <li class="page-item">
-                        <a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=currentPage - 1%>">«</a>
+						<a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=currentPage - 1%><%=danhMucQuery%>">«</a>
                     </li>
                     <%
                     }
@@ -191,7 +203,7 @@
                     for (int i = 1; i <= totalPages; i++) {
                     %>
                     <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
-                        <a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=i%>"><%=i%></a>
+                    	<a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=i%><%=danhMucQuery%>"><%=i%></a>
                     </li>
                     <%
                     }
@@ -200,7 +212,7 @@
                     if (currentPage < totalPages) {
                     %>
                     <li class="page-item">
-                        <a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=currentPage + 1%>">»</a>
+                        <a class="page-link" href="<%=request.getContextPath()%>/san-pham?page=<%=currentPage + 1%><%=danhMucQuery%>">»</a>
                     </li>
                     <%
                     }
