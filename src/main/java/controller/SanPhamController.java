@@ -14,59 +14,103 @@ import model.SanPham;
 
 @WebServlet("/san-pham")
 public class SanPhamController extends HttpServlet {
-    private static final long serialVersionUID = 1L;	
+    private static final long serialVersionUID = 1L;    
     private SanPhamDAO sanPhamDAO;
 
     @Override
     public void init() throws ServletException {
-        sanPhamDAO = new SanPhamDAO(); // Khởi tạo DAO mà không cần truyền tham số
+        sanPhamDAO = new SanPhamDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        int page = 1; // Trang mặc định là 1
-        int limit = 6; // Số sản phẩm mỗi trang
+        String action = request.getParameter("action");
+        // xem chi tiết sản phẩm
+        if ("chiTiet".equals(action)) {
+            // Xử lý xem chi tiết sản phẩm
+            String id = request.getParameter("id");
+            if (id != null) {
+                try {
+                    SanPham sanPham = sanPhamDAO.getById(Integer.parseInt(id));
+                    request.setAttribute("sanPham", sanPham);
+                    request.getRequestDispatcher("views/ChiTietSanPham.jsp").forward(request, response);
+                    return;
+                } catch (NumberFormatException e) {
+                    // Xử lý khi ID không hợp lệ
+                }
+            }
+            response.sendRedirect(request.getContextPath() + "/san-pham");
+            return;
+        }
+  
+        // Xử lý phân trang (giữ nguyên như cũ)
+        int page = 1;
+        int limit = 6;
 
-        // Kiểm tra tham số page từ request
         String pageParam = request.getParameter("page");
         if (pageParam != null) {
             try {
-                page = Integer.parseInt(pageParam); // Đặt giá trị cho page
+                page = Integer.parseInt(pageParam);
             } catch (NumberFormatException e) {
-                page = 1; // Nếu tham số không hợp lệ, mặc định là trang 1
+                page = 1;
             }
         }
 
-        int offset = (page - 1) * limit; // Tính toán vị trí bắt đầu cho phân trang
-        List<SanPham> sanPhams = sanPhamDAO.getSanPhams(offset, limit); // Lấy sản phẩm từ database
-        int totalSanPhams = sanPhamDAO.getTotalSanPham(); // Lấy tổng số sản phẩm
-        int totalPages = (int) Math.ceil((double) totalSanPhams / limit); // Tính tổng số trang
+        int offset = (page - 1) * limit;
+        List<SanPham> sanPhams = sanPhamDAO.getSanPhams(offset, limit);
+        int totalSanPhams = sanPhamDAO.getTotalSanPham();
+        int totalPages = (int) Math.ceil((double) totalSanPhams / limit);
 
-        // Đặt các thuộc tính cần thiết cho JSP
         request.setAttribute("sanPhams", sanPhams);
-        request.setAttribute("currentPage", page); // Đặt trang hiện tại vào request
-        request.setAttribute("totalPages", totalPages); // Đặt tổng số trang vào request
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
 
-        // Chuyển tiếp đến trang JSP
         request.getRequestDispatcher("views/TrangChu.jsp").forward(request, response);
+        
     }
-
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        doGet(request, response); // POST xử lý như GET
+        String action = request.getParameter("action");
+        
+        // đặt hàng
+        if("datHang".equals(action)) {
+        	String id = request.getParameter("id");
+        	String soLuongStr = request.getParameter("soLuong");
+
+        	if (id != null && soLuongStr != null) {
+        	    try {
+        	        int maSanPham = Integer.parseInt(id);
+        	        int soLuong = Integer.parseInt(soLuongStr);
+
+        	        // Lấy sản phẩm
+        	        SanPham sanPham = sanPhamDAO.getById(maSanPham);
+
+        	        // Đặt hàng hoặc chuyển đến trang xác nhận
+        	        request.setAttribute("sanPham", sanPham);
+        	        request.setAttribute("soLuong", soLuong);
+
+        	        request.getRequestDispatcher("views/DatHang.jsp").forward(request, response);
+        	        return;
+
+        	    } catch (NumberFormatException e) {
+        	        // xử lý lỗi parse nếu cần
+        	    }
+        	}
+
+        }
+        
+        doGet(request, response);
     }
 
     @Override
     public void destroy() {
-        // Đảm bảo đóng kết nối khi servlet bị hủy
         try {
             if (sanPhamDAO != null) {
-                sanPhamDAO.closeConnection(); // Đóng kết nối sau khi servlet bị hủy
+                sanPhamDAO.closeConnection();
             }
         } catch (Exception e) {
             e.printStackTrace();

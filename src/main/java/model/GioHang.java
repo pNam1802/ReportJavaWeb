@@ -1,29 +1,62 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GioHang {
-    private int maGioHang;
-    private int maNguoiDung;
+    private List<GioHangItem> items;
 
-    public GioHang() {}
-
-    public GioHang(int maGioHang, int maNguoiDung) {
-        this.maGioHang = maGioHang;
-        this.maNguoiDung = maNguoiDung;
+    public GioHang() {
+        items = new ArrayList<>();
     }
 
-    public int getMaGioHang() {
-        return maGioHang;
+    // Thêm sản phẩm vào giỏ hàng
+    public void themSanPham(GioHangItem item) {
+        boolean exist = false;
+        for (GioHangItem gioHangItem : items) {
+            if (gioHangItem.getMaSanPham() == item.getMaSanPham()) {
+                // Nếu sản phẩm đã có trong giỏ, chỉ cần cập nhật số lượng
+                gioHangItem.capNhatSoLuong(gioHangItem.getSoLuong() + item.getSoLuong());
+                exist = true;
+                break;
+            }
+        }
+        if (!exist) {
+            items.add(item);
+        }
     }
 
-    public void setMaGioHang(int maGioHang) {
-        this.maGioHang = maGioHang;
+    // Xóa sản phẩm khỏi giỏ hàng
+    public void xoaSanPham(int maSanPham) {
+        items.removeIf(item -> item.getMaSanPham() == maSanPham);
     }
 
-    public int getMaNguoiDung() {
-        return maNguoiDung;
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    public void capNhatSoLuong(int maSanPham, int soLuongMoi) {
+        for (GioHangItem item : items) {
+            if (item.getMaSanPham() == maSanPham) {
+                item.capNhatSoLuong(soLuongMoi);
+                break;
+            }
+        }
     }
 
-    public void setMaNguoiDung(int maNguoiDung) {
-        this.maNguoiDung = maNguoiDung;
+    // Tính tổng giá trị giỏ hàng
+    public double getTongTien() {
+        double tongTien = 0;
+        for (GioHangItem item : items) {
+            tongTien += item.getThanhTien();
+        }
+        return tongTien;
+    }
+
+    // Lấy tất cả các món hàng trong giỏ
+    public List<GioHangItem> getItems() {
+        return items;
+    }
+
+    // Kiểm tra xem giỏ có rỗng không
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 }
