@@ -7,12 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Danh sách Sản Phẩm</title>
 
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
+
+    <!-- Bootstrap CSS từ CDN -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+    <!-- Font Awesome để dùng icon -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Style của chính mình -->
+    <link rel="stylesheet"
+          href="<%=request.getContextPath()%>/css/style.css">
 </head>
 <body>
     <header>
@@ -23,16 +29,18 @@
                     <div class="row align-items-center">
                         <div class="col-md-3">
                             <div class="logo">
-                                <img src="<%=request.getContextPath()%>/images/logo.png" alt="Logo"/>
+                                <img src="<%=request.getContextPath() + "/images/logo.png"%>" alt="Logo"/>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="search">
-                                <form class="d-flex">
-                                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
-                                    <button class="btn btn-outline-primary" type="submit">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
+                                <form class="form-inline justify-content-center row">
+                                    <div class="form-search col-10">
+                                        <input class="form-control w-100" type="search" placeholder="Tìm kiếm" aria-label="Search">
+                                        <button class="btn btn-search p-o" type="submit">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -43,10 +51,9 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <a href="<%=request.getContextPath()%>/views/GioHang.jsp" class="btn btn-outline-primary">
-                                <i class="fa fa-cart-plus me-2" aria-hidden="true"></i>
-                                <span>Giỏ hàng</span>
-                            </a>
+                            <button class="btn btn-cart">
+                                <i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ hàng</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -57,25 +64,25 @@
             <div class="menu-wrapper">
                 <div class="container">
                     <nav class="navbar navbar-expand-lg p-0">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/san-pham">Trang chủ</a>
+                                    <a class="nav-link" href="<%=request.getContextPath()%>/san-pham">Trang chủ</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Sản phẩm
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="#">Sofa</a></li>
-                                        <li><a class="dropdown-item" href="#">Bàn trà</a></li>
-                                        <li><a class="dropdown-item" href="#">Tủ Giường</a></li>
-                                        <li><a class="dropdown-item" href="#">Bàn ăn</a></li>
-                                        <li><a class="dropdown-item" href="#">Ghế thư giãn</a></li>
-                                    </ul>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">Sofa</a>
+                                        <a class="dropdown-item" href="#">Bàn trà</a>
+                                        <a class="dropdown-item" href="#">Tủ Giường</a>
+                                        <a class="dropdown-item" href="#">Bàn ăn</a>
+                                        <a class="dropdown-item" href="#">Ghế thư giãn</a>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Giới Thiệu</a>
@@ -83,8 +90,8 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Sản phẩm đã giao</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<%=request.getContextPath()%>/tin-tuc">Tin tức</a>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="<%=request.getContextPath()%>/tin-tuc">Tin tức<span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Facebook</a>
@@ -254,6 +261,11 @@
     </footer>
 
     <!-- Bootstrap 5.3 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery (BẮT BUỘC - Bootstrap 4 cần jQuery) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js (BẮT BUỘC - để dropdown, tooltip hoạt động) -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS (file chính của Bootstrap) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
