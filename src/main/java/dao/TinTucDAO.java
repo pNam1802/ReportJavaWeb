@@ -54,7 +54,7 @@ public class TinTucDAO {
         return 0;
     }
     public TinTuc getTinTucById(int maTinTuc) {
-        String sql = "SELECT * FROM TinTuc WHERE maTinTuc = ?";
+        String sql = "SELECT * FROM tin_tuc WHERE maTinTuc = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maTinTuc);

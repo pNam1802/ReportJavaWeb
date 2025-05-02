@@ -32,8 +32,10 @@
 
 				<!-- Danh mục sản phẩm -->
 				<div class="mb-3 d-flex">
-					<span class="fw-semibold" style="min-width: 120px;">Danh
-						mục:</span> <span><%= sanPham != null && sanPham.getDanhMuc() != null ? sanPham.getDanhMuc().getTenDanhMuc() : "Không có danh mục" %></span>
+					<span class="fw-semibold" style="min-width: 120px;">Danh mục:</span> 
+					<span><%= sanPham != null && sanPham.getDanhMuc() != null ? sanPham.getDanhMuc().getTenDanhMuc() : "Không có danh mục" %></span>
+					
+						
 				</div>
 
 				<!-- Giá sản phẩm -->

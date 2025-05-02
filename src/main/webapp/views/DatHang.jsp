@@ -194,12 +194,12 @@ body {
 						<!-- Nút đặt hàng -->
 						<!-- Thêm các trường ẩn này vào -->
 						<input type="hidden" name="maSanPham"
-							value="<%=sanPham.getMaSanPham()%>" name="tenSanPham"
-						value="<%=sanPham.getTenSanPham()%>">
-						<input type="hidden" name="hinhAnh"
-							value="<%=sanPham.getHinhAnh()%>"> <input type="hidden"
-							name="soLuong" value="<%=soLuong%>"> <input type="hidden"
-							name="tongTien" value="<%=tongTien%>">
+							value="<%=sanPham.getMaSanPham()%>"> <input type="hidden"
+							name="tenSanPham" value="<%=sanPham.getTenSanPham()%>"> <input
+							type="hidden" name="hinhAnh" value="<%=sanPham.getHinhAnh()%>">
+						<input type="hidden" name="soLuong" value="<%=soLuong%>">
+						<input type="hidden" name="tongTien" value="<%=tongTien%>">
+
 						<!-- Dùng tongTien thay vì tongTienFormatted -->
 						<button type="submit"
 							class="btn btn-primary btn-lg w-100 py-3 fw-bold"

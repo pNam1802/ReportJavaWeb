@@ -22,6 +22,8 @@ public class ChiTietTinTucController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	request.setCharacterEncoding("UTF-8");
+    	response.setContentType("text/html; charset=UTF-8");
         try {
             // Lấy maTinTuc từ tham số
             String maTinTucStr = request.getParameter("maTinTuc");
@@ -48,7 +50,7 @@ public class ChiTietTinTucController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Không thể tải chi tiết tin tức: " + e.getMessage());
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
+            
         }
     }
 }
