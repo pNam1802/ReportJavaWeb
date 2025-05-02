@@ -159,5 +159,32 @@ public class SanPhamDAO {
             e.printStackTrace();
         }
     }
+    
+//  HÀM TÌM KIẾM SẢN PHẨM THEO TÊN
+    public List<Product> searchByName(String txtSearch) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT * FROM product WHERE name LIKE ?";
+        try {
+            conn = new DBConnect().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, "%" + txtSearch + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getDouble("price"),
+                    rs.getString("image"),
+                    rs.getString("title"),
+                    rs.getString("description"),
+                    rs.getInt("cateID"),
+                    rs.getInt("sell_ID")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 }
