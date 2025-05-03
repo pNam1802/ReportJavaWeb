@@ -1,15 +1,20 @@
 package controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.SanPhamDAO;
+import model.GioHang;
+import model.GioHangItem;
 import model.SanPham;
 
 @WebServlet("/san-pham")
@@ -74,6 +79,7 @@ public class SanPhamController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+    	
         String action = request.getParameter("action");
         
         // đặt hàng
@@ -102,8 +108,57 @@ public class SanPhamController extends HttpServlet {
         	}
 
         }
+     // xử lý action giỏ hàng
+        if ("themVaoGioHang".equals(action)) {
+            String id = request.getParameter("id");
+            String soLuongStr = request.getParameter("soLuong");
+            // nếu mã sản phẩm và số lượng tồn tại thì bắt đầu xử lý
+            if (id != null && soLuongStr != null) {
+                try {
+                	// ép kiểu
+                    int maSanPham = Integer.parseInt(id);
+                    int soLuong = Integer.parseInt(soLuongStr);
+                    // lấy đối tượng sản phẩm thông qua ID
+                    SanPham sanPham = sanPhamDAO.getById(maSanPham);
+                    // tạo session
+                    HttpSession session = request.getSession();
+                    // lấy đối tượng giỏ hàng đang trong session
+                    GioHang gioHang = (GioHang) session.getAttribute("gioHang");
+                    // nếu giỏ hàng null thì tạo giỏ hàng mới
+                    if (gioHang == null) {
+                        gioHang = new GioHang();
+                    }
+                    // tạo giỏ hàng item để lưu trữ thông tin từng sản phẩm
+                    GioHangItem item = new GioHangItem(
+                        sanPham.getMaSanPham(),
+                        sanPham.getTenSanPham(),
+                        sanPham.getGiaKhuyenMai(),
+                        soLuong
+                    );
+                    // đưa giỏ hàn item vào gioHang
+                    gioHang.themSanPham(item);
+
+                    // Lưu giỏ hàng lại vào session
+                    session.setAttribute("gioHang", gioHang);
+
+                    // Chuyển sang trang giỏ hàng controller
+                    response.sendRedirect("giohang");
+                    return;
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace(); // hoặc log lỗi
+                }
+            }
+
+            // Nếu dữ liệu lỗi thì quay về trang sản phẩm
+            response.sendRedirect("san-pham");
+            return;
+        }
+
+
+
         
-        doGet(request, response);
+       
     }
 
     @Override

@@ -32,10 +32,10 @@
 
 				<!-- Danh mục sản phẩm -->
 				<div class="mb-3 d-flex">
-					<span class="fw-semibold" style="min-width: 120px;">Danh mục:</span> 
-					<span><%= sanPham != null && sanPham.getDanhMuc() != null ? sanPham.getDanhMuc().getTenDanhMuc() : "Không có danh mục" %></span>
-					
-						
+					<span class="fw-semibold" style="min-width: 120px;">Danh
+						mục:</span> <span><%= sanPham != null && sanPham.getDanhMuc() != null ? sanPham.getDanhMuc().getTenDanhMuc() : "Không có danh mục" %></span>
+
+
 				</div>
 
 				<!-- Giá sản phẩm -->
@@ -63,12 +63,11 @@
 					<span class="text-danger fw-semibold">Hết hàng</span>
 					<% } %>
 				</div>
-
 				<!-- Mô tả ngắn -->
 				<div class="mb-3 d-flex">
 					<span class="fw-semibold" style="min-width: 120px;">Mô tả:</span> <span><%= sanPham != null && sanPham.getChiTiet() != null ? sanPham.getChiTiet() : "Không có mô tả" %></span>
 				</div>
-				<!-- form đặt hàng -->
+				<!-- form đặt hàng  chuyển sang trang SanPhamController-->
 				<form action="<%=request.getContextPath()%>/san-pham" method="post"
 					class="mt-2">
 					<!-- Chọn số lượng -->
@@ -77,6 +76,7 @@
 							lượng:</span>
 						<div class="input-group" style="width: 150px;">
 							<button class="btn btn-outline-secondary minus" type="button">-</button>
+							<!-- truyền số lương-->
 							<input type="number" name="soLuong"
 								class="form-control text-center quantity-input" value="1"
 								min="1"
@@ -84,15 +84,20 @@
 							<button class="btn btn-outline-secondary plus" type="button">+</button>
 						</div>
 					</div>
-					<!-- Nút đặt hàng dùng POST -->
-					<div class="input-group" style="width: 150px;">
-					<input type="hidden" name="action" value="datHang"> <input
-						type="hidden" name="id" value="<%=sanPham.getMaSanPham()%>">
-					<button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold"
-					style="background-color:#000000; border: none; transition: all 0.3s; ">Đặt
-						hàng</button>
-						</div>
+
+					<!-- Truyền mã sản phẩm -->
+					<input type="hidden" name="id" value="<%=sanPham.getMaSanPham()%>">					
+					<div class="d-flex gap-2" style="width: 100%;">
+						<button type="submit" name="action" value="datHang"
+							class="btn btn-primary btn-lg w-100 py-3 fw-bold"
+							style="background-color: #000000; border: none;">Đặt
+							hàng</button>
+						<button type="submit" name="action" value="themVaoGioHang"
+							class="btn btn-outline-dark btn-lg w-100 py-3 fw-bold">
+							Thêm vào giỏ</button>
+					</div>
 				</form>
+
 			</div>
 		</div>
 	</div>

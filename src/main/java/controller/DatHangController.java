@@ -20,7 +20,8 @@ public class DatHangController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	request.setCharacterEncoding("UTF-8");
     	response.setContentType("text/html; charset=UTF-8");
-
+    	String action = request.getParameter("action");
+    	if("datHang".equals(action)) {
         String fullName = request.getParameter("fullName");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
@@ -94,6 +95,84 @@ public class DatHangController extends HttpServlet {
             logger.severe("Lỗi xử lý đặt hàng: " + e.getMessage());
             request.setAttribute("errorMessage", "Đã xảy ra lỗi trong quá trình xử lý.");
             forwardToErrorPage(request, response);
+        }
+    }
+    	if ("GioHangThanhToan".equals(action)) {
+            String fullName = request.getParameter("fullName");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            String note = request.getParameter("note");
+
+            if (isEmpty(fullName, phone, email, address)) {
+                request.setAttribute("errorMessage", "Thiếu thông tin đặt hàng.");
+                forwardToErrorPage(request, response);
+                return;
+            }
+
+            try {
+                DatHangDAO datHangDAO = new DatHangDAO();
+                int maNguoiDung = datHangDAO.themHoacLayNguoiDung(fullName, phone, email, address);
+                if (maNguoiDung == -1) {
+                    request.setAttribute("errorMessage", "Không thể tạo người dùng.");
+                    forwardToErrorPage(request, response);
+                    return;
+                }
+
+                String[] maSanPhamStr = request.getParameterValues("maSanPham[]");
+                String[] tenSanPham = request.getParameterValues("tenSanPham[]");
+                String[] soLuongStr = request.getParameterValues("soLuong[]");
+                String[] donGiaStr = request.getParameterValues("donGia[]");
+
+                List<ChiTietDonHang> dsChiTiet = new ArrayList<>();
+                double tongTien = 0;
+
+                for (int i = 0; i < maSanPhamStr.length; i++) {
+                    int maSanPham = Integer.parseInt(maSanPhamStr[i]);
+                    int soLuong = Integer.parseInt(soLuongStr[i]);
+                    double donGia = Double.parseDouble(donGiaStr[i]);
+                    double thanhTien = donGia * soLuong;
+                    tongTien += thanhTien;
+
+                    ChiTietDonHang chiTiet = new ChiTietDonHang();
+                    chiTiet.setMaSanPham(maSanPham);
+                    chiTiet.setSoLuong(soLuong);
+                    chiTiet.setDonGia(donGia);
+                    dsChiTiet.add(chiTiet);
+                }
+
+                DonHang donHang = new DonHang();
+                donHang.setNgayLap(new Date());
+                donHang.setTrangThai("Đang xử lý");
+                donHang.setTongTien(tongTien);
+                donHang.setMaNguoiDung(maNguoiDung);
+
+                boolean success = datHangDAO.placeOrder(donHang, dsChiTiet);
+                if (!success) {
+                    request.setAttribute("errorMessage", "Không thể đặt hàng. Kiểm tra lại số lượng.");
+                    forwardToErrorPage(request, response);
+                    return;
+                }
+                HttpSession session = request.getSession();
+                session.removeAttribute("gioHang");
+
+                // ✅ Truyền dữ liệu sang trang cảm ơn
+                request.setAttribute("fullName", fullName);
+                request.setAttribute("phone", phone);
+                request.setAttribute("email", email);
+                request.setAttribute("address", address);
+                request.setAttribute("note", note);
+                request.setAttribute("tenSanPham", Arrays.asList(tenSanPham));
+                request.setAttribute("soLuong", Arrays.asList(soLuongStr));
+                request.setAttribute("tongTien", tongTien);
+
+                request.getRequestDispatcher("views/CamOn.jsp").forward(request, response);
+
+            } catch (NumberFormatException | SQLException e) {
+                logger.severe("Lỗi xử lý đặt hàng từ giỏ hàng: " + e.getMessage());
+                request.setAttribute("errorMessage", "Đã xảy ra lỗi trong quá trình xử lý.");
+                forwardToErrorPage(request, response);
+            }
         }
     }
 

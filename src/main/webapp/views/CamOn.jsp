@@ -52,17 +52,13 @@
     <div class="thank-you-container mx-auto col-md-8 col-lg-6">
         <%
             String hoTen = request.getParameter("fullName");
-            String tongTienStr = request.getParameter("tongTien");
-            String email = request.getParameter("email");
+        Object tongTienObj = request.getAttribute("tongTien");
+        String email = request.getParameter("email");
 
-            double tongTien = 0;
-            try {
-                if (tongTienStr != null) {
-                    tongTien = Double.parseDouble(tongTienStr);
-                }
-            } catch (NumberFormatException e) {
-                tongTien = 0;
-            }
+        double tongTien = 0;
+        if (tongTienObj != null && tongTienObj instanceof Double) {
+            tongTien = (Double) tongTienObj;
+        }
 
             NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
             String tongTienFormatted = nf.format(tongTien);
