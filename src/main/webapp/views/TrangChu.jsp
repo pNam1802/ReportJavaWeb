@@ -18,8 +18,12 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Style của chính mình -->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/style.css">
+<link rel="stylesheet" href="css/style.css"> <!-- Thử sử dụng đường dẫn tương đối -->
+
+
+
+
+	
 </head>
 <body>
 	<header>
@@ -36,17 +40,21 @@
 						</div>
 						<div class="col-md-4">
 							<div class="search">
-								<form class="form-inline justify-content-center row">
+								<form action="<%=request.getContextPath()%>/san-pham"
+									method="get" class="form-inline justify-content-center row">
+									<input type="hidden" name="action" value="timKiem">
 									<div class="form-search col-10">
-										<input class="form-control w-100" type="search"
-											placeholder="Tìm kiếm" aria-label="Search">
-										<button class="btn btn-search p-o" type="submit">
-											<i class="fa fa-search" aria-hidden="true"></i>
+										<input class="form-control w-100" type="search" name="keyword"
+											placeholder="Tìm kiếm" aria-label="Search"
+											value="<%= request.getAttribute("keyword") != null ? request.getAttribute("keyword") : "" %>">
+										<button type="submit" aria-label="Tìm kiếm">
+											<i class="fa fa-search"></i>
 										</button>
 									</div>
 								</form>
 							</div>
 						</div>
+
 						<div class="col-md-3">
 							<div class="contact">
 								<h4>Hotline hỗ trợ</h4>
@@ -54,7 +62,8 @@
 							</div>
 						</div>
 						<div class="col-md-2">
-							<form action="<%=request.getContextPath()%>/giohang" method="post">
+							<form action="<%=request.getContextPath()%>/giohang"
+								method="post">
 								<button type="submit" class="btn btn-cart">
 									<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ
 										hàng</span>
@@ -91,8 +100,8 @@
 											class="dropdown-item" href="#">Bàn ăn</a> <a
 											class="dropdown-item" href="#">Ghế thư giãn</a>
 									</div></li>
-								<li class="nav-item"><a class="nav-link" href="views/GioiThieu.jsp">Giới
-										Thiệu</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="views/GioiThieu.jsp">Giới Thiệu</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">Sản
 										phẩm đã giao</a></li>
 								<li class="nav-item active"><a class="nav-link"

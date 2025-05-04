@@ -49,6 +49,44 @@ public class SanPhamController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/san-pham");
             return;
         }
+     // Tìm kiếm sản phẩm
+        if ("timKiem".equals(action)) {
+            String keyword = request.getParameter("keyword");
+            System.out.println("Keyword received: '" + keyword + "'");
+            int page = 1;
+            int limit = 6;
+
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) {
+                try {
+                    page = Integer.parseInt(pageParam);
+                } catch (NumberFormatException e) {
+                    page = 1;
+                }
+            }
+            int offset = (page - 1) * limit;
+            List<SanPham> sanPhams;
+            int totalSanPhams;
+
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                System.out.println("Calling searchByName with keyword: " + keyword);
+                sanPhams = sanPhamDAO.searchByName(keyword, offset, limit);
+                totalSanPhams = sanPhamDAO.getTotalSanPhamByName(keyword);
+                request.setAttribute("keyword", keyword);
+            } else {
+                System.out.println("Keyword empty, calling getSanPhams");
+                sanPhams = sanPhamDAO.getSanPhams(offset, limit);
+                totalSanPhams = sanPhamDAO.getTotalSanPham();
+            }
+
+            int totalPages = (int) Math.ceil((double) totalSanPhams / limit);
+            request.setAttribute("sanPhams", sanPhams);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.getRequestDispatcher("views/TrangChu.jsp").forward(request, response);
+            return;
+        }
+
   
         // Xử lý phân trang (giữ nguyên như cũ)
         int page = 1;

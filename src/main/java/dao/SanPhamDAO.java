@@ -124,6 +124,50 @@ public class SanPhamDAO {
         }
         return sanPhams;
     }
+    // Tìm kiếm sản phẩm theo tên
+    public List<SanPham> searchByName(String keyword, int offset, int limit) {
+        List<SanPham> sanPhams = new ArrayList<>();
+        String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
+                     "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
+                     "FROM san_pham sp " +
+                     "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
+                     "WHERE sp.tenSanPham LIKE ? " +
+                     "LIMIT ? OFFSET ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ps.setInt(2, limit);
+            ps.setInt(3, offset);
+            System.out.println("Executing searchByName with keyword: " + keyword);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    sanPhams.add(mapResultSetToSanPham(rs));
+                }
+                System.out.println("Found " + sanPhams.size() + " products for keyword: " + keyword);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sanPhams;
+    }
+
+    // Lấy tổng số sản phẩm theo tên
+    public int getTotalSanPhamByName(String keyword) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM san_pham WHERE tenSanPham LIKE ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+                System.out.println("Total products for keyword " + keyword + ": " + count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 
     // Phương thức hỗ trợ ánh xạ ResultSet thành đối tượng SanPham
