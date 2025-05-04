@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-<<<<<<< HEAD
+
 /* Reset mặc định */
 * {
     margin: 0;
@@ -13,6 +13,25 @@ body {
     line-height: 1.6;
     color: #333;
 }
+.text-main {
+        color: #f25a29;
+    }
+    .btn-main {
+        background-color: #f25a29;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+    .btn-main:hover {
+        background-color: #d94f24;
+        color: #fff;
+    }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
 /* Header */
 .header .top-header {
@@ -405,3 +424,4 @@ footer .address-store h4 i {
         font-size: 14px;
         height: 35px;
     }
+}

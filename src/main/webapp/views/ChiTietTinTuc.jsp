@@ -9,16 +9,41 @@
     <title>Chi tiết Tin Tức</title>
 
     <!-- Bootstrap CSS từ CDN -->
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-          crossorigin="anonymous">
-    <!-- Font Awesome để dùng icon -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Style của chính mình -->
-    <link rel="stylesheet"
-          href="<%=request.getContextPath()%>/css/style.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
+<!-- Font Awesome để dùng icon -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Style của chính mình -->
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/style.css">
+	<style>
+.news .col-md-4 {
+    margin-bottom: 30px;
+}
+
+    .text-main {
+        color: #f25a29;
+    }
+    .btn-main {
+        background-color: #f25a29;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+    .btn-main:hover {
+        background-color: #d94f24;
+        color: #fff;
+    }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+</style>
 </head>
 <body>
     <header>
@@ -51,9 +76,12 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-cart">
-                                <i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ hàng</span>
-                            </button>
+                            <form action="<%=request.getContextPath()%>/giohang" method="post">
+								<button type="submit" class="btn btn-cart">
+									<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ
+										hàng</span>
+								</button>
+							</form>
                         </div>
                     </div>
                 </div>
@@ -98,32 +126,38 @@
     </header>
     <!-- Kết thúc header -->
 
-    <div class="main-wrapper">
-        <section class="news-detail">
-            <div class="container">
-                <%
+   <div class="main-wrapper py-5">
+    <section class="news-detail">
+        <div class="container">
+            <%
                 TinTuc tinTuc = (TinTuc) request.getAttribute("tinTuc");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 if (tinTuc != null) {
-                %>
-                <h1 class="title-page"><%=tinTuc.getTieuDe()%></h1>
-                <p class="text-muted mb-4">
-                    Ngày đăng: <%=dateFormat.format(tinTuc.getNgayDang())%>
-                </p>
-                <div class="content">
-                    <p><%=tinTuc.getNoiDung()%></p>
-                </div>
-                <%
-                } else {
-                %>
-                <p class="text-danger">Không tìm thấy tin tức.</p>
-                <%
-                }
-                %>
-                <a href="<%=request.getContextPath()%>/tin-tuc" class="btn btn-primary mt-3">Quay lại danh sách tin tức</a>
+            %>
+            <h3 class="text-center mb-4 title-page text-main"><%=tinTuc.getTieuDe() %></h3>
+            <p class="text-center text-muted mb-4">
+                Ngày đăng: <%=dateFormat.format(tinTuc.getNgayDang())%>
+            </p>
+            <div class="content mb-4 px-md-5">
+                <p><%=tinTuc.getNoiDung()%></p>
             </div>
-        </section>
-    </div>
+            <div class="text-center">
+                <a href="<%=request.getContextPath()%>/tin-tuc" class="btn btn-sm btn-main">Quay lại danh sách tin tức</a>
+            </div>
+            <%
+                } else {
+            %>
+            <p class="text-danger text-center">Không tìm thấy tin tức.</p>
+            <div class="text-center mt-3">
+                <a href="<%=request.getContextPath()%>/tin-tuc" class="btn btn-secondary">Quay lại</a>
+            </div>
+            <%
+                }
+            %>
+        </div>
+    </section>
+</div>
+
 
     <footer>
         <div class="container">
