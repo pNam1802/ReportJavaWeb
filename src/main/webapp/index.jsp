@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% response.sendRedirect("san-pham"); %>
-
+<% response.sendRedirect(request.getContextPath() + "/san-pham"); %>
 </body>
 </html>
