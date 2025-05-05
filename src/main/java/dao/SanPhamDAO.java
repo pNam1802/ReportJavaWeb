@@ -1,6 +1,7 @@
 package dao;
 
 import model.SanPham;
+import model.DanhGiaSanPham;
 import model.DanhMuc;
 
 import java.sql.*;
@@ -168,7 +169,38 @@ public class SanPhamDAO {
         }
         return count;
     }
+    public List<DanhGiaSanPham> layDanhSachDanhGiaDaGiao() {
+        List<DanhGiaSanPham> danhSach = new ArrayList<>();
 
+        String sql = """
+            SELECT sp.tenSanPham, nd.hoTen, dg.diemDanhGia, dg.noiDung, dg.ngayDanhGia
+            FROM danh_gia dg
+            JOIN san_pham sp ON dg.maSanPham = sp.maSanPham
+            JOIN nguoi_dung nd ON dg.maNguoiDung = nd.maNguoiDung
+            JOIN don_hang dh ON dh.maNguoiDung = nd.maNguoiDung
+            JOIN chi_tiet_don_hang ct ON ct.maDonHang = dh.maDonHang AND ct.maSanPham = sp.maSanPham
+            WHERE dh.trangThai = 'Đã giao'
+            ORDER BY dg.ngayDanhGia DESC;
+        """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                DanhGiaSanPham dg = new DanhGiaSanPham();
+                dg.setTenSanPham(rs.getString("tenSanPham"));
+                dg.setTenNguoiDung(rs.getString("hoTen"));
+                dg.setDiemDanhGia(rs.getInt("diemDanhGia"));
+                dg.setNoiDung(rs.getString("noiDung"));
+                dg.setNgayDanhGia(rs.getDate("ngayDanhGia"));
+                danhSach.add(dg);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return danhSach;
+    }
 
     // Phương thức hỗ trợ ánh xạ ResultSet thành đối tượng SanPham
     private SanPham mapResultSetToSanPham(ResultSet rs) throws SQLException {

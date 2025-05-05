@@ -111,10 +111,10 @@
                                         <a class="dropdown-item" href="#">Ghế thư giãn</a>
                                     </div>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="#">Giới Thiệu</a></li>
+                                <li class="nav-item"><a class="nav-link" href="views/GioiThieu.jsp">Giới Thiệu</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Sản phẩm đã giao</a></li>
                                 <li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/tin-tuc">Tin tức<span class="sr-only">(current)</span></a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
+                                <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/isofafurniture">Facebook</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Liên hệ</a></li>
                             </ul>
                         </div>

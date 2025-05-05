@@ -1,5 +1,13 @@
 @charset "UTF-8";
-
+     .main-color {
+            color: #f25a29;
+        }
+        .border-left-orange {
+            border-left: 5px solid #f25a29;
+        }
+        .star {
+            color: gold;
+        }
     .form-search {
         position: relative;
     }

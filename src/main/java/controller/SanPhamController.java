@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.SanPhamDAO;
+import model.DanhGiaSanPham;
 import model.GioHang;
 import model.GioHangItem;
 import model.SanPham;
@@ -48,6 +49,12 @@ public class SanPhamController extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/san-pham");
             return;
+        }
+        if ("daGiao".equals(action)) {
+            SanPhamDAO dao = new SanPhamDAO();
+            List<DanhGiaSanPham> danhGiaList = dao.layDanhSachDanhGiaDaGiao();
+            request.setAttribute("danhGiaList", danhGiaList);
+            request.getRequestDispatcher("/views/SanPhamGiao.jsp").forward(request, response);
         }
      // Tìm kiếm sản phẩm
         if ("timKiem".equals(action)) {
