@@ -104,7 +104,6 @@ public class SanPhamDAO {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
-
                      "FROM san_pham sp " +
                      "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
                      "LIMIT ? OFFSET ?";
@@ -113,18 +112,17 @@ public class SanPhamDAO {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
 
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     sanPhams.add(mapResultSetToSanPham(rs));
                 }
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return sanPhams;
     }
+    
     // Tìm kiếm sản phẩm theo tên
     public List<SanPham> searchByName(String keyword, int offset, int limit) {
         List<SanPham> sanPhams = new ArrayList<>();
@@ -152,6 +150,7 @@ public class SanPhamDAO {
         return sanPhams;
     }
 
+
     // Lấy tổng số sản phẩm theo tên
     public int getTotalSanPhamByName(String keyword) {
         int count = 0;
@@ -169,6 +168,54 @@ public class SanPhamDAO {
         }
         return count;
     }
+    
+    // Lấy sản phẩm theo danh mục (có phân trang)
+    public List<SanPham> getSanPhamTheoDanhMuc(int maDanhMuc, int offset, int limit) {
+        List<SanPham> list = new ArrayList<>();
+        String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
+                     "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
+                     "FROM san_pham sp " +
+                     "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
+                     "WHERE sp.idDanhMuc = ? " +
+                     "LIMIT ? OFFSET ?"; // Thêm LIMIT và OFFSET cho phân trang
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1,  maDanhMuc);	 // Set mã danh mục vào câu truy vấn
+        	ps.setInt(2, limit);         // Set giới hạn số lượng sản phẩm
+            ps.setInt(3, offset);        // Set vị trí bắt đầu (offset)
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    SanPham sp = mapResultSetToSanPham(rs);
+                    list.add(sp); // Thêm sản phẩm vào danh sách
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    // Lấy tổng số sản phẩm theo danh mục
+    public int getTotalSanPhamTheoDanhMuc(int maDanhMuc) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM san_pham sp " +
+                     "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
+                     "WHERE sp.idDanhMuc = ?";
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maDanhMuc);  // Set mã danh mục vào câu truy vấn
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+    
     public List<DanhGiaSanPham> layDanhSachDanhGiaDaGiao() {
         List<DanhGiaSanPham> danhSach = new ArrayList<>();
 
