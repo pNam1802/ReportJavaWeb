@@ -117,11 +117,11 @@ public class SanPhamController extends HttpServlet {
             // Ánh xạ danhMuc sang maDanhMuc (số)
             int maDanhMuc;
             switch (danhMuc.toLowerCase()) {
-                case "sofa": maDanhMuc = 1; break;
-                case "ban-tra": maDanhMuc = 2; break;
-                case "tu-giuong": maDanhMuc = 3; break;
-                case "ban-an": maDanhMuc = 4; break;
-                case "ghe-thu-gian": maDanhMuc = 5; break;
+                case "sofa": maDanhMuc = 5001; break;
+                case "ban-tra": maDanhMuc = 5002; break;
+                case "tu-giuong": maDanhMuc = 5003; break;
+                case "ban-an": maDanhMuc = 5004; break;
+                case "ghe-thu-gian": maDanhMuc = 5005; break;
                 default: maDanhMuc = Integer.parseInt(danhMuc); // Nếu không khớp, giữ nguyên (có thể gây lỗi)
             }
             sanPhams = sanPhamDAO.getSanPhamTheoDanhMuc(maDanhMuc, offset, limit);

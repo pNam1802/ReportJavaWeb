@@ -127,13 +127,13 @@ iframe {
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 									role="button" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false"> Sản phẩm </a>
+									aria-expanded="false"> Danh mục </a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<a class="dropdown-item" href="#">Sofa</a> <a
-											class="dropdown-item" href="#">Bàn trà</a> <a
-											class="dropdown-item" href="#">Tủ Giường</a> <a
-											class="dropdown-item" href="#">Bàn ăn</a> <a
-											class="dropdown-item" href="#">Ghế thư giãn</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=sofa">Sofa</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-tra">Bàn trà</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=tu-giuong">Tủ Giường</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-an">Bàn ăn</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ghe-thu-gian">Ghế thư giãn</a>
 									</div></li>
 								<li class="nav-item"><a class="nav-link" href="GioiThieu.jsp">giới thiệu</a></li>
 
