@@ -111,7 +111,7 @@
 										class="sr-only">(current)</span></a></li>
 								<li class="nav-item"><a class="nav-link" href="https://www.facebook.com/isofafurniture">Facebook</a>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="#">Liên
+								<li class="nav-item"><a class="nav-link" href="views/LienHe.jsp">Liên
 										hệ</a></li>
 							</ul>
 						</div>

@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Giới thiệu về Isofa</title>
-   <!-- Bootstrap CSS từ CDN -->
+<meta charset="UTF-8">
+<title>Liên hệ</title>
+<!-- Bootstrap CSS từ CDN -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
 	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
@@ -14,32 +14,54 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Style của chính mình -->
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/style.css">
-    <style>
-        :root {
-            --main-color: #f25a29;
-        }
-        .text-main {
-            color: var(--main-color) !important;
-        }
-        .bg-main {
-            background-color: var(--main-color) !important;
-        }
-        .border-main {
-            border-color: var(--main-color) !important;
-        }
-        .btn-main {
-            background-color: var(--main-color);
-            color: white;
-            border: none;
-        }
-        .btn-main:hover {
-            background-color: #d94f24;
-        }
-    </style>
+	href="${pageContext.request.contextPath}/css/style.css">
+<style>
+:root {
+	--primary-color: #f25a29;
+}
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+.page-title {
+	color: var(--primary-color);
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.contact-info p {
+	margin: 5px 0;
+}
+
+.contact-card {
+	background-color: #fff4f0;
+	border: 1px solid #f25a29;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+iframe {
+	border-radius: 10px;
+	border: none;
+	width: 100%;
+	height: 450px;
+}
+
+.btn-primary {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+	background-color: #d94f22;
+	border-color: #d94f22;
+}
+</style>
 </head>
-<body class="bg-light">
-<header>
+<body>
+	<header>
 		<section class="header">
 			<!-- Thanh navbar -->
 			<div class="top-header">
@@ -59,7 +81,7 @@
 									<div class="form-search col-10">
 										<input class="form-control w-100" type="search" name="keyword"
 											placeholder="Tìm kiếm" aria-label="Search"
-											value="<%= request.getAttribute("keyword") != null ? request.getAttribute("keyword") : "" %>">
+											value="<%=request.getAttribute("keyword") != null ? request.getAttribute("keyword") : ""%>">
 										<button type="submit" aria-label="Tìm kiếm">
 											<i class="fa fa-search"></i>
 										</button>
@@ -113,17 +135,18 @@
 											class="dropdown-item" href="#">Bàn ăn</a> <a
 											class="dropdown-item" href="#">Ghế thư giãn</a>
 									</div></li>
+								<li class="nav-item"><a class="nav-link" href="GioiThieu.jsp">giới thiệu</a></li>
+
 								<li class="nav-item"><a class="nav-link"
-									href="#">Giới Thiệu</a></li>
-								<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/san-pham?action=daGiao">Sản
+									href="<%=request.getContextPath()%>/san-pham?action=daGiao">Sản
 										phẩm đã giao</a></li>
 								<li class="nav-item active"><a class="nav-link"
 									href="<%=request.getContextPath()%>/tin-tuc">Tin tức<span
-										class="sr-only">(current)</span></a></li>
-								<li class="nav-item"><a class="nav-link" href="https://www.facebook.com/isofafurniture">Facebook</a>
-								</li>
-								<li class="nav-item"><a class="nav-link" href="LienHe.jsp">Liên hệ</a></li>
-
+										class="sr-only"></span></a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="https://www.facebook.com/isofafurniture">Facebook</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="#">Liên hệ</a></li>
 							</ul>
 						</div>
 					</nav>
@@ -133,22 +156,41 @@
 		</section>
 	</header>
 
-    <div class="container mt-5">
-        <div class="card shadow p-4 border-main">
-           <h3 class="title-page text-center mb-4">GIỚI THIỆU</h3>
-            <p><strong>Isofa</strong> là công ty tiên phong trong lĩnh vực nội thất và thiết kế không gian sống hiện đại. Với sứ mệnh mang đến sự tinh tế, tiện nghi và phong cách cho mọi tổ ấm, Isofa không ngừng sáng tạo và cải tiến sản phẩm để đáp ứng nhu cầu ngày càng đa dạng của khách hàng.</p>
+	<div class="container">
+		<h1 class="page-title">Liên hệ với chúng tôi</h1>
 
-            <p>Chúng tôi cung cấp các dòng sản phẩm nội thất cao cấp như ghế sofa, bàn ghế phòng khách, phòng ăn, văn phòng,... với thiết kế hiện đại, chất lượng bền bỉ và giá cả hợp lý.</p>
+		<div class="row mb-5">
+			<div class="col-md-6">
+				<div class="contact-card">
+					<h4>Thông tin liên hệ</h4>
+					<div class="contact-info">
+						<p>
+							<strong>Địa chỉ:</strong> Nguyên Hòa, Phù Cừ, Hưng Yên
+						</p>
+						<p>
+							<strong>Điện thoại:</strong> 0123 456 789
+						</p>
+						<p>
+							<strong>Email:</strong> lienhe@banghesofa.vn
+						</p>
+						<p>
+							<strong>Giờ làm việc:</strong> Thứ 2 - Thứ 7: 8:00 - 17:00
+						</p>
+					</div>
+				</div>
+			</div>
+			<div>
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29862.641045613094!2d106.22565790775522!3d20.67648882668459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135eb5bd81e6cb7%3A0x2c751faca03cff2b!2zTmd1ecOqbiBIb8OgLCBQaMO5IEPhu6ssIEjGsG5nIFnDqm4sIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1746414629571!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			</div>
+		</div>
 
-            <p>Với đội ngũ nhân viên chuyên nghiệp và tận tâm, Isofa cam kết mang đến trải nghiệm mua sắm và dịch vụ hậu mãi tốt nhất cho khách hàng trên toàn quốc.</p>
 
-            <p class="fw-bold">Hãy cùng Isofa biến không gian sống của bạn trở thành nơi lý tưởng để thư giãn và thể hiện phong cách riêng!</p>
 
-            <a href="<%=request.getContextPath() %>/san-pham" class="btn btn-main mt-3">Về trang chủ</a>
-        </div>
-    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
