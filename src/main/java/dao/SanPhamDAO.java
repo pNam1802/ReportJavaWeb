@@ -249,8 +249,9 @@ public class SanPhamDAO {
         return danhSach;
     }
 
-    // Phương thức hỗ trợ ánh xạ ResultSet thành đối tượng SanPham
+ // Phương thức ánh xạ ResultSet thành đối tượng SanPham
     private SanPham mapResultSetToSanPham(ResultSet rs) throws SQLException {
+        // Tạo đối tượng SanPham
         SanPham sanPham = new SanPham();
         sanPham.setMaSanPham(rs.getInt("maSanPham"));
         sanPham.setTenSanPham(rs.getString("tenSanPham"));
@@ -261,15 +262,17 @@ public class SanPhamDAO {
         sanPham.setSoLuongTonKho(rs.getInt("soLuongTonKho"));
         sanPham.setHinhAnh(rs.getString("hinhAnh"));
 
-        DanhMuc danhMuc = new DanhMuc(
-            rs.getInt("maDanhMuc"),
-            rs.getString("tenDanhMuc"),
-            rs.getString("moTa")
-        );
+        // Tạo đối tượng DanhMuc từ ResultSet và gán vào SanPham
+        DanhMuc danhMuc = new DanhMuc();
+        danhMuc.setMaDanhMuc(rs.getInt("maDanhMuc"));
+        danhMuc.setTenDanhMuc(rs.getString("tenDanhMuc"));
+        danhMuc.setMoTa(rs.getString("moTa"));
+
         sanPham.setDanhMuc(danhMuc);
-        
+
         return sanPham;
     }
+
 
     // Đóng kết nối (đã có)
     public void closeConnection() {
