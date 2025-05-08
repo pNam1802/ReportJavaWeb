@@ -29,18 +29,11 @@
                     class="btn btn-outline-warning w-100 py-3">Quản lý Sản Phẩm</a>
                 </div>
                 <div class="col-md-6">
-<<<<<<< HEAD
                     <a href="${pageContext.request.contextPath}/admin/nguoi-dung" class="btn btn-outline-warning w-100">Quản lý Người dùng</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/don-hang" class="btn btn-outline-danger w-100">Quản lý Đơn hàng</a>
-=======
-                    <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
-                    class="btn btn-outline-warning w-100 py-3">Quản lý Người dùng</a>
-                </div>
-                <div class="col-md-6">
-                    <a href="don-hang" class="btn btn-outline-danger w-100 py-3">Quản lý Đơn hàng</a>
->>>>>>> 7ae870cb3e02d0b7ba80b30df61dd804041baa49
+
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" 
