@@ -3,32 +3,35 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Đăng nhập Admin</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Đăng nhập Admin - Bàn Ghế Sofa</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
 <div class="container mt-5">
-    <h2>Đăng nhập Admin</h2>
-    
-    <form action="${pageContext.request.contextPath}/login-admin" method="post">
-        <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+    <div class="card shadow mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Đăng nhập Admin</h3>
         </div>
-        <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+        <div class="card-body">
+            <form action="${pageContext.request.contextPath}/login-admin" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-    </form>
+    </div>
 </div>
 
-<!-- Link to Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

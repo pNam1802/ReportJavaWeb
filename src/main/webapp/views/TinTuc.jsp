@@ -61,12 +61,15 @@
 						</div>
 						<div class="col-md-4">
 							<div class="search">
-								<form class="form-inline justify-content-center row">
+								<form action="<%=request.getContextPath()%>/san-pham"
+									method="get" class="form-inline justify-content-center row">
+									<input type="hidden" name="action" value="timKiem">
 									<div class="form-search col-10">
-										<input class="form-control w-100" type="search"
-											placeholder="Search" aria-label="Search">
-										<button class="btn btn-search p-o" type="submit">
-											<i class="fa fa-search" aria-hidden="true"></i>
+										<input class="form-control w-100" type="search" name="keyword"
+											placeholder="Tìm kiếm" aria-label="Search"
+											value="<%=request.getAttribute("keyword") != null ? request.getAttribute("keyword") : ""%>">
+										<button type="submit" aria-label="Tìm kiếm">
+											<i class="fa fa-search"></i>
 										</button>
 									</div>
 								</form>
