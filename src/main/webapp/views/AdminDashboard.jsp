@@ -28,7 +28,7 @@
                     <a href="nguoi-dung" class="btn btn-outline-warning w-100">Quản lý Người dùng</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="don-hang" class="btn btn-outline-danger w-100">Quản lý Đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/don-hang" class="btn btn-outline-danger w-100">Quản lý Đơn hàng</a>
                 </div>
                 <div class="col-md-6">
                     <a href="tin-tuc" class="btn btn-outline-secondary w-100">Quản lý Tin tức</a>
