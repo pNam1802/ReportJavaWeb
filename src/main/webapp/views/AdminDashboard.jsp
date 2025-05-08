@@ -18,14 +18,15 @@
             <h3 class="mb-0">Trang Quản Trị - Admin Dashboard</h3>
         </div>
         <div class="card-body">
-            <p class="lead">Chào mừng <strong>Admin</strong> đến với hệ thống quản trị Bàn Ghế Sofa.</p>
+            <p class="lead">Chào mừng <strong>Admin</strong> đến với hệ thống quản trị của iSofa.</p>
 
             <div class="row g-3 mt-4">
                 <div class="col-md-6">
                     <a href="danh-muc" class="btn btn-outline-primary w-100">Quản lý Danh mục sản phẩm</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="san-pham" class="btn btn-outline-success w-100">Quản lý Sản phẩm</a>
+                    <a href="${pageContext.request.contextPath}/admin-san-pham" 
+                    class="btn btn-outline-warning w-100">Quản lý Sản Phẩm</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
