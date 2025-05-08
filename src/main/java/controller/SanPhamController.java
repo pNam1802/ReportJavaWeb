@@ -218,10 +218,7 @@ public class SanPhamController extends HttpServlet {
             response.sendRedirect("san-pham");
             return;
         }
-
-
-
-        
+     
        
     }
 

@@ -1,9 +1,12 @@
 package controller;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @WebServlet("/login-admin")
 public class AdminLoginController extends HttpServlet {
@@ -27,9 +30,11 @@ public class AdminLoginController extends HttpServlet {
 
         // Kiểm tra thông tin đăng nhập admin
         if ("admin".equals(user) && "admin123".equals(pass)) {
-            response.sendRedirect("views/AdminDashboard.jsp");
+            // Thiết lập session cho admin
+            HttpSession session = request.getSession();
+            session.setAttribute("admin", user);
+            response.sendRedirect(request.getContextPath() + "/views/AdminDashboard.jsp");
         } else {
-            // Nếu đăng nhập sai, lưu thông báo lỗi và chuyển hướng lại trang đăng nhập
             request.setAttribute("errorMessage", "Đăng nhập thất bại! Sai tên hoặc mật khẩu.");
             request.getRequestDispatcher("views/AdminLogin.jsp").forward(request, response);
         }
