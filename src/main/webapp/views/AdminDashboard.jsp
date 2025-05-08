@@ -15,36 +15,36 @@
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Trang Quản Trị - Admin Dashboard</h3>
+            <h3 class="mb-0 text-center">Trang Quản Trị - Admin Dashboard</h3>
         </div>
         <div class="card-body">
             <p class="lead">Chào mừng <strong>Admin</strong> đến với hệ thống quản trị của iSofa.</p>
 
             <div class="row g-3 mt-4">
                 <div class="col-md-6">
-                    <a href="danh-muc" class="btn btn-outline-primary w-100">Quản lý Danh mục sản phẩm</a>
+                    <a href="danh-muc" class="btn btn-outline-primary w-100 py-3">Quản lý Danh mục sản phẩm</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/admin-san-pham" 
-                    class="btn btn-outline-warning w-100">Quản lý Sản Phẩm</a>
+                    class="btn btn-outline-warning w-100 py-3">Quản lý Sản Phẩm</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
-                    class="btn btn-outline-warning w-100">Quản lý Người dùng</a>
+                    class="btn btn-outline-warning w-100 py-3">Quản lý Người dùng</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="don-hang" class="btn btn-outline-danger w-100">Quản lý Đơn hàng</a>
+                    <a href="don-hang" class="btn btn-outline-danger w-100 py-3">Quản lý Đơn hàng</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" 
-   					class="btn btn-outline-secondary w-100">Quản lý Tin tức</a>
+   					class="btn btn-outline-secondary w-100 py-3">Quản lý Tin tức</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="khuyen-mai" class="btn btn-outline-info w-100">Quản lý Khuyến mãi</a>
+                    <a href="khuyen-mai" class="btn btn-outline-info w-100 py-3">Quản lý Khuyến mãi</a>
                 </div>
                 <div class="col-md-12 mt-3">
-                    <a href="index.jsp" class="btn btn-dark w-100">Đăng xuất</a>
-
+					<a href="${pageContext.request.contextPath}/logout-admin" 
+                    class="btn btn-outline-danger w-100 py-3">Đăng xuất</a>
                 </div>
             </div>
         </div>

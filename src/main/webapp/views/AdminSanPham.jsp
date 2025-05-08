@@ -75,7 +75,7 @@
 
             <!-- Nút để mở form thêm sản phẩm -->
             <div class="mb-4" id="addButtonContainer">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm" aria-expanded="false" aria-controls="addProductForm">
+                <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm" aria-expanded="false" aria-controls="addProductForm">
                     Thêm Sản phẩm
                 </button>
             </div>
@@ -164,7 +164,7 @@
                             </td>
                             <td><%= sp.getChiTiet() != null ? sp.getChiTiet() : "" %></td>
                             <td class="action-buttons">
-                                <button class="btn btn-sm btn-warning edit-btn" 
+                                <button class="btn btn-sm btn-primary edit-btn" 
                                         data-id="<%= sp.getMaSanPham() %>"
                                         data-ten="<%= sp.getTenSanPham() != null ? sp.getTenSanPham() : "" %>"
                                         data-danhmuc="<%= sp.getDanhMuc() != null ? sp.getDanhMuc().getTenDanhMuc() : "" %>"

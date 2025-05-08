@@ -250,11 +250,20 @@ public class AdminSanPhamController extends HttpServlet {
             double giaKhuyenMai = (giaKhuyenMaiParam != null && !giaKhuyenMaiParam.isEmpty())
                     ? Double.parseDouble(giaKhuyenMaiParam) : 0;
             int soLuongTonKho = Integer.parseInt(soLuongTonKhoParam);
+            
+         // Lấy sản phẩm hiện tại để kiểm tra hình ảnh cũ
+            SanPham existingProduct = sanPhamDAO.getById(maSanPham);
+            if (existingProduct == null) {
+                LOGGER.warning("Product not found with ID: " + maSanPham);
+                response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
+                return;
+            }
 
+            // Xử lý hình ảnh: chỉ cập nhật nếu có hình ảnh mới
             String hinhAnh = handleImageUpload(request);
             if (hinhAnh == null) {
-                SanPham existingProduct = sanPhamDAO.getById(maSanPham);
-                hinhAnh = (existingProduct != null) ? existingProduct.getHinhAnh() : null;
+                // Giữ nguyên hình ảnh cũ nếu không có hình ảnh mới
+                hinhAnh = existingProduct.getHinhAnh();
             }
 
             SanPham sanPham = new SanPham();
