@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Trạng thái:</label>
+                    <label class="form-label fw-bold">Trạng thái: <%=donHang.getTrangThai() %></label>
                     <select name="trangThai" class="form-select">
                         <option <%= donHang.getTrangThai().equals("Chờ xử lý") ? "selected" : "" %>>Chờ xử lý</option>
                         <option <%= donHang.getTrangThai().equals("Đang giao") ? "selected" : "" %>>Đang giao</option>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Trạng thái thanh toán:</label>
+                    <label class="form-label fw-bold">Trạng thái thanh toán: <%=donHang.getTrangThaiThanhToan() %></label>
                     <select name="trangThaiThanhToan" class="form-select">
                         <option <%= donHang.getTrangThaiThanhToan().equals("Chưa thanh toán") ? "selected" : "" %>>Chưa thanh toán</option>
                         <option <%= donHang.getTrangThaiThanhToan().equals("Đã thanh toán") ? "selected" : "" %>>Đã thanh toán</option>
@@ -142,7 +142,10 @@
             </table>
         </div>
     </div>
-
+<!-- Nút Trở về -->
+    <div class="text-end mt-4">
+        <a href="<%= request.getContextPath() %>/don-hang" class="btn btn-secondary">Trở về Quản lý đơn hàng</a>
+    </div>
 </div>
 </body>
 </html>

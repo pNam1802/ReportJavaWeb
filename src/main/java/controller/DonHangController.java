@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,9 +49,14 @@ public class DonHangController extends HttpServlet {
         }
     }
 
+
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
 
         String action = request.getParameter("action");
         if (action == null) action = "";
@@ -65,6 +72,10 @@ public class DonHangController extends HttpServlet {
                 case "paymentStatus":
                     updatePaymentStatus(request, response);
                     break;
+                case "huy":
+                    huyDonHang(request, response);
+                    break;
+
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Hành động không được hỗ trợ");
                     break;
@@ -72,6 +83,19 @@ public class DonHangController extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Đã xảy ra lỗi xử lý yêu cầu");
+        }
+    }
+    private void huyDonHang(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            int maDonHang = Integer.parseInt(request.getParameter("maDonHang"));
+            DonHangDAO dao = new DonHangDAO(); // nếu bạn dùng constructor, hoặc gọi từ singleton
+            dao.huyDonHang(maDonHang);
+            response.sendRedirect("don-hang"); // quay lại trang danh sách
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Mã đơn hàng không hợp lệ");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi hủy đơn hàng");
         }
     }
 
@@ -104,40 +128,43 @@ public class DonHangController extends HttpServlet {
             throws ServletException, IOException {
         try {
             int maDonHang = Integer.parseInt(request.getParameter("maDonHang"));
-            
-            // Lấy danh sách sản phẩm trong đơn hàng
-            List<SanPhamInDonHang> sanPhamList = donHangDAO.getSanPhamInDonHang(maDonHang);
-            // Lấy thông tin đơn hàng và người dùng
-            List<DonHangWithUser> donHangWithUsers =donHangDAO.getDonHangWithUser(maDonHang);
 
-            // Kiểm tra nếu không có đơn hàng hoặc sản phẩm nào
-            if (sanPhamList == null || donHangWithUsers == null || donHangWithUsers.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy đơn hàng hoặc sản phẩm.");
+            // Lấy danh sách sản phẩm và thông tin đơn hàng
+            List<SanPhamInDonHang> sanPhamList = donHangDAO.getSanPhamInDonHang(maDonHang);
+            List<DonHangWithUser> donHangWithUsers = donHangDAO.getDonHangWithUser(maDonHang);
+
+            // Log để kiểm tra
+            System.out.println("maDonHang = " + maDonHang);
+            System.out.println("sanPhamList = " + (sanPhamList != null ? sanPhamList.size() : "null"));
+            System.out.println("donHangWithUsers = " + (donHangWithUsers != null ? donHangWithUsers.size() : "null"));
+
+            if (donHangWithUsers == null || donHangWithUsers.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy đơn hàng.");
                 return;
             }
 
-            // Gắn danh sách sản phẩm vào từng đối tượng đơn hàng
+            // Gắn danh sách sản phẩm nếu có
             for (DonHangWithUser donHang : donHangWithUsers) {
-                donHang.setSanPhamList(sanPhamList);
+                donHang.setSanPhamList(sanPhamList); // Có thể null, JSP xử lý điều kiện
             }
 
-            // Đưa dữ liệu vào request và chuyển đến trang chi tiết đơn hàng
+            // Chuẩn bị dữ liệu và chuyển tiếp
             SanPhamDAO sanPhamDAO = new SanPhamDAO();
-            List<SanPham> danhSachSanPham = sanPhamDAO.getAll();  // Gọi getAll() mà không cần static
+            List<SanPham> danhSachSanPham = sanPhamDAO.getAll();
+
             request.setAttribute("danhSachSanPham", danhSachSanPham);
             request.setAttribute("donHangWithUsers", donHangWithUsers);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/views/ChiTietDonHang.jsp");
             dispatcher.forward(request, response);
 
         } catch (NumberFormatException e) {
-            // Xử lý trường hợp maDonHang không hợp lệ
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Mã đơn hàng không hợp lệ");
         } catch (SQLException e) {
-            // Log lỗi và trả về mã lỗi nội bộ
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi truy vấn cơ sở dữ liệu");
         }
     }
+
 
     private void updateDonHangStatus(HttpServletRequest request, HttpServletResponse response)
             throws IOException, SQLException {
@@ -199,9 +226,14 @@ public class DonHangController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi cập nhật thông tin đơn hàng");
         }
     }
+    
 
     @Override
     public void destroy() {
         donHangDAO = null;
     }
+    
+
+
+
 }

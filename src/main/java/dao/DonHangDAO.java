@@ -1,6 +1,8 @@
 package dao;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.*;
@@ -188,7 +190,15 @@ public class DonHangDAO {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, maDonHang);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
+                if (!rs.isBeforeFirst()) {
+                    // Nếu không có kết quả, in thông báo và trả về danh sách trống
+                    System.out.println("Không có kết quả cho mã đơn hàng: " + maDonHang);
+                    return donHangWithUsers;  // Trả về danh sách trống
+                }
+
+                // Nếu có kết quả, xử lý dữ liệu
+                while (rs.next()) {
+                    System.out.println("Đơn hàng đã tìm thấy: " + rs.getInt("maDonHang"));
                     DonHangWithUser donHangWithUser = new DonHangWithUser(
                         rs.getInt("maDonHang"),
                         rs.getDate("ngayLap"),
@@ -197,11 +207,14 @@ public class DonHangDAO {
                         rs.getDouble("tongTien"),
                         rs.getString("diaChi"),
                         rs.getString("tenNguoiDung"),
-                        getSanPhamInDonHang(maDonHang) // Sử dụng lại phương thức getSanPhamInDonHang
+                        getSanPhamInDonHang(rs.getInt("maDonHang"))  // Giả sử phương thức này trả về danh sách sản phẩm
                     );
                     donHangWithUsers.add(donHangWithUser);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Lỗi khi truy vấn cơ sở dữ liệu", e);
         }
 
         return donHangWithUsers;
@@ -392,5 +405,9 @@ public class DonHangDAO {
             connection.setAutoCommit(true); // Khôi phục chế độ auto-commit
         }
     }
+    
+
+
+
 
 }
