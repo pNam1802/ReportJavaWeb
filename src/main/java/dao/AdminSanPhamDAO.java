@@ -31,19 +31,20 @@ public class AdminSanPhamDAO {
     }
 
     public void add(SanPham sp) {
-        String sql = "INSERT INTO san_pham (tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO san_pham (maSanPham, tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, sp.getTenSanPham());
-            ps.setInt(2, sp.getDanhMuc().getMaDanhMuc());
-            ps.setDouble(3, sp.getGiaGoc());
-            ps.setDouble(4, sp.getGiaKhuyenMai());
-            ps.setString(5, sp.getTinhTrang());
-            ps.setInt(6, sp.getSoLuongTonKho());
-            ps.setString(7, sp.getHinhAnh());
-            ps.setString(8, sp.getChiTiet());
+        	ps.setInt(1, sp.getMaSanPham());
+            ps.setString(2, sp.getTenSanPham());
+            ps.setInt(3, sp.getDanhMuc().getMaDanhMuc());
+            ps.setDouble(4, sp.getGiaGoc());
+            ps.setDouble(5, sp.getGiaKhuyenMai());
+            ps.setString(6, sp.getTinhTrang());
+            ps.setInt(7, sp.getSoLuongTonKho());
+            ps.setString(8, sp.getHinhAnh());
+            ps.setString(9, sp.getChiTiet());
             ps.executeUpdate();
-            LOGGER.info("Added product: " + sp.getTenSanPham());
+            LOGGER.info("Added product: " + sp.getTenSanPham() + " with ID: " + sp.getMaSanPham());;
         } catch (SQLException e) {
             LOGGER.severe("Error adding product: " + e.getMessage());
             throw new RuntimeException("Failed to add product", e);

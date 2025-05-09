@@ -2,6 +2,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.SanPham" %>
 <%@ page import="model.DanhMuc" %>
+<% 
+    List<DanhMuc> danhMucList = (List<DanhMuc>) request.getAttribute("danhMucs");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +15,15 @@
         .action-buttons {
             display: flex;
             gap: 5px;
-            justify-content: center; /* Căn giữa nút Sửa và Xóa */
+            justify-content: center;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+        .error-message-active {
+            display: block;
         }
     </style>
 </head>
@@ -60,7 +71,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="editHinhAnh" class="form-label">Hình ảnh</label>
-                            <input type="file" class="form-control" id="editHinhAnh" name="hinhAnh" accept="image/*">
+                            <input type="file" class="form-control" id="editHinhAnh" name="hinhAnh" accept="*">
                             <small id="currentImage"></small>
                         </div>
                         <div class="mb-3">
@@ -84,41 +95,58 @@
             <div class="collapse" id="addProductForm">
                 <div class="card card-body mt-3">
                     <h5>Thêm Sản phẩm</h5>
-                    <form action="${pageContext.request.contextPath}/admin-san-pham" method="post" enctype="multipart/form-data">
+                    <form action="${pageContext.request.contextPath}/admin-san-pham" method="post" enctype="multipart/form-data" id="addProductFormElement">
                         <input type="hidden" name="action" value="add">
                         <div class="mb-3">
+                            <label for="maSanPham" class="form-label">Mã sản phẩm</label>
+                            <input type="number" class="form-control <%= (request.getAttribute("formError") != null && request.getAttribute("formError").equals(true) && request.getAttribute("maSanPhamError") != null) ? "is-invalid" : "" %>" id="maSanPham" name="maSanPham" value="<%= request.getAttribute("maSanPham") != null ? request.getAttribute("maSanPham") : "" %>" required>
+                            <div id="maSanPhamError" class="error-message <%= (request.getAttribute("formError") != null && request.getAttribute("formError").equals(true) && request.getAttribute("maSanPhamError") != null) ? "error-message-active" : "" %>">
+                                <%= request.getAttribute("maSanPhamError") != null ? request.getAttribute("maSanPhamError") : "" %>
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label for="tenSanPham" class="form-label">Tên sản phẩm</label>
-                            <input type="text" class="form-control" id="tenSanPham" name="tenSanPham" required>
+                            <input type="text" class="form-control" id="tenSanPham" name="tenSanPham" value="<%= request.getAttribute("tenSanPham") != null ? request.getAttribute("tenSanPham") : "" %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="maDanhMuc" class="form-label">Danh mục</label>
                             <select class="form-select" id="maDanhMuc" name="maDanhMuc" required>
                                 <option value="">Chọn danh mục</option>
+                                <% 
+                                    if (danhMucList != null) {
+                                        for (DanhMuc dm : danhMucList) {
+                                            String selected = (request.getAttribute("maDanhMuc") != null && request.getAttribute("maDanhMuc").toString().equals(String.valueOf(dm.getMaDanhMuc()))) ? "selected" : "";
+                                %>
+                                    <option value="<%= dm.getMaDanhMuc() %>" <%= selected %>><%= dm.getTenDanhMuc() != null ? dm.getTenDanhMuc() : "" %></option>
+                                <% 
+                                        }
+                                    }
+                                %>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="giaGoc" class="form-label">Giá gốc (Đồng)</label>
-                            <input type="number" step="0.01" class="form-control" id="giaGoc" name="giaGoc" required>
+                            <input type="number" step="0.01" class="form-control" id="giaGoc" name="giaGoc" value="<%= request.getAttribute("giaGoc") != null ? request.getAttribute("giaGoc") : "" %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="giaKhuyenMai" class="form-label">Giá khuyến mãi (Đồng)</label>
-                            <input type="number" step="0.01" class="form-control" id="giaKhuyenMai" name="giaKhuyenMai">
+                            <input type="number" step="0.01" class="form-control" id="giaKhuyenMai" name="giaKhuyenMai" value="<%= request.getAttribute("giaKhuyenMai") != null ? request.getAttribute("giaKhuyenMai") : "" %>">
                         </div>
                         <div class="mb-3">
                             <label for="tinhTrang" class="form-label">Tình trạng</label>
-                            <input type="text" class="form-control" id="tinhTrang" name="tinhTrang">
+                            <input type="text" class="form-control" id="tinhTrang" name="tinhTrang" value="<%= request.getAttribute("tinhTrang") != null ? request.getAttribute("tinhTrang") : "" %>">
                         </div>
                         <div class="mb-3">
                             <label for="soLuongTonKho" class="form-label">Số lượng tồn kho</label>
-                            <input type="number" class="form-control" id="soLuongTonKho" name="soLuongTonKho" required>
+                            <input type="number" class="form-control" id="soLuongTonKho" name="soLuongTonKho" value="<%= request.getAttribute("soLuongTonKho") != null ? request.getAttribute("soLuongTonKho") : "" %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hinhAnh" class="form-label">Hình ảnh</label>
-                            <input type="file" class="form-control" id="hinhAnh" name="hinhAnh" accept="image/*" required>
+                            <input type="file" class="form-control" id="hinhAnh" name="hinhAnh" accept="image/*" value="<%= request.getAttribute("hinhAnh") != null ? request.getAttribute("hinhAnh") : "" %>">
                         </div>
                         <div class="mb-3">
                             <label for="chiTiet" class="form-label">Chi tiết</label>
-                            <textarea class="form-control" id="chiTiet" name="chiTiet" rows="4"></textarea>
+                            <textarea class="form-control" id="chiTiet" name="chiTiet" rows="4"><%= request.getAttribute("chiTiet") != null ? request.getAttribute("chiTiet") : "" %></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Thêm Sản phẩm</button>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#addProductForm">Hủy</button>
@@ -144,7 +172,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%
+                    <% 
                         List<SanPham> sanPhams = (List<SanPham>) request.getAttribute("sanPhams");
                         if (sanPhams != null && !sanPhams.isEmpty()) {
                             for (SanPham sp : sanPhams) {
@@ -158,10 +186,10 @@
                             <td><%= sp.getTinhTrang() != null ? sp.getTinhTrang() : "" %></td>
                             <td><%= sp.getSoLuongTonKho() %></td>
                             <td>
-                                <% if (sp.getHinhAnh() != null && !sp.getHinhAnh().isEmpty()) { %>
-                                    <img src="${pageContext.request.contextPath}/<%= sp.getHinhAnh() %>" alt="<%= sp.getTenSanPham() != null ? sp.getTenSanPham() : "" %>" width="50">
-                                <% } %>
-                            </td>
+    							<% if (sp.getHinhAnh() != null && !sp.getHinhAnh().isEmpty()) { %>
+        							<img src="${pageContext.request.contextPath}/<%= sp.getHinhAnh() %>" alt="<%= sp.getTenSanPham() != null ? sp.getTenSanPham() : "" %>" width="50">
+    							<% } %>
+							</td>
                             <td><%= sp.getChiTiet() != null ? sp.getChiTiet() : "" %></td>
                             <td class="action-buttons">
                                 <button class="btn btn-sm btn-primary edit-btn" 
@@ -180,14 +208,14 @@
                                 <a href="${pageContext.request.contextPath}/admin-san-pham?action=delete&id=<%= sp.getMaSanPham() %>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">Xóa</a>
                             </td>
                         </tr>
-                    <%
+                    <% 
                             }
                         } else {
                     %>
                         <tr>
                             <td colspan="10" class="text-center">Không có sản phẩm để hiển thị.</td>
                         </tr>
-                    <%
+                    <% 
                         }
                     %>
                 </tbody>
@@ -205,29 +233,19 @@
     // Tạo mảng danh mục
     const danhMucs = [
         <% 
-            List<DanhMuc> danhMucList = (List<DanhMuc>) request.getAttribute("danhMucs");
             if (danhMucList != null) {
                 for (int i = 0; i < danhMucList.size(); i++) {
                     DanhMuc dm = danhMucList.get(i);
         %>
-            {
-                maDanhMuc: <%= dm.getMaDanhMuc() %>,
-                tenDanhMuc: "<%= dm.getTenDanhMuc() != null ? dm.getTenDanhMuc().replace("\"", "\\\"") : "" %>"
-            }<%= i < danhMucList.size() - 1 ? "," : "" %>
+                    {
+                        maDanhMuc: <%= dm.getMaDanhMuc() %>,
+                        tenDanhMuc: "<%= dm.getTenDanhMuc() != null ? dm.getTenDanhMuc().replace("\"", "\\\"") : "" %>"
+                    }<%= i < danhMucList.size() - 1 ? "," : "" %>
         <% 
                 }
             }
         %>
     ];
-
-    // Hiển thị danh mục trong dropdown (Thêm)
-    const danhMucSelect = document.getElementById('maDanhMuc');
-    danhMucs.forEach(dm => {
-        const option = document.createElement('option');
-        option.value = dm.maDanhMuc;
-        option.textContent = dm.tenDanhMuc;
-        danhMucSelect.appendChild(option);
-    });
 
     // Hiển thị danh mục trong dropdown (Sửa)
     const editDanhMucSelect = document.getElementById('editMaDanhMuc');
@@ -238,10 +256,44 @@
         editDanhMucSelect.appendChild(option);
     });
 
+    // Kiểm tra mã sản phẩm trùng lặp
+    const maSanPhamInput = document.getElementById('maSanPham');
+    const maSanPhamError = document.getElementById('maSanPhamError');
+    const addProductForm = document.getElementById('addProductFormElement');
+
+    maSanPhamInput.addEventListener('blur', function() {
+        const maSanPham = this.value;
+        if (maSanPham) {
+            fetch('${pageContext.request.contextPath}/admin-san-pham?action=checkMaSanPham&maSanPham=' + maSanPham)
+                .then(response => response.text())
+                .then(data => {
+                    if (data === 'exists') {
+                        maSanPhamInput.classList.add('is-invalid');
+                        maSanPhamError.style.display = 'block';
+                        maSanPhamError.textContent = 'Mã sản phẩm đã tồn tại, vui lòng nhập mã khác.';
+                    } else {
+                        maSanPhamInput.classList.remove('is-invalid');
+                        maSanPhamError.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking maSanPham:', error);
+                });
+        }
+    });
+
+    // Ngăn submit form nếu mã sản phẩm không hợp lệ
+    addProductForm.addEventListener('submit', function(event) {
+        if (maSanPhamInput.classList.contains('is-invalid')) {
+            event.preventDefault();
+            maSanPhamError.style.display = 'block';
+            maSanPhamError.textContent = 'Mã sản phẩm đã tồn tại, vui lòng nhập mã khác.';
+        }
+    });
+
     // Xử lý sự kiện sửa sản phẩm
     document.querySelectorAll('.edit-btn').forEach(button => {
         button.addEventListener('click', function() {
-            // Lấy dữ liệu từ các thuộc tính data-*
             const maSanPham = this.getAttribute('data-id');
             const tenSanPham = this.getAttribute('data-ten');
             const danhMuc = this.getAttribute('data-danhmuc');
@@ -253,7 +305,6 @@
             const chiTiet = this.getAttribute('data-chitiet');
             const danhMucId = this.getAttribute('data-danhmucid');
 
-            // Điền dữ liệu vào form
             document.getElementById('editMaSanPham').value = maSanPham;
             document.getElementById('editTenSanPham').value = tenSanPham;
             document.getElementById('editGiaGoc').value = giaGoc;
@@ -263,12 +314,10 @@
             document.getElementById('currentImage').innerHTML = hinhAnh ? `<img src="${hinhAnh}" alt="${tenSanPham}" width="50" class="mt-2">` : '';
             document.getElementById('editChiTiet').value = chiTiet;
 
-            // Chọn danh mục trong dropdown
             Array.from(editDanhMucSelect.options).forEach(option => {
                 option.selected = option.value == danhMucId;
             });
 
-            // Mở form sửa và ẩn nút Thêm
             const editCollapse = new bootstrap.Collapse(document.getElementById('editProductForm'), { toggle: true });
             document.getElementById('addButtonContainer').style.display = 'none';
             editCollapse._element.addEventListener('hidden.bs.collapse', () => {
@@ -279,13 +328,18 @@
 
     // Xử lý sự kiện thêm sản phẩm
     document.querySelector('[data-bs-target="#addProductForm"]').addEventListener('click', function() {
-        // Mở form thêm và ẩn nút Thêm
         const addCollapse = new bootstrap.Collapse(document.getElementById('addProductForm'), { toggle: true });
         document.getElementById('addButtonContainer').style.display = 'none';
         addCollapse._element.addEventListener('hidden.bs.collapse', () => {
             document.getElementById('addButtonContainer').style.display = 'block';
         });
     });
+
+    // Giữ form mở nếu có lỗi
+    <% if (request.getAttribute("formError") != null && (Boolean) request.getAttribute("formError")) { %>
+        document.getElementById('addProductForm').classList.add('show');
+        document.getElementById('addButtonContainer').style.display = 'none';
+    <% } %>
 </script>
 
 </body>

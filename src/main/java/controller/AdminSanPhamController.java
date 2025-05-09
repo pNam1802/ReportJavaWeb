@@ -74,12 +74,12 @@ public class AdminSanPhamController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
-        String admin = (String) session.getAttribute("admin"); // Thay "username" bằng "admin"
-        System.out.println("doPost - Session admin: " + admin); // Log để debug
+        String admin = (String) session.getAttribute("admin");
+        System.out.println("doPost - Session admin: " + admin);
         if (admin == null || !admin.equals("admin")) {
             String redirectUrl = request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
             LOGGER.warning("Unauthorized POST attempt to admin-san-pham, redirecting to login with URL: " + redirectUrl);
@@ -88,7 +88,7 @@ public class AdminSanPhamController extends HttpServlet {
         }
 
         String action = request.getParameter("action");
-        System.out.println("Action received: " + action); // Log để kiểm tra action
+        System.out.println("Action received: " + action);
         if (action == null) {
             response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
             return;
@@ -101,6 +101,9 @@ public class AdminSanPhamController extends HttpServlet {
                     break;
                 case "update":
                     handleUpdateProduct(request, response);
+                    break;
+                case "checkMaSanPham":
+                    handleCheckMaSanPham(request, response);
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
@@ -176,9 +179,27 @@ public class AdminSanPhamController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
     }
 
+    private void handleCheckMaSanPham(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String maSanPhamParam = request.getParameter("maSanPham");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            int maSanPham = Integer.parseInt(maSanPhamParam);
+            SanPham existingProduct = sanPhamDAO.getById(maSanPham);
+            boolean exists = (existingProduct != null);
+            LOGGER.info("Checking maSanPham: " + maSanPham + ", exists: " + exists); // Debug log
+            response.getWriter().write("{\"exists\":" + exists + "}");
+        } catch (NumberFormatException e) {
+            LOGGER.warning("Invalid maSanPham format: " + maSanPhamParam);
+            response.getWriter().write("{\"exists\":false}");
+        }
+    }
+
     private void handleAddProduct(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String maSanPhamParam = request.getParameter("maSanPham");
             String tenSanPham = request.getParameter("tenSanPham");
             String maDanhMucParam = request.getParameter("maDanhMuc");
             String giaGocParam = request.getParameter("giaGoc");
@@ -187,11 +208,38 @@ public class AdminSanPhamController extends HttpServlet {
             String soLuongTonKhoParam = request.getParameter("soLuongTonKho");
             String chiTiet = request.getParameter("chiTiet");
 
-            if (tenSanPham == null || tenSanPham.trim().isEmpty() ||
-                maDanhMucParam == null || giaGocParam == null ||
-                tinhTrang == null || soLuongTonKhoParam == null) {
+            if (maSanPhamParam == null || tenSanPham == null || tenSanPham.trim().isEmpty() ||
+                maDanhMucParam == null || giaGocParam == null || tinhTrang == null || 
+                soLuongTonKhoParam == null) {
                 LOGGER.warning("Missing required fields for adding product");
                 response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
+                return;
+            }
+
+            int maSanPham = Integer.parseInt(maSanPhamParam);
+            // Kiểm tra mã sản phẩm trùng lặp
+            SanPham existingProduct = sanPhamDAO.getById(maSanPham);
+            if (existingProduct != null) {
+                LOGGER.warning("Duplicate product ID: " + maSanPham);
+                List<SanPham> sanPhams = sanPhamDAO.getSanPhams(0, Integer.MAX_VALUE);
+                List<DanhMuc> danhMucs = danhMucDAO.getAll();
+                request.setAttribute("sanPhams", sanPhams); // Giữ danh sách sản phẩm
+                request.setAttribute("danhMucs", danhMucs); // Giữ danh sách danh mục
+                request.setAttribute("formError", true); // Giữ form mở
+                request.setAttribute("maSanPham", maSanPhamParam);
+                request.setAttribute("tenSanPham", tenSanPham);
+                request.setAttribute("maDanhMuc", maDanhMucParam);
+                request.setAttribute("giaGoc", giaGocParam);
+                request.setAttribute("giaKhuyenMai", giaKhuyenMaiParam);
+                request.setAttribute("tinhTrang", tinhTrang);
+                request.setAttribute("soLuongTonKho", soLuongTonKhoParam);
+                request.setAttribute("chiTiet", chiTiet);
+                Part filePart = request.getPart("hinhAnh");
+                if (filePart != null && filePart.getSize() > 0) {
+                    request.setAttribute("hinhAnh", filePart.getSubmittedFileName());
+                }
+                request.setAttribute("maSanPhamError", "Mã sản phẩm đã tồn tại, vui lòng nhập mã khác."); // Thông báo lỗi
+                request.getRequestDispatcher("/views/AdminSanPham.jsp").forward(request, response);
                 return;
             }
 
@@ -204,6 +252,7 @@ public class AdminSanPhamController extends HttpServlet {
             String hinhAnh = handleImageUpload(request);
 
             SanPham sanPham = new SanPham();
+            sanPham.setMaSanPham(maSanPham);
             sanPham.setTenSanPham(tenSanPham);
             sanPham.setGiaGoc(giaGoc);
             sanPham.setGiaKhuyenMai(giaKhuyenMai);
@@ -216,7 +265,7 @@ public class AdminSanPhamController extends HttpServlet {
             sanPham.setDanhMuc(danhMuc);
 
             adminSanPhamDAO.add(sanPham);
-            LOGGER.info("Added new product: " + tenSanPham);
+            LOGGER.info("Added new product: " + tenSanPham + " with ID: " + maSanPham);
             response.sendRedirect(request.getContextPath() + "/admin-san-pham?action=list");
         } catch (NumberFormatException e) {
             LOGGER.warning("Invalid number format in add product: " + e.getMessage());
@@ -250,8 +299,7 @@ public class AdminSanPhamController extends HttpServlet {
             double giaKhuyenMai = (giaKhuyenMaiParam != null && !giaKhuyenMaiParam.isEmpty())
                     ? Double.parseDouble(giaKhuyenMaiParam) : 0;
             int soLuongTonKho = Integer.parseInt(soLuongTonKhoParam);
-            
-         // Lấy sản phẩm hiện tại để kiểm tra hình ảnh cũ
+
             SanPham existingProduct = sanPhamDAO.getById(maSanPham);
             if (existingProduct == null) {
                 LOGGER.warning("Product not found with ID: " + maSanPham);
@@ -259,10 +307,8 @@ public class AdminSanPhamController extends HttpServlet {
                 return;
             }
 
-            // Xử lý hình ảnh: chỉ cập nhật nếu có hình ảnh mới
             String hinhAnh = handleImageUpload(request);
             if (hinhAnh == null) {
-                // Giữ nguyên hình ảnh cũ nếu không có hình ảnh mới
                 hinhAnh = existingProduct.getHinhAnh();
             }
 
