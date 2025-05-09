@@ -12,9 +12,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-/**
- * Servlet xử lý các yêu cầu đặt hàng từ người dùng với phương thức thanh toán trực tiếp (COD).
- */
+
 @WebServlet("/dat-hang")
 public class DatHangController extends HttpServlet {
 
@@ -22,17 +20,13 @@ public class DatHangController extends HttpServlet {
     private static final String ERROR_PAGE = "views/ErrorPage.jsp";
     private static final String THANK_YOU_PAGE = "views/CamOn.jsp";
 
-    /**
-     * Các hành động được hỗ trợ bởi servlet.
-     */
+ 
     private static class Action {
         static final String DAT_HANG = "datHang";
         static final String GIO_HANG_THANH_TOAN = "GioHangThanhToan";
     }
 
-    /**
-     * Các trạng thái đơn hàng.
-     */
+   
     private static class TrangThai {
         static final String CHUA_THANH_TOAN = "Chưa thanh toán";
     }
@@ -65,14 +59,7 @@ public class DatHangController extends HttpServlet {
         }
     }
 
-    /**
-     * Xử lý đặt hàng cho một sản phẩm đơn lẻ với thanh toán trực tiếp (COD).
-     *
-     * @param request  Yêu cầu HTTP
-     * @param response Phản hồi HTTP
-     * @throws ServletException Nếu có lỗi xử lý servlet
-     * @throws IOException     Nếu có lỗi I/O
-     */
+
     private void processSingleProductOrder(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy dữ liệu từ form
@@ -162,14 +149,6 @@ public class DatHangController extends HttpServlet {
         }
     }
 
-    /**
-     * Xử lý đặt hàng từ giỏ hàng với thanh toán trực tiếp (COD).
-     *
-     * @param request  Yêu cầu HTTP
-     * @param response Phản hồi HTTP
-     * @throws ServletException Nếu có lỗi xử lý servlet
-     * @throws IOException     Nếu có lỗi I/O
-     */
     private void processCartOrder(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy dữ liệu từ form
@@ -269,13 +248,7 @@ public class DatHangController extends HttpServlet {
             throw new ServletException("Dữ liệu số không hợp lệ.");
         }
     }
-
-    /**
-     * Kiểm tra dữ liệu rỗng.
-     *
-     * @param values Các giá trị cần kiểm tra
-     * @return true nếu có giá trị rỗng, ngược lại false
-     */
+// kiểm tra các thông tin chuẩn dạng hay chưa
     private boolean isEmpty(String... values) {
         for (String value : values) {
             if (value == null || value.trim().isEmpty()) {
@@ -285,33 +258,14 @@ public class DatHangController extends HttpServlet {
         return false;
     }
 
-    /**
-     * Kiểm tra định dạng email.
-     *
-     * @param email Địa chỉ email
-     * @return true nếu email hợp lệ
-     */
     private boolean isValidEmail(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
     }
 
-    /**
-     * Kiểm tra định dạng số điện thoại.
-     *
-     * @param phone Số điện thoại
-     * @return true nếu số điện thoại hợp lệ
-     */
     private boolean isValidPhone(String phone) {
         return phone != null && phone.matches("^\\+?[0-9]{10,13}$");
     }
 
-    /**
-     * Phân tích chuỗi thành số thực an toàn.
-     *
-     * @param str Giá trị chuỗi
-     * @param defaultValue Giá trị mặc định nếu không phân tích được
-     * @return Giá trị số thực
-     */
     private double parseDoubleSafe(String str, double defaultValue) {
         try {
             return Double.parseDouble(str);
@@ -320,14 +274,6 @@ public class DatHangController extends HttpServlet {
         }
     }
 
-    /**
-     * Chuyển hướng đến trang lỗi.
-     *
-     * @param request Yêu cầu HTTP
-     * @param response Phản hồi HTTP
-     * @throws ServletException Nếu có lỗi xử lý
-     * @throws IOException Nếu có lỗi I/O
-     */
     private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher(ERROR_PAGE).forward(request, response);

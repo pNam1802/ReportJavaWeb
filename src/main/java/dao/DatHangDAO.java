@@ -7,47 +7,35 @@ import java.sql.*;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * Data Access Object (DAO) để xử lý các thao tác liên quan đến đặt hàng.
- */
+
+
 public class DatHangDAO {
 
     private static final Logger LOGGER = Logger.getLogger(DatHangDAO.class.getName());
     private final Connection connection;
 
-    /**
-     * Các trạng thái cố định dùng trong hệ thống.
-     */
+    //Các trạng thái cố định dùng trong hệ thống
+    
     public static class TrangThai {
         public static final String CHUA_THANH_TOAN = "Chưa thanh toán";
         public static final String DA_THANH_TOAN = "Đã thanh toán";
         public static final String DANG_XU_LY = "Đang xử lý";
     }
 
-    /**
-     * Các hình thức thanh toán.
-     */
+    //Các hình thức thanh toán
+    
     public static class HinhThucThanhToan {
         public static final String COD = "COD";
     }
 
-    /**
-     * Khởi tạo DatHangDAO với kết nối cơ sở dữ liệu.
-     */
+    //Khởi tạo DatHangDAO với kết nối cơ sở dữ liệu
+
     public DatHangDAO() {
         this.connection = DBConnection.getConnection();
     }
 
-    /**
-     * Thêm mới hoặc lấy mã người dùng dựa trên thông tin cung cấp.
-     *
-     * @param fullName Họ tên người dùng
-     * @param phone    Số điện thoại
-     * @param email    Email
-     * @param address  Địa chỉ
-     * @return Mã người dùng
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    //Thêm mới hoặc lấy mã người dùng dựa trên thông tin cung cấp.
+
     public int themHoacLayNguoiDung(String fullName, String phone, String email, String address) throws SQLException {
         if (fullName == null || phone == null || email == null || address == null) {
             throw new IllegalArgumentException("Thông tin người dùng không được để trống!");
@@ -85,13 +73,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Thêm thông tin thanh toán cho đơn hàng.
-     *
-     * @param donHang Đơn hàng cần thêm thanh toán
-     * @return True nếu thêm thành công
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    //Thêm thông tin thanh toán cho đơn hàng.
+     
     public boolean addPayment(DonHang donHang) throws SQLException {
         if (donHang == null || donHang.getMaDonHang() <= 0) {
             throw new IllegalArgumentException("Đơn hàng không hợp lệ!");
@@ -111,14 +94,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Xử lý toàn bộ quy trình đặt hàng, bao gồm thêm đơn hàng, chi tiết đơn hàng, cập nhật tồn kho, và thanh toán.
-     *
-     * @param donHang   Đơn hàng cần xử lý
-     * @param dsChiTiet Danh sách chi tiết đơn hàng
-     * @return True nếu đặt hàng thành công
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    // Xử lý toàn bộ quy trình đặt hàng, bao gồm thêm đơn hàng, chi tiết đơn hàng, cập nhật tồn kho, và thanh toán.
+   
     public boolean placeOrder(DonHang donHang, List<ChiTietDonHang> dsChiTiet) throws SQLException {
         if (donHang == null || dsChiTiet == null || dsChiTiet.isEmpty()) {
             throw new IllegalArgumentException("Đơn hàng hoặc chi tiết đơn hàng không hợp lệ!");
@@ -154,12 +131,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Kiểm tra số lượng tồn kho của các sản phẩm trong đơn hàng.
-     *
-     * @param dsChiTiet Danh sách chi tiết đơn hàng
-     * @throws SQLException Nếu sản phẩm không tồn tại hoặc không đủ tồn kho
-     */
+    //Kiểm tra số lượng tồn kho của các sản phẩm trong đơn hàng.
+
     private void checkStockAvailability(List<ChiTietDonHang> dsChiTiet) throws SQLException {
         String checkStockSql = "SELECT soLuongTonKho FROM san_pham WHERE maSanPham = ?";
         try (PreparedStatement checkStmt = connection.prepareStatement(checkStockSql)) {
@@ -179,13 +152,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Thêm đơn hàng vào cơ sở dữ liệu.
-     *
-     * @param donHang Đơn hàng cần thêm
-     * @return Mã đơn hàng được tạo
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    //Thêm đơn hàng vào cơ sở dữ liệu.
+     
     private int insertOrder(DonHang donHang) throws SQLException {
         String sql = "INSERT INTO don_hang (ngayLap, trangThai, tongTien, maNguoiDung) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -206,13 +174,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Thêm danh sách chi tiết đơn hàng vào cơ sở dữ liệu.
-     *
-     * @param maDonHang Mã đơn hàng
-     * @param dsChiTiet Danh sách chi tiết đơn hàng
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    //Thêm danh sách chi tiết đơn hàng vào cơ sở dữ liệu.
+ 
     private void insertOrderDetails(int maDonHang, List<ChiTietDonHang> dsChiTiet) throws SQLException {
         String sql = "INSERT INTO chi_tiet_don_hang (maDonHang, maSanPham, soLuong, donGia) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -235,12 +198,8 @@ public class DatHangDAO {
         }
     }
 
-    /**
-     * Cập nhật số lượng tồn kho dựa trên chi tiết đơn hàng.
-     *
-     * @param dsChiTiet Danh sách chi tiết đơn hàng
-     * @throws SQLException Nếu có lỗi truy vấn cơ sở dữ liệu
-     */
+    // Cập nhật số lượng tồn kho dựa trên chi tiết đơn hàng.
+ 
     private void updateStock(List<ChiTietDonHang> dsChiTiet) throws SQLException {
         String sql = "UPDATE san_pham SET soLuongTonKho = soLuongTonKho - ? WHERE maSanPham = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
