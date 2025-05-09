@@ -103,7 +103,7 @@
 								<li class="nav-item"><a class="nav-link"
 									href="<%=request.getContextPath()%>/san-pham">Trang chủ</a></li>
 								<li class="nav-item dropdown"><a
-									class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+									class="nav-link dropdown-toggle" href="<%=request.getContextPath()%>/san-pham" id="navbarDropdown"
 									role="button" data-toggle="dropdown" aria-haspopup="true"
 									aria-expanded="false"> Danh mục </a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
