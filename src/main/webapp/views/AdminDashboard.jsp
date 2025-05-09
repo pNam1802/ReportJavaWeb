@@ -29,10 +29,12 @@
                     class="btn btn-outline-warning w-100 py-3">Quản lý Sản Phẩm</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="${pageContext.request.contextPath}/admin/nguoi-dung" class="btn btn-outline-warning w-100">Quản lý Người dùng</a>
+                    <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
+                    class="btn btn-outline-warning w-100 py-3">Quản lý Người dùng</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="${pageContext.request.contextPath}/don-hang" class="btn btn-outline-danger w-100">Quản lý Đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/don-hang" 
+                    class="btn btn-outline-danger w-100 py-3">Quản lý Đơn hàng</a>
 
                 </div>
                 <div class="col-md-6">

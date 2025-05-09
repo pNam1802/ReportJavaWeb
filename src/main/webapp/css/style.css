@@ -105,6 +105,67 @@ body {
     box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
+.top-header .btn-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    border-radius: 25px;
+    background-color: #f25a29;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.top-header .btn-cart:hover {
+    background-color: #d94a20;
+}
+
+.top-header .btn-cart i,
+.top-header .btn-cart span {
+    font-size: 16px;
+    color: #fff;
+}
+
+.top-header .btn-cart span {
+    margin-left: 5px;
+    max-width: 100%; /* Giới hạn chiều rộng text */
+}
+
+.top-header .btn-user {
+    background: white;
+    border: 2px solid #f25a29;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f25a29; /* icon màu cam */
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 0 6px #f25a29; /* viền cam bên trong */
+    cursor: pointer;
+}
+
+.top-header .btn-user:hover {
+    box-shadow: inset 0 0 0 6px #d94a20;
+    color: #d94a20;
+    transform: scale(1.05);
+}
+
+
+.top-header .btn-user i {
+    font-size: 29px; /* 👈 kích thước icon */
+    line-height: 1;
+}
+	 
+
+.top-header .btn-user {
+    border-radius: 50% !important; /* Đảm bảo hình tròn */
+    width: 40px !important;
+    height: 40px !important;
+}
+
 .btn-search {
     position: absolute;
     right: 10px;

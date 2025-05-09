@@ -15,17 +15,10 @@
 	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
 	crossorigin="anonymous">
 <!-- Font Awesome để dùng icon -->
-<link rel="stylesheet"
+<link rel="stylesheet" 
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Style của chính mình -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-
-
-
-
-
-
-	
 </head>
 <body>
 	<header>
@@ -63,14 +56,16 @@
 								<h5>0348363413 - 077777777</h5>
 							</div>
 						</div>
-						<div class="col-md-2">
-							<form action="<%=request.getContextPath()%>/giohang"
-								method="post">
-								<button type="submit" class="btn btn-cart">
-									<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ
-										hàng</span>
-								</button>
-							</form>
+						<div class="col-md-2 d-flex align-items-center justify-content-end">
+    						<form action="<%=request.getContextPath()%>/giohang" method="post">
+        						<button type="submit" class="btn btn-cart d-flex align-items-center">
+            						<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> 
+            						<span class="d-inline-block">Giỏ hàng</span>
+        						</button>
+    						</form>
+    						<button class="btn btn-user ml-2" data-toggle="modal" data-target="#adminLoginModal">
+        						<i class="fa fa-user-circle" aria-hidden="true"></i>
+    						</button>
 						</div>
 					</div>
 				</div>
@@ -284,6 +279,27 @@
 			</div>
 		</div>
 	</footer>
+	
+	<!-- Modal thông báo -->
+	<div class="modal fade" id="adminLoginModal" tabindex="-1" role="dialog" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+    	<div class="modal-dialog" role="document">
+        	<div class="modal-content">
+            	<div class="modal-header">
+                	<h5 class="modal-title" id="adminLoginModalLabel">Thông báo</h5>
+                	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    	<span aria-hidden="true">&times;</span>
+                	</button>
+            	</div>
+            	<div class="modal-body">
+                	Bạn chỉ có thể thực hiện chức năng này khi là admin. Bạn vẫn muốn tiếp tục?
+            	</div>
+            	<div class="modal-footer">
+                	<a href="<%=request.getContextPath()%>/login-admin" class="btn btn-primary">Đăng nhập</a>
+                	<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            	</div>
+        	</div>
+    	</div>
+	</div>
 
 	<!-- Bootstrap 5.3 JS -->
 	<!-- jQuery (BẮT BUỘC - Bootstrap 4 cần jQuery) -->
