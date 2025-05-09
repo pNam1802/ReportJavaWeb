@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -22,7 +21,8 @@
 
             <div class="row g-3 mt-4">
                 <div class="col-md-6">
-                    <a href="danh-muc" class="btn btn-outline-primary w-100 py-3">Quản lý Danh mục sản phẩm</a>
+                    <a href="${pageContext.request.contextPath}/san-pham" 
+                    class="btn btn-outline-primary w-100 py-3">Trang sản phẩm</a>
                 </div>
                 <div class="col-md-6">
                     <a href="${pageContext.request.contextPath}/admin-san-pham" 
@@ -42,7 +42,7 @@
    					class="btn btn-outline-secondary w-100 py-3">Quản lý Tin tức</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="khuyen-mai" class="btn btn-outline-info w-100 py-3">Quản lý Khuyến mãi</a>
+                    <a href="danh-muc" class="btn btn-outline-info w-100 py-3">Quản lý Danh mục sản phẩm</a>
                 </div>
                 <div class="col-md-12 mt-3">
 					<a href="${pageContext.request.contextPath}/logout-admin" 
