@@ -42,7 +42,8 @@
    					class="btn btn-outline-secondary w-100 py-3">Quản lý Tin tức</a>
                 </div>
                 <div class="col-md-6">
-                    <a href="danh-muc" class="btn btn-outline-info w-100 py-3">Quản lý Danh mục sản phẩm</a>
+                    <a href="${pageContext.request.contextPath}/admin-khuyen-mai" 
+                    class="btn btn-outline-info w-100 py-3">Quản lý Khuyến Mãi</a>
                 </div>
                 <div class="col-md-12 mt-3">
 					<a href="${pageContext.request.contextPath}/logout-admin" 
