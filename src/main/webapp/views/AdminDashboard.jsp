@@ -1,15 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Objects"%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard - iSofa</title>
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         :root {
             --primary-color: #f97316; /* Orange */
@@ -26,11 +26,61 @@
         }
 
         .sidebar {
+            width: 250px;
+            background: #ffffff;
+            padding: 20px 10px;
+            border-right: 1px solid #e0e0e0;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
         }
 
         .sidebar-hidden {
             transform: translateX(-100%);
+        }
+
+        .sidebar .header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .sidebar .header:hover {
+            transform: scale(1.02);
+        }
+
+        .sidebar .logo {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #007bff;
+            color: white;
+            transform: translateX(5px);
         }
 
         .card {
@@ -61,37 +111,63 @@
         .btn-secondary:hover {
             background-color: #1e3a8a;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .flex-1 {
+                margin-left: 0 !important;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex">
     <!-- Sidebar -->
-    <div class="sidebar fixed top-0 left-0 h-full w-64 bg-white shadow-lg p-6 flex flex-col justify-between sidebar-hidden lg:translate-x-0 z-50">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">iSofa Admin</h2>
-            <nav class="space-y-2">
-                <a href="${pageContext.request.contextPath}/san-pham" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-box mr-2"></i> Trang sản phẩm
-                </a>
-                <a href="${pageContext.request.contextPath}/admin-san-pham" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-cubes mr-2"></i> Quản lý Sản phẩm
-                </a>
-                <a href="${pageContext.request.contextPath}/admin/nguoi-dung" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-users mr-2"></i> Quản lý Người dùng
-                </a>
-                <a href="${pageContext.request.contextPath}/don-hang" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-shopping-cart mr-2"></i> Quản lý Đơn hàng
-                </a>
-                <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-newspaper mr-2"></i> Quản lý Tin tức
-                </a>
-                <a href="${pageContext.request.contextPath}/admin-khuyen-mai" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-tags mr-2"></i> Quản lý Khuyến mãi
-                </a>
-            </nav>
+    <div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
+        <div class="header">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
+            <h4 class="mb-0">Trang Quản Trị</h4>
+            <small>Admin Dashboard</small>
         </div>
-        <a href="${pageContext.request.contextPath}/logout-admin" class="flex items-center p-2 text-red-600 hover:bg-red-100 rounded">
-            <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
-        </a>
+        <p class="text-center mb-4 text-muted">Chào mừng <strong>Admin</strong></p>
+        <div class="nav flex-column">
+            <a href="${pageContext.request.contextPath}/admin-dashboard" 
+               class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+               <i class="bi bi-house"></i> Tổng quan
+            </a>
+            <a href="${pageContext.request.contextPath}/san-pham" 
+               class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
+               <i class="bi bi-box"></i> Trang sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-san-pham" 
+               class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
+               <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
+               class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
+               <i class="bi bi-people"></i> Quản lý Người dùng
+            </a>
+            <a href="${pageContext.request.contextPath}/don-hang" 
+               class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
+               <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
+            </a>
+            <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" 
+               class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
+               <i class="bi bi-newspaper"></i> Quản lý Tin tức
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-khuyen-mai" 
+               class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
+               <i class="bi bi-tag"></i> Quản lý Khuyến mãi
+            </a>
+            <a href="${pageContext.request.contextPath}/logout-admin" 
+               class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
+               <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -101,7 +177,7 @@
             <header class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Trang Quản Trị</h1>
                 <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded bg-gray-200">
-                    <i class="fas fa-bars"></i>
+                    <i class="bi bi-list"></i>
                 </button>
             </header>
 
@@ -114,7 +190,7 @@
             <!-- Dashboard Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="card bg-white rounded-lg shadow-lg p-6 flex items-center">
-                    <i class="fas fa-box fa-2x text-orange-500 mr-4"></i>
+                    <i class="bi bi-box fa-2x text-orange-500 mr-4"></i>
                     <div>
                         <h4 class="text-lg font-semibold">Sản phẩm</h4>
                         <p class="text-gray-600">Xem và quản lý danh sách sản phẩm.</p>
@@ -122,7 +198,7 @@
                     </div>
                 </div>
                 <div class="card bg-white rounded-lg shadow-lg p-6 flex items-center">
-                    <i class="fas fa-users fa-2x text-blue-500 mr-4"></i>
+                    <i class="bi bi-people fa-2x text-blue-500 mr-4"></i>
                     <div>
                         <h4 class="text-lg font-semibold">Người dùng</h4>
                         <p class="text-gray-600">Quản lý thông tin người dùng.</p>
@@ -130,7 +206,7 @@
                     </div>
                 </div>
                 <div class="card bg-white rounded-lg shadow-lg p-6 flex items-center">
-                    <i class="fas fa-shopping-cart fa-2x text-orange-500 mr-4"></i>
+                    <i class="bi bi-cart-check fa-2x text-orange-500 mr-4"></i>
                     <div>
                         <h4 class="text-lg font-semibold">Đơn hàng</h4>
                         <p class="text-gray-600">Theo dõi và xử lý đơn hàng.</p>
@@ -138,7 +214,7 @@
                     </div>
                 </div>
                 <div class="card bg-white rounded-lg shadow-lg p-6 flex items-center">
-                    <i class="fas fa-newspaper fa-2x text-blue-500 mr-4"></i>
+                    <i class="bi bi-newspaper fa-2x text-blue-500 mr-4"></i>
                     <div>
                         <h4 class="text-lg font-semibold">Tin tức</h4>
                         <p class="text-gray-600">Quản lý bài viết và tin tức.</p>
@@ -146,7 +222,7 @@
                     </div>
                 </div>
                 <div class="card bg-white rounded-lg shadow-lg p-6 flex items-center">
-                    <i class="fas fa-tags fa-2x text-orange-500 mr-4"></i>
+                    <i class="bi bi-tag fa-2x text-orange-500 mr-4"></i>
                     <div>
                         <h4 class="text-lg font-semibold">Khuyến mãi</h4>
                         <p class="text-gray-600">Tạo và quản lý chương trình khuyến mãi.</p>
