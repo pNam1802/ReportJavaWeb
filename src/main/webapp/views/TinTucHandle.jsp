@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, model.TinTuc, dao.QuanLyTinTucDAO, java.text.SimpleDateFormat"%>
+<%@ page import="java.util.List, model.TinTuc, model.SanPham, dao.QuanLyTinTucDAO, java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -45,42 +45,48 @@
                 <!-- Form thêm/sửa tin tức -->
                 <form action="<%=request.getContextPath()%>/QuanLyTinTuc" method="post" class="mb-4">
                     <% 
-                        TinTuc news = (TinTuc) request.getAttribute("news");
+                        TinTuc tinTuc = (TinTuc) request.getAttribute("tinTuc");
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     %>
-                    <input type="hidden" name="action" value="<%= news != null ? "update" : "add" %>">
-                    <% if (news != null) { %>
-                        <input type="hidden" name="id" value="<%=news.getMaTinTuc()%>">
+                    <input type="hidden" name="action" value="<%= tinTuc != null ? "edit" : "add" %>">
+                    <% if (tinTuc != null) { %>
+                        <input type="hidden" name="maTinTuc" value="<%=tinTuc.getMaTinTuc()%>">
                     <% } %>
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label for="tieuDe" class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" id="tieuDe" name="tieuDe" value="<%= news != null ? news.getTieuDe() : "" %>" placeholder="Nhập tiêu đề" required>
+                            <input type="text" class="form-control" id="tieuDe" name="tieuDe" value="<%= tinTuc != null ? tinTuc.getTieuDe() : "" %>" placeholder="Nhập tiêu đề" required>
                         </div>
                         <div class="col-md-3">
                             <label for="noiDung" class="form-label">Nội dung</label>
-                            <textarea class="form-control" id="noiDung" name="noiDung" rows="3" placeholder="Nhập nội dung" required><%= news != null ? news.getNoiDung() : "" %></textarea>
+                            <textarea class="form-control" id="noiDung" name="noiDung" rows="3" placeholder="Nhập nội dung" required><%= tinTuc != null ? tinTuc.getNoiDung() : "" %></textarea>
                         </div>
                         <div class="col-md-2">
                             <label for="ngayDang" class="form-label">Ngày đăng</label>
-                            <input type="date" class="form-control" id="ngayDang" name="ngayDang" value="<%= news != null ? dateFormat.format(news.getNgayDang()) : "" %>" required>
+                            <input type="date" class="form-control" id="ngayDang" name="ngayDang" value="<%= tinTuc != null ? dateFormat.format(tinTuc.getNgayDang()) : "" %>" required>
                         </div>
                         <div class="col-md-2">
                             <label for="maSanPham" class="form-label">Sản phẩm</label>
                             <select class="form-select" id="maSanPham" name="maSanPham" required>
-                                <option value="" disabled <%= news == null ? "selected" : "" %>>Chọn sản phẩm</option>
+                                <option value="" disabled <%= tinTuc == null ? "selected" : "" %>>Chọn sản phẩm</option>
                                 <% 
-                                    QuanLyTinTucDAO dao = new QuanLyTinTucDAO();
-                                    List<QuanLyTinTucDAO.Product> products = dao.getAllProducts();
-                                    for (QuanLyTinTucDAO.Product product : products) {
+                                    List<SanPham> products = (List<SanPham>) request.getAttribute("products");
+                                    if (products == null || products.isEmpty()) {
+                                        request.setAttribute("message", "Không có sản phẩm nào trong cơ sở dữ liệu.");
+                                        request.setAttribute("messageType", "warning");
+                                    } else {
+                                        for (SanPham product : products) {
                                 %>
-                                    <option value="<%=product.getMaSanPham()%>" <%= news != null && news.getMaSanPham() == product.getMaSanPham() ? "selected" : "" %>><%=product.getTenSanPham()%></option>
-                                <% } %>
+                                    <option value="<%=product.getMaSanPham()%>" <%= tinTuc != null && tinTuc.getMaSanPham() == product.getMaSanPham() ? "selected" : "" %>><%=product.getTenSanPham()%></option>
+                                <% 
+                                        }
+                                    }
+                                %>
                             </select>
                         </div>
                         <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-success w-100"><%= news != null ? "Cập nhật" : "Thêm" %></button>
-                            <% if (news != null) { %>
+                            <button type="submit" class="btn btn-success w-100"><%= tinTuc != null ? "Cập nhật" : "Thêm" %></button>
+                            <% if (tinTuc != null) { %>
                                 <a href="<%=request.getContextPath()%>/QuanLyTinTuc" class="btn btn-secondary ms-2">Hủy</a>
                             <% } %>
                         </div>
@@ -102,35 +108,39 @@
                         </thead>
                         <tbody>
                             <% 
-                                List<TinTuc> newsList = (List<TinTuc>) request.getAttribute("newsList");
+                                List<TinTuc> tinTucs = (List<TinTuc>) request.getAttribute("tinTucs");
                                 Integer currentPage = (Integer) request.getAttribute("currentPage");
                                 if (currentPage == null) currentPage = 1;
                                 int pageSize = 6;
-                                System.out.println("JSP: newsList size: " + (newsList != null ? newsList.size() : "null"));
-                                if (newsList != null && !newsList.isEmpty()) {
+                                System.out.println("JSP: tinTucs size: " + (tinTucs != null ? tinTucs.size() : "null"));
+                                if (tinTucs != null && !tinTucs.isEmpty()) {
                                     int index = (currentPage - 1) * pageSize + 1;
-                                    for (TinTuc tinTuc : newsList) {
+                                    for (TinTuc tinTucItem : tinTucs) {
                             %>
                                 <tr>
                                     <td><%=index++%></td>
-                                    <td><%=tinTuc.getTieuDe()%></td>
-                                    <td><span class="truncate"><%=tinTuc.getNoiDung()%></span></td>
-                                    <td><%=dateFormat.format(tinTuc.getNgayDang())%></td>
+                                    <td><%=tinTucItem.getTieuDe()%></td>
+                                    <td><span class="truncate"><%=tinTucItem.getNoiDung()%></span></td>
+                                    <td><%=dateFormat.format(tinTucItem.getNgayDang())%></td>
                                     <td>
                                         <% 
-                                            for (QuanLyTinTucDAO.Product product : products) {
-                                                if (product.getMaSanPham() == tinTuc.getMaSanPham()) {
-                                                    out.print(product.getTenSanPham());
-                                                    break;
+                                            if (products != null) {
+                                                for (SanPham product : products) {
+                                                    if (product.getMaSanPham() == tinTucItem.getMaSanPham()) {
+                                                        out.print(product.getTenSanPham());
+                                                        break;
+                                                    }
                                                 }
+                                            } else {
+                                                out.print("Không có sản phẩm");
                                             }
                                         %>
                                     </td>
                                     <td class="action-buttons">
-                                        <a href="<%=request.getContextPath()%>/QuanLyTinTuc?action=edit&id=<%=tinTuc.getMaTinTuc()%>" class="btn btn-primary btn-sm me-1">Sửa</a>
+                                        <a href="<%=request.getContextPath()%>/QuanLyTinTuc?action=edit&maTinTuc=<%=tinTucItem.getMaTinTuc()%>" class="btn btn-primary btn-sm me-1">Sửa</a>
                                         <form action="<%=request.getContextPath()%>/QuanLyTinTuc" method="post" style="display:inline;">
                                             <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="<%=tinTuc.getMaTinTuc()%>">
+                                            <input type="hidden" name="maTinTuc" value="<%=tinTucItem.getMaTinTuc()%>">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
                                         </form>
                                     </td>
