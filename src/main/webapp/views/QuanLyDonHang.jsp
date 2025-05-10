@@ -54,13 +54,10 @@
             transform: translateX(-100%);
         }
 
-        .sidebar .header {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+        .sidebar .header {          
             color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding-left: 20px;
             text-align: center;
-            margin-bottom: 20px;
             transition: transform 0.3s;
         }
 
@@ -139,14 +136,13 @@
     </style>
 </head>
 <body class="min-h-screen flex">
-    <!-- Sidebar -->
+       <!-- Sidebar -->
     <div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
         <div class="header">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
             <h4 class="mb-0">Trang Quản Trị</h4>
             <small>Admin Dashboard</small>
         </div>
-        <p class="text-center mb-4 text-muted">Chào mừng <strong>Admin</strong></p>
         <div class="nav flex-column">
             <a href="${pageContext.request.contextPath}/admin-dashboard" 
                class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">

@@ -24,7 +24,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <style>
         :root {
             --primary-color: #f97316; /* Orange */
             --secondary-color: #1e40af; /* Dark Blue */
@@ -40,11 +41,58 @@
         }
 
         .sidebar {
+            width: 250px;
+            background: #ffffff;
+            padding: 20px 10px;
+            border-right: 1px solid #e0e0e0;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
         }
 
         .sidebar-hidden {
             transform: translateX(-100%);
+        }
+
+        .sidebar .header {          
+            color: white;
+            padding-left: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .sidebar .header:hover {
+            transform: scale(1.02);
+        }
+
+        .sidebar .logo {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #007bff;
+            color: white;
+            transform: translateX(5px);
         }
 
         .card {
@@ -54,13 +102,6 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .table-container {
-            background-color: var(--card-bg);
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
         }
 
         .btn-primary {
@@ -73,85 +114,72 @@
             background-color: #ea580c;
         }
 
-        .btn-danger {
-            background-color: #dc2626;
+        .btn-secondary {
+            background-color: var(--secondary-color);
             color: white;
             transition: background-color 0.3s ease;
         }
 
-        .btn-danger:hover {
-            background-color: #b91c1c;
+        .btn-secondary:hover {
+            background-color: #1e3a8a;
         }
 
-        .btn-outline-primary {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-outline-danger {
-            border-color: #dc2626;
-            color: #dc2626;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #dc2626;
-            color: white;
-        }
-
-        .form-select, .form-control {
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-select:focus, .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(249, 115, 22, 0.25);
-        }
-
-        .input-sm {
-            width: 200px; /* Compact input size */
-        }
-
-        .number-input {
-            width: 80px; /* Compact number input size */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .flex-1 {
+                margin-left: 0 !important;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex">
     <!-- Sidebar -->
-    <div class="sidebar fixed top-0 left-0 h-full w-64 bg-white shadow-lg p-6 flex flex-col justify-between sidebar-hidden lg:translate-x-0 z-50">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">iSofa Admin</h2>
-            <nav class="space-y-2">
-                <a href="${pageContext.request.contextPath}/san-pham" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-box mr-2"></i> Trang sản phẩm
-                </a>
-                <a href="${pageContext.request.contextPath}/admin-san-pham" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-cubes mr-2"></i> Quản lý Sản phẩm
-                </a>
-                <a href="${pageContext.request.contextPath}/admin/nguoi-dung" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-users mr-2"></i> Quản lý Người dùng
-                </a>
-                <a href="${pageContext.request.contextPath}/don-hang" class="flex items-center p-2 text-gray-700 bg-gray-100 rounded">
-                    <i class="fas fa-shopping-cart mr-2"></i> Quản lý Đơn hàng
-                </a>
-                <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-newspaper mr-2"></i> Quản lý Tin tức
-                </a>
-                <a href="${pageContext.request.contextPath}/admin-khuyen-mai" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
-                    <i class="fas fa-tags mr-2"></i> Quản lý Khuyến mãi
-                </a>
-            </nav>
+    <!-- Sidebar -->
+    <div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
+        <div class="header">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
+            <h4 class="mb-0">Trang Quản Trị</h4>
+            <small>Admin Dashboard</small>
         </div>
-        <a href="${pageContext.request.contextPath}/logout-admin" class="flex items-center p-2 text-red-600 hover:bg-red-100 rounded">
-            <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
-        </a>
+        <div class="nav flex-column">
+            <a href="${pageContext.request.contextPath}/admin-dashboard" 
+               class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+               <i class="bi bi-house"></i> Tổng quan
+            </a>
+            <a href="${pageContext.request.contextPath}/san-pham" 
+               class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
+               <i class="bi bi-box"></i> Trang sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-san-pham" 
+               class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
+               <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
+               class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
+               <i class="bi bi-people"></i> Quản lý Người dùng
+            </a>
+            <a href="${pageContext.request.contextPath}/don-hang" 
+               class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
+               <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
+            </a>
+            <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" 
+               class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
+               <i class="bi bi-newspaper"></i> Quản lý Tin tức
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-khuyen-mai" 
+               class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
+               <i class="bi bi-tag"></i> Quản lý Khuyến mãi
+            </a>
+            <a href="${pageContext.request.contextPath}/logout-admin" 
+               class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
+               <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
+        </div>
     </div>
 
     <!-- Main Content -->
