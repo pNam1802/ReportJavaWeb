@@ -75,6 +75,9 @@ public class QuanLyTinTucController extends HttpServlet {
                 case "edit":
                     updateTinTuc(req, resp);
                     break;
+                case "delete":
+                    deleteTinTuc(req, resp);
+                    break;
                 default:
                     listTinTuc(req, resp);
                     break;
@@ -97,12 +100,11 @@ public class QuanLyTinTucController extends HttpServlet {
         List<TinTuc> tinTucs = tinTucDAO.getTinTucByPage(page, pageSize);
         int totalTinTuc = tinTucDAO.getTotalTinTuc();
         int totalPages = (int) Math.ceil((double) totalTinTuc / pageSize);
-        // Load products for display in table
         List<SanPham> products = tinTucDAO.getAllProducts();
         System.out.println("Controller: Loaded " + (products != null ? products.size() : "null") + " products in listTinTuc");
 
         req.setAttribute("tinTucs", tinTucs);
-        req.setAttribute("products", products); // Add products to request
+        req.setAttribute("products", products);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
         req.getRequestDispatcher("/views/TinTucHandle.jsp").forward(req, resp);

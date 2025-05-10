@@ -127,13 +127,14 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maTinTuc);
             int rowsAffected = stmt.executeUpdate();
+            System.out.println("DAO: Deleted " + rowsAffected + " rows for maTinTuc = " + maTinTuc);
             if (rowsAffected == 0) {
-                throw new SQLException("No news found to delete with ID: " + maTinTuc);
+                System.out.println("DAO: No rows deleted - maTinTuc " + maTinTuc + " not found");
             }
-            System.out.println("DAO: Deleted news with ID: " + maTinTuc);
         } catch (SQLException e) {
+            System.err.println("DAO Error in deleteTinTuc: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Error deleting tin tuc: " + e.getMessage(), e);
+            throw new RuntimeException("Error deleting tinTuc: " + e.getMessage(), e);
         }
     }
 
