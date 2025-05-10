@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, model.NguoiDung"%>
 <!DOCTYPE html>
@@ -7,13 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quản lý người dùng - Admin</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminStyles.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminSanPham.css">
 </head>
@@ -27,43 +22,35 @@
         <small>Admin Dashboard</small>
     </div>
     <div class="nav flex-column">
-        <a href="${pageContext.request.contextPath}/admin-dashboard"
-           class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
-           <i class="bi bi-house"></i> Tổng quan
+        <a href="${pageContext.request.contextPath}/admin-dashboard" class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+            <i class="bi bi-house"></i> Tổng quan
         </a>
-        <a href="${pageContext.request.contextPath}/san-pham"
-           class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
-           <i class="bi bi-box"></i> Trang sản phẩm
+        <a href="${pageContext.request.contextPath}/san-pham" class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
+            <i class="bi bi-box"></i> Trang sản phẩm
         </a>
-        <a href="${pageContext.request.contextPath}/admin-san-pham"
-           class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
-           <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
+        <a href="${pageContext.request.contextPath}/admin-san-pham" class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
+            <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
         </a>
-        <a href="${pageContext.request.contextPath}/admin/nguoi-dung"
-           class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
-           <i class="bi bi-people"></i> Quản lý Người dùng
+        <a href="${pageContext.request.contextPath}/admin/nguoi-dung" class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
+            <i class="bi bi-people"></i> Quản lý Người dùng
         </a>
-        <a href="${pageContext.request.contextPath}/don-hang"
-           class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
-           <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
+        <a href="${pageContext.request.contextPath}/don-hang" class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
+            <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
         </a>
-        <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1"
-           class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
-           <i class="bi bi-newspaper"></i> Quản lý Tin tức
+        <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
+            <i class="bi bi-newspaper"></i> Quản lý Tin tức
         </a>
-        <a href="${pageContext.request.contextPath}/admin-khuyen-mai"
-           class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
-           <i class="bi bi-tag"></i> Quản lý Khuyến mãi
+        <a href="${pageContext.request.contextPath}/admin-khuyen-mai" class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
+            <i class="bi bi-tag"></i> Quản lý Khuyến mãi
         </a>
-        <a href="${pageContext.request.contextPath}/logout-admin"
-           class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
-           <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        <a href="${pageContext.request.contextPath}/logout-admin" class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
         </a>
     </div>
 </div>
 
 <!-- Main content -->
-<div class="flex-1" style="margin-left: 250px; padding: 20px;">
+<div class="main-container">
     <div class="container mt-5">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
@@ -102,15 +89,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Optional Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
 
                 <!-- Danh sách người dùng -->
                 <table class="table table-bordered">
@@ -134,10 +112,8 @@
                             <td><%=nd.getSdt()%></td>
                             <td><%=nd.getEmail()%></td>
                             <td><%=nd.getDiaChi()%></td>
-                         <%--    <td><%=nd.getTenDangNhap()%></td>
-                            <td><%=nd.getVaiTro()%></td> --%>
                             <td>
-                                <a href="<%=request.getContextPath()%>/admin/nguoi-dung?action=edit&maNguoiDung=<%=nd.getMaNguoiDung()%>" class="btn btn-primary btn-sm">Sửa</a>
+                                <a href="<%=request.getContextPath()%>/admin/nguoi-dung?action=edit&maNguoiDung=<%=nd.getMaNguoiDung()%>" class="btn bg-primary text-white btn-sm">Sửa</a>
                                 <form action="<%=request.getContextPath()%>/admin/nguoi-dung" method="post" style="display:inline;">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="maNguoiDung" value="<%=nd.getMaNguoiDung()%>">
@@ -187,12 +163,19 @@
                 <% if (errorMessage != null) { %>
                     <div class="alert alert-danger"><%=errorMessage%></div>
                 <% } %>
-            </div>
-        </div>
-        <a href="<%=request.getContextPath()%>/views/AdminDashboard.jsp" class="btn btn-secondary mt-3">Quay lại Dashboard</a>
-    </div>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                <a href="<%=request.getContextPath()%>/views/AdminDashboard.jsp" class="btn btn-secondary mt-3">Quay lại Dashboard</a>
+            </div> <!-- card-body -->
+        </div> <!-- card -->
+    </div> <!-- container -->
+</div> <!-- main-container -->
+
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('sidebar-hidden');
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

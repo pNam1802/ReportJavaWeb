@@ -149,3 +149,10 @@ body {
         padding: 15px;
     }
 }
+
+.main-container {
+    margin-left: 230px !important;
+    padding: 20px;
+    flex: 1;
+}
+

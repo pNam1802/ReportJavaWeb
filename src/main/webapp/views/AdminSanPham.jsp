@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div class="flex-1" style="margin-left: 250px; padding: 20px;">
+    <div class="main-container"">
         <div class="container mt-5">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
@@ -240,7 +240,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Custom JS -->
         <script>
-            window.contextPath = '<%= request.getContextPath() %>';   
+            window.contextPath = '<%= request.getContextPath() %>';
+            function toggleSidebar() {
+                document.querySelector('.sidebar').classList.toggle('sidebar-hidden');
+            }
         </script>
         <script src="<%= request.getContextPath() %>/js/adminSanPham.js"></script>
     </div>
