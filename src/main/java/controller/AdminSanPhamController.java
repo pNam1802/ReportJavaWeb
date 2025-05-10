@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import interfaces.IAdminSanPham;
+import interfaces.ISanPham;
+import interfaces.IDanhMuc;
 import dao.AdminSanPhamDAO;
 import dao.SanPhamDAO;
 import dao.DanhMucDAO;
@@ -21,9 +24,9 @@ import model.DanhMuc;
 @MultipartConfig
 public class AdminSanPhamController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private SanPhamDAO sanPhamDAO;
-    private AdminSanPhamDAO adminSanPhamDAO;
-    private DanhMucDAO danhMucDAO;
+    private ISanPham sanPhamDAO;
+    private IAdminSanPham adminSanPhamDAO;
+    private IDanhMuc danhMucDAO;
 
     @Override
     public void init() throws ServletException {
@@ -157,7 +160,7 @@ public class AdminSanPhamController extends HttpServlet {
         sanPham.setTinhTrang(request.getParameter("tinhTrang"));
         sanPham.setSoLuongTonKho(soLuongTonKho);
         sanPham.setChiTiet(request.getParameter("chiTiet"));
-        String hinhAnh = handleImageUpload(request);
+        String hinhAnh = imageUpload(request);
         sanPham.setHinhAnh(hinhAnh);
 
         adminSanPhamDAO.add(sanPham);
@@ -195,7 +198,7 @@ public class AdminSanPhamController extends HttpServlet {
         sanPham.setTinhTrang(request.getParameter("tinhTrang"));
         sanPham.setSoLuongTonKho(soLuongTonKho);
         sanPham.setChiTiet(request.getParameter("chiTiet"));
-        String hinhAnh = handleImageUpload(request);
+        String hinhAnh = imageUpload(request);
         SanPham existingProduct = sanPhamDAO.getById(maSanPham);
         sanPham.setHinhAnh(hinhAnh != null ? hinhAnh : (existingProduct != null ? existingProduct.getHinhAnh() : null));
 
@@ -210,7 +213,7 @@ public class AdminSanPhamController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin-san-pham");
     }
 
-    private String handleImageUpload(HttpServletRequest request) throws IOException, ServletException {
+    private String imageUpload(HttpServletRequest request) throws IOException, ServletException {
         Part filePart = request.getPart("hinhAnh");
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = filePart.getSubmittedFileName();

@@ -1,11 +1,12 @@
 package dao;
 
+import interfaces.IAdminKhuyenMai;
 import model.KhuyenMai;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminKhuyenMaiDAO {
+public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
     private Connection conn;
 
     public AdminKhuyenMaiDAO() {

@@ -1,5 +1,6 @@
 package dao;
 
+import interfaces.IAdminSanPham;
 import model.SanPham;
 import model.DanhMuc;
 import java.sql.Connection;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminSanPhamDAO {
+public class AdminSanPhamDAO implements IAdminSanPham {
     public void add(SanPham sanPham) throws SQLException {
         String sql = "INSERT INTO san_pham (maSanPham, tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();

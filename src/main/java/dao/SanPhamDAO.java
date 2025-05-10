@@ -1,5 +1,6 @@
 package dao;
 
+import interfaces.ISanPham;
 import model.SanPham;
 import model.DanhGiaSanPham;
 import model.DanhMuc;
@@ -8,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanPhamDAO {
+public class SanPhamDAO implements ISanPham {
     private Connection conn;
 
     public SanPhamDAO() {
