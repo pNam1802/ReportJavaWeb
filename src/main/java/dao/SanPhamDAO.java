@@ -11,16 +11,13 @@ import java.util.List;
 public class SanPhamDAO {
     private Connection conn;
 
-
     public SanPhamDAO() {
         this.conn = DBConnection.getConnection();
     }
 
-
     public SanPhamDAO(Connection conn) {
         this.conn = conn;
     }
-
 
     // Lấy sản phẩm theo ID
     public SanPham getById(int id) {
@@ -32,36 +29,19 @@ public class SanPhamDAO {
         
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
-            
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    SanPham sanPham = new SanPham();
-                    sanPham.setMaSanPham(rs.getInt("maSanPham"));
-                    sanPham.setTenSanPham(rs.getString("tenSanPham"));
-                    sanPham.setChiTiet(rs.getString("chiTiet"));
-                    sanPham.setGiaGoc(rs.getDouble("giaGoc"));
-                    sanPham.setGiaKhuyenMai(rs.getDouble("giaKhuyenMai"));
-                    sanPham.setTinhTrang(rs.getString("tinhTrang"));
-                    sanPham.setSoLuongTonKho(rs.getInt("soLuongTonKho"));
-                    sanPham.setHinhAnh(rs.getString("hinhAnh"));
-
-                    DanhMuc danhMuc = new DanhMuc(
-                        rs.getInt("maDanhMuc"),
-                        rs.getString("tenDanhMuc"),
-                        rs.getString("moTa")
-                    );
-                    sanPham.setDanhMuc(danhMuc);
-                    
-                    return sanPham;
+                    return mapResultSetToSanPham(rs);
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching product by ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
-    // Lấy tất cả sản phẩm (đã có)
+    // Lấy tất cả sản phẩm
     public List<SanPham> getAll() {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
@@ -73,33 +53,30 @@ public class SanPhamDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 sanPhams.add(mapResultSetToSanPham(rs));
-
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching all products: " + e.getMessage());
             e.printStackTrace();
         }
         return sanPhams;
     }
 
-
-    // Lấy tổng số sản phẩm (đã có)
-
+    // Lấy tổng số sản phẩm
     public int getTotalSanPham() {
-        int count = 0;
         String sql = "SELECT COUNT(*) FROM san_pham";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
-                count = rs.getInt(1);
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
+            System.err.println("Error counting products: " + e.getMessage());
             e.printStackTrace();
         }
-        return count;
+        return 0;
     }
 
-
-    // Lấy sản phẩm phân trang (đã có)
+    // Lấy sản phẩm phân trang
     public List<SanPham> getSanPhams(int offset, int limit) {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
@@ -111,13 +88,13 @@ public class SanPhamDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     sanPhams.add(mapResultSetToSanPham(rs));
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching products by page: " + e.getMessage());
             e.printStackTrace();
         }
         return sanPhams;
@@ -137,36 +114,33 @@ public class SanPhamDAO {
             ps.setString(1, "%" + keyword + "%");
             ps.setInt(2, limit);
             ps.setInt(3, offset);
-            System.out.println("Executing searchByName with keyword: " + keyword);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     sanPhams.add(mapResultSetToSanPham(rs));
                 }
-                System.out.println("Found " + sanPhams.size() + " products for keyword: " + keyword);
             }
         } catch (SQLException e) {
+            System.err.println("Error searching products by name: " + e.getMessage());
             e.printStackTrace();
         }
         return sanPhams;
     }
 
-
     // Lấy tổng số sản phẩm theo tên
     public int getTotalSanPhamByName(String keyword) {
-        int count = 0;
         String sql = "SELECT COUNT(*) FROM san_pham WHERE tenSanPham LIKE ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    count = rs.getInt(1);
+                    return rs.getInt(1);
                 }
-                System.out.println("Total products for keyword " + keyword + ": " + count);
             }
         } catch (SQLException e) {
+            System.err.println("Error counting products by name: " + e.getMessage());
             e.printStackTrace();
         }
-        return count;
+        return 0;
     }
     
     // Lấy sản phẩm theo danh mục (có phân trang)
@@ -177,20 +151,19 @@ public class SanPhamDAO {
                      "FROM san_pham sp " +
                      "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
                      "WHERE sp.idDanhMuc = ? " +
-                     "LIMIT ? OFFSET ?"; // Thêm LIMIT và OFFSET cho phân trang
+                     "LIMIT ? OFFSET ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1,  maDanhMuc);	 // Set mã danh mục vào câu truy vấn
-        	ps.setInt(2, limit);         // Set giới hạn số lượng sản phẩm
-            ps.setInt(3, offset);        // Set vị trí bắt đầu (offset)
-
+            ps.setInt(1, maDanhMuc);
+            ps.setInt(2, limit);
+            ps.setInt(3, offset);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    SanPham sp = mapResultSetToSanPham(rs);
-                    list.add(sp); // Thêm sản phẩm vào danh sách
+                    list.add(mapResultSetToSanPham(rs));
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching products by category: " + e.getMessage());
             e.printStackTrace();
         }
         return list;
@@ -198,27 +171,23 @@ public class SanPhamDAO {
     
     // Lấy tổng số sản phẩm theo danh mục
     public int getTotalSanPhamTheoDanhMuc(int maDanhMuc) {
-        int count = 0;
-        String sql = "SELECT COUNT(*) FROM san_pham sp " +
-                     "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
-                     "WHERE sp.idDanhMuc = ?";
-        
+        String sql = "SELECT COUNT(*) FROM san_pham WHERE idDanhMuc = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maDanhMuc);  // Set mã danh mục vào câu truy vấn
+            ps.setInt(1, maDanhMuc);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    count = rs.getInt(1);
+                    return rs.getInt(1);
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error counting products by category: " + e.getMessage());
             e.printStackTrace();
         }
-        return count;
+        return 0;
     }
     
     public List<DanhGiaSanPham> layDanhSachDanhGiaDaGiao() {
         List<DanhGiaSanPham> danhSach = new ArrayList<>();
-
         String sql = """
             SELECT sp.tenSanPham, nd.hoTen, dg.diemDanhGia, dg.noiDung, dg.ngayDanhGia
             FROM danh_gia dg
@@ -232,7 +201,6 @@ public class SanPhamDAO {
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 DanhGiaSanPham dg = new DanhGiaSanPham();
                 dg.setTenSanPham(rs.getString("tenSanPham"));
@@ -243,15 +211,14 @@ public class SanPhamDAO {
                 danhSach.add(dg);
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching product reviews: " + e.getMessage());
             e.printStackTrace();
         }
-
         return danhSach;
     }
 
- // Phương thức ánh xạ ResultSet thành đối tượng SanPham
+    // Phương thức ánh xạ ResultSet thành đối tượng SanPham
     private SanPham mapResultSetToSanPham(ResultSet rs) throws SQLException {
-        // Tạo đối tượng SanPham
         SanPham sanPham = new SanPham();
         sanPham.setMaSanPham(rs.getInt("maSanPham"));
         sanPham.setTenSanPham(rs.getString("tenSanPham"));
@@ -262,28 +229,24 @@ public class SanPhamDAO {
         sanPham.setSoLuongTonKho(rs.getInt("soLuongTonKho"));
         sanPham.setHinhAnh(rs.getString("hinhAnh"));
 
-        // Tạo đối tượng DanhMuc từ ResultSet và gán vào SanPham
         DanhMuc danhMuc = new DanhMuc();
         danhMuc.setMaDanhMuc(rs.getInt("maDanhMuc"));
         danhMuc.setTenDanhMuc(rs.getString("tenDanhMuc"));
         danhMuc.setMoTa(rs.getString("moTa"));
-
         sanPham.setDanhMuc(danhMuc);
 
         return sanPham;
     }
 
-
-    // Đóng kết nối (đã có)
+    // Đóng kết nối
     public void closeConnection() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
-
             }
         } catch (SQLException e) {
+            System.err.println("Error closing connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
 }

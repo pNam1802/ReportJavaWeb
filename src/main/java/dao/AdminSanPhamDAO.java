@@ -1,136 +1,103 @@
 package dao;
 
 import model.SanPham;
-import java.sql.*;
-import java.util.logging.Logger;
+import model.DanhMuc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminSanPhamDAO {
-    private static final Logger LOGGER = Logger.getLogger(AdminSanPhamDAO.class.getName());
-    private Connection conn;
-
-    public AdminSanPhamDAO() {
-        this.conn = DBConnection.getConnection();
-        if (this.conn == null) {
-            LOGGER.severe("Failed to establish database connection");
-            throw new RuntimeException("Database connection is null");
-        }
-    }
-
-    public AdminSanPhamDAO(Connection conn) {
-        this.conn = conn;
-    }
-
-    private void checkConnection() throws SQLException {
-        if (conn == null || conn.isClosed()) {
-            conn = DBConnection.getConnection();
-            if (conn == null) {
-                LOGGER.severe("Failed to re-establish database connection");
-                throw new RuntimeException("Failed to re-establish database connection");
-            }
-        }
-    }
-
-    public void add(SanPham sp) {
-        String sql = "INSERT INTO san_pham (maSanPham, tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        	ps.setInt(1, sp.getMaSanPham());
-            ps.setString(2, sp.getTenSanPham());
-            ps.setInt(3, sp.getDanhMuc().getMaDanhMuc());
-            ps.setDouble(4, sp.getGiaGoc());
-            ps.setDouble(5, sp.getGiaKhuyenMai());
-            ps.setString(6, sp.getTinhTrang());
-            ps.setInt(7, sp.getSoLuongTonKho());
-            ps.setString(8, sp.getHinhAnh());
-            ps.setString(9, sp.getChiTiet());
+    public void add(SanPham sanPham) throws SQLException {
+        String sql = "INSERT INTO san_pham (maSanPham, tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, sanPham.getMaSanPham());
+            ps.setString(2, sanPham.getTenSanPham());
+            ps.setInt(3, sanPham.getDanhMuc().getMaDanhMuc());
+            ps.setDouble(4, sanPham.getGiaGoc());
+            ps.setDouble(5, sanPham.getGiaGoc()); // Giá khuyến mãi bằng giá gốc
+            ps.setString(6, sanPham.getTinhTrang());
+            ps.setInt(7, sanPham.getSoLuongTonKho());
+            ps.setString(8, sanPham.getHinhAnh());
+            ps.setString(9, sanPham.getChiTiet());
             ps.executeUpdate();
-            LOGGER.info("Added product: " + sp.getTenSanPham() + " with ID: " + sp.getMaSanPham());;
+            System.out.println("Thêm sản phẩm thành công.");
         } catch (SQLException e) {
-            LOGGER.severe("Error adding product: " + e.getMessage());
-            throw new RuntimeException("Failed to add product", e);
+            System.err.println("Error adding product: " + e.getMessage());
+            throw e;
         }
     }
 
-    public void update(SanPham sp) {
+    public void update(SanPham sanPham) throws SQLException {
         String sql = "UPDATE san_pham SET tenSanPham = ?, idDanhMuc = ?, giaGoc = ?, giaKhuyenMai = ?, tinhTrang = ?, soLuongTonKho = ?, hinhAnh = ?, chiTiet = ? WHERE maSanPham = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, sp.getTenSanPham());
-            ps.setInt(2, sp.getDanhMuc().getMaDanhMuc());
-            ps.setDouble(3, sp.getGiaGoc());
-            ps.setDouble(4, sp.getGiaKhuyenMai());
-            ps.setString(5, sp.getTinhTrang());
-            ps.setInt(6, sp.getSoLuongTonKho());
-            ps.setString(7, sp.getHinhAnh());
-            ps.setString(8, sp.getChiTiet());
-            ps.setInt(9, sp.getMaSanPham());
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, sanPham.getTenSanPham());
+            ps.setInt(2, sanPham.getDanhMuc().getMaDanhMuc());
+            ps.setDouble(3, sanPham.getGiaGoc());
+            ps.setDouble(4, sanPham.getGiaKhuyenMai());
+            ps.setString(5, sanPham.getTinhTrang());
+            ps.setInt(6, sanPham.getSoLuongTonKho());
+            ps.setString(7, sanPham.getHinhAnh());
+            ps.setString(8, sanPham.getChiTiet());
+            ps.setInt(9, sanPham.getMaSanPham());
             ps.executeUpdate();
-            LOGGER.info("Updated product with ID: " + sp.getMaSanPham());
+            System.out.println("Chỉnh sửa thành công.");
         } catch (SQLException e) {
-            LOGGER.severe("Error updating product: " + e.getMessage());
-            throw new RuntimeException("Failed to update product", e);
+            System.err.println("Error updating product: " + e.getMessage());
+            throw e;
         }
     }
 
-    public boolean canDelete(int id) {
-        String sql = "SELECT COUNT(*) FROM chi_tiet_don_hang WHERE maSanPham = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    return false; // Không thể xóa vì có liên kết
+    public void delete(int maSanPham) throws SQLException {
+        String checkOrderSql = "SELECT COUNT(*) FROM chi_tiet_don_hang WHERE maSanPham = ?";
+        String checkCartSql = "SELECT COUNT(*) FROM chi_tiet_gio_hang WHERE maSanPham = ?";
+        String checkKhuyenMaiSql = "SELECT maKhuyenMai FROM khuyen_mai WHERE maSanPham = ?";
+        String deleteSql = "DELETE FROM san_pham WHERE maSanPham = ?";
+        try (Connection conn = DBConnection.getConnection()) {
+            // Kiểm tra chi tiết đơn hàng
+            try (PreparedStatement ps = conn.prepareStatement(checkOrderSql)) {
+                ps.setInt(1, maSanPham);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang được sử dụng trong đơn hàng.");
+                    }
                 }
             }
-        } catch (SQLException e) {
-            LOGGER.severe("Error checking delete eligibility: " + e.getMessage());
-        }
-        return true;
-    }
-
-    public void delete(int id) {
-        try {
-            checkConnection();
-            conn.setAutoCommit(false);
-
-            if (!canDelete(id)) {
-                throw new RuntimeException("Cannot delete product because it is linked to an order.");
-            }
-
-            String sql = "DELETE FROM san_pham WHERE maSanPham = ?";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, id);
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected > 0) {
-                    LOGGER.info("Deleted product with ID: " + id);
+            // Kiểm tra chi tiết giỏ hàng
+            try (PreparedStatement ps = conn.prepareStatement(checkCartSql)) {
+                ps.setInt(1, maSanPham);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang có trong giỏ hàng.");
+                    }
                 }
             }
-
-            conn.commit();
-        } catch (SQLException e) {
-            try {
-                conn.rollback();
-                LOGGER.severe("Rolled back transaction due to error: " + e.getMessage());
-            } catch (SQLException rollbackEx) {
-                LOGGER.severe("Error during rollback: " + rollbackEx.getMessage());
+            // Kiểm tra khuyến mãi
+            List<Integer> promotionIds = new ArrayList<>();
+            try (PreparedStatement ps = conn.prepareStatement(checkKhuyenMaiSql)) {
+                ps.setInt(1, maSanPham);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        promotionIds.add(rs.getInt("maKhuyenMai"));
+                    }
+                }
             }
-            LOGGER.severe("Error deleting product: " + e.getMessage());
-            throw new RuntimeException("Failed to delete product: " + e.getMessage(), e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                LOGGER.severe("Error resetting auto-commit: " + e.getMessage());
+            if (!promotionIds.isEmpty()) {
+                String promotionIdList = String.join(", ", promotionIds.stream().map(String::valueOf).toList());
+                throw new SQLException("Vui lòng xóa khuyến mãi ra khỏi sản phẩm. Mã khuyến mãi là: " + promotionIdList);
             }
-        }
-    }
-
-    public void closeConnection() {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-                LOGGER.info("Database connection closed");
+            // Xóa sản phẩm
+            try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
+                ps.setInt(1, maSanPham);
+                ps.executeUpdate();
             }
         } catch (SQLException e) {
-            LOGGER.severe("Error closing connection: " + e.getMessage());
+            System.err.println("Error deleting product: " + e.getMessage());
+            throw e;
         }
     }
 }
