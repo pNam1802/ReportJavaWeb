@@ -6,11 +6,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quản lý Người Dùng - Admin</title>
+    <title>Quản lý người dùng - Admin</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminStyles.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminSanPham.css">
 </head>
 <body class="bg-light">
+
+<!-- Sidebar -->
+<div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
+    <div class="header">
+        <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
+        <h4 class="mb-0">Trang Quản Trị</h4>
+        <small>Admin Dashboard</small>
+    </div>
+    <div class="nav flex-column">
+        <a href="${pageContext.request.contextPath}/admin-dashboard"
+           class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+           <i class="bi bi-house"></i> Tổng quan
+        </a>
+        <a href="${pageContext.request.contextPath}/san-pham"
+           class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
+           <i class="bi bi-box"></i> Trang sản phẩm
+        </a>
+        <a href="${pageContext.request.contextPath}/admin-san-pham"
+           class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
+           <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
+        </a>
+        <a href="${pageContext.request.contextPath}/admin/nguoi-dung"
+           class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
+           <i class="bi bi-people"></i> Quản lý Người dùng
+        </a>
+        <a href="${pageContext.request.contextPath}/don-hang"
+           class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
+           <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
+        </a>
+        <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1"
+           class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
+           <i class="bi bi-newspaper"></i> Quản lý Tin tức
+        </a>
+        <a href="${pageContext.request.contextPath}/admin-khuyen-mai"
+           class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
+           <i class="bi bi-tag"></i> Quản lý Khuyến mãi
+        </a>
+        <a href="${pageContext.request.contextPath}/logout-admin"
+           class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
+           <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        </a>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="flex-1" style="margin-left: 250px; padding: 20px;">
     <div class="container mt-5">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
@@ -41,8 +94,6 @@
                             <label for="diaChi" class="form-label">Địa Chỉ</label>
                             <input type="text" class="form-control" id="diaChi" name="diaChi" value="<%= nguoiDung != null ? nguoiDung.getDiaChi() : "" %>" required>
                         </div>
-                            </select>
-                        </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-success"><%= nguoiDung != null ? "Cập nhật" : "Thêm" %> Người Dùng</button>
                             <% if (nguoiDung != null) { %>
@@ -51,6 +102,15 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 
                 <!-- Danh sách người dùng -->
                 <table class="table table-bordered">
