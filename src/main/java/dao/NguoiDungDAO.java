@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -9,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.NguoiDung;
 import dao.DBConnection;
+import interfaces.IAdminNguoiDung;
 
-public class NguoiDungDAO {
+public class NguoiDungDAO implements IAdminNguoiDung {
     public List<NguoiDung> getNguoiDungsByPage(int page, int pageSize) throws SQLException {
         List<NguoiDung> list = new ArrayList<>();
         String sql = "SELECT * FROM nguoi_dung ORDER BY maNguoiDung ASC LIMIT ? OFFSET ?";

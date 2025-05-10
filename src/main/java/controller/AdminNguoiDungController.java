@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -12,11 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.NguoiDungDAO;
 import model.NguoiDung;
+import interfaces.IAdminNguoiDung;
 
 @WebServlet("/admin/nguoi-dung")
 public class AdminNguoiDungController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private NguoiDungDAO nguoiDungDAO;
+    private IAdminNguoiDung nguoiDungDAO;
 
     @Override
     public void init() throws ServletException {
