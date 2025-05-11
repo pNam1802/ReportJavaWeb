@@ -54,21 +54,26 @@ public class AdminSanPhamDAO implements IAdminSanPham {
     }
 
     public void delete(int maSanPham) throws SQLException {
-        String checkOrderSql = "SELECT COUNT(*) FROM chi_tiet_don_hang WHERE maSanPham = ?";
         String checkCartSql = "SELECT COUNT(*) FROM chi_tiet_gio_hang WHERE maSanPham = ?";
+        String checkDonHangSql = "SELECT maDonHang FROM chi_tiet_don_hang WHERE maSanPham = ?";
         String checkTinTucSql = "SELECT maTinTuc FROM tin_tuc WHERE maSanPham = ?";
         String checkKhuyenMaiSql = "SELECT maKhuyenMai FROM khuyen_mai WHERE maSanPham = ?";
         String deleteSql = "DELETE FROM san_pham WHERE maSanPham = ?";
         
         try (Connection conn = DBConnection.getConnection()) {
             // Kiểm tra chi tiết đơn hàng
-            try (PreparedStatement ps = conn.prepareStatement(checkOrderSql)) {
+        	List<Integer> donHangIds = new ArrayList<>();
+            try (PreparedStatement ps = conn.prepareStatement(checkDonHangSql)) {
                 ps.setInt(1, maSanPham);
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next() && rs.getInt(1) > 0) {
-                        throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang được sử dụng trong đơn hàng.");
+                    if (rs.next()) {
+                    	donHangIds.add(rs.getInt("maDonHang"));  
                     }
                 }
+            }
+            if (!donHangIds.isEmpty()) {
+                String donHangIdList = String.join(", ", donHangIds.stream().map(String::valueOf).toList());
+                throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang được sử dụng trong đơn hàng. Mã đơn hàng là: " + donHangIdList);
             }
             // Kiểm tra chi tiết giỏ hàng
             try (PreparedStatement ps = conn.prepareStatement(checkCartSql)) {
@@ -93,7 +98,7 @@ public class AdminSanPhamDAO implements IAdminSanPham {
                 String tinTucIdList = String.join(", ", tinTucIds.stream().map(String::valueOf).toList());
                 throw new SQLException("Không thể xóa sản phẩm vì đang được sử dụng trong tin tức. Mã tin tức là: " + tinTucIdList);
             }
-            // Kiểm tra khuyến mãi
+            // Kiểm tra chi tiết khuyến mãi
             List<Integer> khuyenMaiIds = new ArrayList<>();
             try (PreparedStatement ps = conn.prepareStatement(checkKhuyenMaiSql)) {
                 ps.setInt(1, maSanPham);
