@@ -194,7 +194,8 @@ public class DonHangController extends HttpServlet {
             String trangThai = request.getParameter("trangThai");
             String trangThaiThanhToan = request.getParameter("trangThaiThanhToan");
             String diaChi = request.getParameter("diaChi");
-
+            System.out.print("trang thai duoc lay ra: " + trangThai);
+            System.out.print("trang thai thanh toan: " + trangThaiThanhToan);
             // Kiểm tra dữ liệu đầu vào
             if (trangThai == null || trangThai.trim().isEmpty() ||
                 trangThaiThanhToan == null || trangThaiThanhToan.trim().isEmpty() ||
@@ -215,8 +216,7 @@ public class DonHangController extends HttpServlet {
             // Cập nhật thông tin trong cơ sở dữ liệu
             donHangDAO.updateTrangThaiDonHang(maDonHang, trangThai);
             donHangDAO.updatePaymentStatus(maDonHang, trangThaiThanhToan);
-            donHangDAO.updateDiaChiNguoiDungTheoMaDonHang(maDonHang, diaChi);
-
+            donHangDAO.updateDiaChiNguoiDungTheoMaDonHang(maDonHang, diaChi);        
             // Chuyển hướng về trang chi tiết đơn hàng với thông báo thành công
             response.sendRedirect(request.getContextPath() + "/don-hang?action=chitiet&maDonHang=" + maDonHang + "&success=updated");
         } catch (NumberFormatException e) {

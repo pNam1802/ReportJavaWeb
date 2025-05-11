@@ -226,10 +226,11 @@ public class DonHangDAO {
         }
 
         String query = "UPDATE don_hang SET trangThai = ? WHERE maDonHang = ?";
-
+        System.out.print("đến đây vẫn ổn");
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, trangThaiMoi);
             stmt.setInt(2, maDonHang);
+            System.out.print("trang thai don hang moi: " + trangThaiMoi + "he");
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new SQLException("Không tìm thấy đơn hàng với mã: " + maDonHang);
@@ -260,35 +261,17 @@ public class DonHangDAO {
         }
 
         String sql = "UPDATE thanh_toan SET trangThai = ? WHERE maDonHang = ?";
-        String sqlUpdateDonHang = "UPDATE don_hang SET trangThai = ? WHERE maDonHang = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             PreparedStatement stmtUpdateDonHang = connection.prepareStatement(sqlUpdateDonHang)) {
-            connection.setAutoCommit(false); // Bắt đầu giao dịch
-            try {
-                // Cập nhật trạng thái thanh toán trong bảng thanh_toan
-                stmt.setString(1, thanhToanTrangThai);
-                stmt.setInt(2, maDonHang);
-                int rowsAffected = stmt.executeUpdate();
-                if (rowsAffected == 0) {
-                    throw new SQLException("Không tìm thấy thanh toán cho đơn hàng: " + maDonHang);
-                }
-
-                // Đồng bộ trạng thái đơn hàng nếu cần
-                String trangThaiDonHang = thanhToanTrangThai.equals("Đã thanh toán") ? "Đã thanh toán" : "Chưa thanh toán";
-                stmtUpdateDonHang.setString(1, trangThaiDonHang);
-                stmtUpdateDonHang.setInt(2, maDonHang);
-                stmtUpdateDonHang.executeUpdate();
-
-                connection.commit(); // Xác nhận giao dịch
-            } catch (SQLException e) {
-                connection.rollback(); // Hoàn tác nếu có lỗi
-                throw e;
-            } finally {
-                connection.setAutoCommit(true); // Khôi phục chế độ auto-commit
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, thanhToanTrangThai);
+            stmt.setInt(2, maDonHang);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Không tìm thấy thanh toán cho đơn hàng: " + maDonHang);
             }
         }
     }
+
 
     public void addChiTietDonHang(int maDonHang, int maSanPham, int soLuong, Double donGia) throws SQLException {
         if (maDonHang <= 0 || maSanPham <= 0 || soLuong <= 0 || donGia == null || donGia <= 0) {
