@@ -191,13 +191,11 @@ public class SanPhamDAO implements ISanPham {
         List<DanhGiaSanPham> danhSach = new ArrayList<>();
         String sql = """
             SELECT sp.tenSanPham, nd.hoTen, dg.diemDanhGia, dg.noiDung, dg.ngayDanhGia
-            FROM danh_gia dg
-            JOIN san_pham sp ON dg.maSanPham = sp.maSanPham
-            JOIN nguoi_dung nd ON dg.maNguoiDung = nd.maNguoiDung
-            JOIN don_hang dh ON dh.maNguoiDung = nd.maNguoiDung
-            JOIN chi_tiet_don_hang ct ON ct.maDonHang = dh.maDonHang AND ct.maSanPham = sp.maSanPham
-            WHERE dh.trangThai = 'Đã giao'
-            ORDER BY dg.ngayDanhGia DESC;
+FROM danh_gia dg
+JOIN san_pham sp ON dg.maSanPham = sp.maSanPham
+JOIN nguoi_dung nd ON dg.maNguoiDung = nd.maNguoiDung
+JOIN don_hang dh ON dh.maNguoiDung = nd.maNguoiDung
+WHERE dh.trangThai = 'Hoàn thành';
         """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
