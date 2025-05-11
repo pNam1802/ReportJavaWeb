@@ -1,0 +1,158 @@
+@charset "UTF-8";
+:root {
+    --primary-color: #f97316; /* Orange */
+    --secondary-color: #1e40af; /* Dark Blue */
+    --bright-color: #007bff; /* Bright Blue */
+    --bg-color: #f3f4f6; /* Light Gray */
+    --card-bg: #ffffff; /* White */
+    --text-color: #1f2937; /* Dark Gray */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+}
+
+.bg-light {
+    background-color: var(--bg-color) !important;
+}
+
+.shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.sidebar {
+    width: 250px;
+    background: #ffffff;
+    padding: 20px 10px;
+    border-right: 1px solid #e0e0e0;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 50;
+}
+
+@media (min-width: 1024px) {
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+    .sidebar-hidden {
+        transform: translateX(0) !important;
+    }
+}
+
+@media (max-width: 1023px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar-hidden {
+        transform: translateX(-100%);
+    }
+    .sidebar.show {
+        transform: translateX(0);
+    }
+}
+
+.sidebar .header {          
+    color: white;
+    padding-left: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.sidebar .header:hover {
+    transform: scale(1.02);
+}
+
+.sidebar .logo {
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    background: #007bff;
+    color: white;
+    transform: translateX(5px);
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ea580c !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #1e3a8a !important;
+}
+
+.btn-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-danger:hover {
+    background-color: #c82333 !important;
+}
+
+@media (max-width: 1023px) {
+    .flex-1 {
+        margin-left: 0 !important;
+        padding: 15px;
+    }
+}
+
+.main-container {
+    margin-left: 230px !important;
+    padding: 20px;
+    flex: 1;
+}
+

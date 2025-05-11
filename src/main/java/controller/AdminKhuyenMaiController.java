@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import interfaces.IAdminKhuyenMai;
+import interfaces.ISanPham;
 import dao.AdminKhuyenMaiDAO;
 import dao.SanPhamDAO;
 import model.KhuyenMai;
@@ -17,14 +19,14 @@ import model.SanPham;
 @WebServlet("/admin-khuyen-mai")
 public class AdminKhuyenMaiController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private AdminKhuyenMaiDAO AdminkhuyenMaiDAO;
-    private SanPhamDAO sanPhamDAO;
+    private IAdminKhuyenMai adminKhuyenMaiDAO;
+    private ISanPham sanPhamDAO;
     private static final int PROMOTIONS_PER_PAGE = 10;
 
     @Override
     public void init() throws ServletException {
-    	AdminkhuyenMaiDAO = new AdminKhuyenMaiDAO();
-        sanPhamDAO = new SanPhamDAO();
+    	adminKhuyenMaiDAO = new AdminKhuyenMaiDAO();
+    	sanPhamDAO = new SanPhamDAO();
     }
 
     @Override
@@ -104,17 +106,17 @@ public class AdminKhuyenMaiController extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Update expired promotions
-        	AdminkhuyenMaiDAO.updateExpiredPromotions();
+        	adminKhuyenMaiDAO.updateExpiredPromotions();
 
             String pageParam = request.getParameter("page");
             int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
             if (page < 1) page = 1;
 
             int offset = (page - 1) * PROMOTIONS_PER_PAGE;
-            int totalPromotions = AdminkhuyenMaiDAO.getTotalPromotions();
+            int totalPromotions = adminKhuyenMaiDAO.getTotalPromotions();
             int totalPages = (int) Math.ceil((double) totalPromotions / PROMOTIONS_PER_PAGE);
 
-            List<KhuyenMai> khuyenMais = AdminkhuyenMaiDAO.getPromotions(offset, PROMOTIONS_PER_PAGE);
+            List<KhuyenMai> khuyenMais = adminKhuyenMaiDAO.getPromotions(offset, PROMOTIONS_PER_PAGE);
             List<SanPham> sanPhams = sanPhamDAO.getSanPhams(0, Integer.MAX_VALUE);
 
             request.setAttribute("khuyenMais", khuyenMais);
@@ -134,7 +136,7 @@ public class AdminKhuyenMaiController extends HttpServlet {
         if (maKhuyenMaiParam != null && !maKhuyenMaiParam.isEmpty()) {
             try {
                 int id = Integer.parseInt(maKhuyenMaiParam);
-                KhuyenMai khuyenMai = AdminkhuyenMaiDAO.getById(id);
+                KhuyenMai khuyenMai = adminKhuyenMaiDAO.getById(id);
                 if (khuyenMai != null) {
                     List<SanPham> sanPhams = sanPhamDAO.getSanPhams(0, Integer.MAX_VALUE);
                     request.setAttribute("khuyenMai", khuyenMai);
@@ -158,13 +160,13 @@ public class AdminKhuyenMaiController extends HttpServlet {
         if (maKhuyenMaiParam != null && !maKhuyenMaiParam.isEmpty()) {
             try {
                 int id = Integer.parseInt(maKhuyenMaiParam);
-                KhuyenMai khuyenMai = AdminkhuyenMaiDAO.getById(id);
+                KhuyenMai khuyenMai = adminKhuyenMaiDAO.getById(id);
                 if (khuyenMai == null) {
                     request.setAttribute("errorMessage", "Không tìm thấy khuyến mãi với ID: " + id);
                     handleListPromotions(request, response);
                     return;
                 }
-                AdminkhuyenMaiDAO.delete(id);
+                adminKhuyenMaiDAO.delete(id);
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "ID khuyến mãi không hợp lệ: " + e.getMessage());
                 handleListPromotions(request, response);
@@ -213,7 +215,7 @@ public class AdminKhuyenMaiController extends HttpServlet {
             khuyenMai.setNgayKetThuc(endDate);
             khuyenMai.setGiaKhuyenMai(giaKhuyenMai);
 
-            AdminkhuyenMaiDAO.add(khuyenMai);
+            adminKhuyenMaiDAO.add(khuyenMai);
             response.sendRedirect(request.getContextPath() + "/admin-khuyen-mai?action=list");
         } catch (IllegalArgumentException e) {
             request.setAttribute("errorMessage", "Dữ liệu nhập không hợp lệ: " + e.getMessage());
@@ -255,7 +257,7 @@ public class AdminKhuyenMaiController extends HttpServlet {
             khuyenMai.setNgayKetThuc(endDate);
             khuyenMai.setGiaKhuyenMai(giaKhuyenMai);
 
-            AdminkhuyenMaiDAO.update(khuyenMai);
+            adminKhuyenMaiDAO.update(khuyenMai);
             response.sendRedirect(request.getContextPath() + "/admin-khuyen-mai?action=list");
         } catch (IllegalArgumentException e) {
             request.setAttribute("errorMessage", "Dữ liệu nhập không hợp lệ: " + e.getMessage());

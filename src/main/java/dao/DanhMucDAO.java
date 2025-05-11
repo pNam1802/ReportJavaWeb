@@ -1,11 +1,14 @@
 package dao;
 
+import interfaces.IDanhMuc;
 import model.DanhMuc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DanhMucDAO {
+import interfaces.IAdminSanPham;
+
+public class DanhMucDAO implements IDanhMuc {
     private Connection conn;
 
     public DanhMucDAO() {

@@ -1,0 +1,84 @@
+#editForm:empty {
+    display: none;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+#addProductButton {
+    display: flex;
+    align-items: center;
+}
+
+#addProductButton.hidden {
+    display: none !important;
+}
+
+#productForm textarea#chiTiet {
+    display: block;
+    width: 100%;
+    min-height: 100px;
+}
+
+#productForm.collapse {
+    display: none !important;
+}
+
+#productForm.collapse.show {
+    display: block !important;
+}
+
+#productForm .btn {
+    display: inline-block !important;
+}
+
+#productForm, #productForm form, #productForm .row, #productForm .col-12 {
+    display: block !important;
+    visibility: visible !important;
+}
+
+#productForm .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+#productForm .col-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+}
+
+@media (max-width: 576px) {
+    #productForm .col-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding-right: 4px !important;
+        padding-left: 4px !important;
+    }
+    #productForm .form-control,
+    #productForm .form-label {
+        font-size: 0.875rem !important;
+    }
+    #productForm .form-control {
+        padding: 0.375rem 0.75rem !important;
+    }
+}
+
+/* Đảm bảo textarea không làm lệch bố cục */
+#productForm textarea {
+    height: auto !important;
+    resize: vertical !important;
+}
+
+.btn-edit {
+    background-color: #007bff !important; /* Màu xanh dương */
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3 !important; /* Màu xanh dương đậm hơn khi hover */
+}
