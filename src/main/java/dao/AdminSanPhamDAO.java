@@ -54,7 +54,6 @@ public class AdminSanPhamDAO implements IAdminSanPham {
     }
 
     public void delete(int maSanPham) throws SQLException {
-        String checkCartSql = "SELECT COUNT(*) FROM chi_tiet_gio_hang WHERE maSanPham = ?";
         String checkDonHangSql = "SELECT maDonHang FROM chi_tiet_don_hang WHERE maSanPham = ?";
         String checkTinTucSql = "SELECT maTinTuc FROM tin_tuc WHERE maSanPham = ?";
         String checkKhuyenMaiSql = "SELECT maKhuyenMai FROM khuyen_mai WHERE maSanPham = ?";
@@ -74,15 +73,6 @@ public class AdminSanPhamDAO implements IAdminSanPham {
             if (!donHangIds.isEmpty()) {
                 String donHangIdList = String.join(", ", donHangIds.stream().map(String::valueOf).toList());
                 throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang được sử dụng trong đơn hàng. Mã đơn hàng là: " + donHangIdList);
-            }
-            // Kiểm tra chi tiết giỏ hàng
-            try (PreparedStatement ps = conn.prepareStatement(checkCartSql)) {
-                ps.setInt(1, maSanPham);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next() && rs.getInt(1) > 0) {
-                        throw new SQLException("Không thể xóa sản phẩm vì sản phẩm đang có trong giỏ hàng.");
-                    }
-                }
             }
          // Kiểm tra tin tức liên quan đến sản phẩm
             List<Integer> tinTucIds = new ArrayList<>();
