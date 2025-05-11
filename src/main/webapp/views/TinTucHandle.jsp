@@ -6,8 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quản lý Tin tức - Admin</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminStyles.css">
     <style>
         .truncate {
             max-width: 250px;
@@ -23,8 +32,51 @@
         .action-buttons { min-width: 120px; }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
+<body class="min-h-screen flex">
+<div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
+        <div class="header">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
+            <h4 class="mb-0">Trang Quản Trị</h4>
+            <small>Admin Dashboard</small>
+        </div>
+        <div class="nav flex-column">
+			    <a href="${pageContext.request.contextPath}/admin-dashboard" 
+               class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+               <i class="bi bi-house"></i> Tổng quan
+            </a>
+			<a href="${pageContext.request.contextPath}/san-pham" 
+               class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
+               <i class="bi bi-box"></i> Trang sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-san-pham" 
+               class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
+               <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/nguoi-dung" 
+               class="nav-link ${request.getServletPath() eq '/admin/nguoi-dung' ? 'active' : ''}">
+               <i class="bi bi-people"></i> Quản lý Người dùng
+            </a>
+            <a href="${pageContext.request.contextPath}/don-hang" 
+               class="nav-link ${request.getServletPath() eq '/don-hang' ? 'active' : ''}">
+               <i class="bi bi-cart-check"></i> Quản lý Đơn hàng
+            </a>
+            <a href="${pageContext.request.contextPath}/QuanLyTinTuc?page=1" 
+               class="nav-link ${request.getServletPath() eq '/QuanLyTinTuc' ? 'active' : ''}">
+               <i class="bi bi-newspaper"></i> Quản lý Tin tức
+            </a>
+            <a href="${pageContext.request.contextPath}/admin-khuyen-mai" 
+               class="nav-link ${request.getServletPath() eq '/admin-khuyen-mai' ? 'active' : ''}">
+               <i class="bi bi-tag"></i> Quản lý Khuyến mãi
+            </a>
+            <a href="${pageContext.request.contextPath}/logout-admin" 
+               class="nav-link ${request.getServletPath() eq '/logout-admin' ? 'active' : ''}">
+               <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
+        </div>
+    </div>
+    <!-- content main -->
+    <div class="flex-1 p-6 lg:ml-64">
+     <div class="container mx-auto">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
                 <h3 class="mb-0">Quản lý Tin tức</h3>
@@ -190,6 +242,7 @@
 
                 <a href="<%=request.getContextPath()%>/views/AdminDashboard.jsp" class="btn btn-secondary mt-3">Quay lại Dashboard</a>
             </div>
+        </div>
         </div>
     </div>
 
