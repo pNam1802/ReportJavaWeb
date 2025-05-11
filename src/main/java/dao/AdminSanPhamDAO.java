@@ -56,8 +56,10 @@ public class AdminSanPhamDAO implements IAdminSanPham {
     public void delete(int maSanPham) throws SQLException {
         String checkOrderSql = "SELECT COUNT(*) FROM chi_tiet_don_hang WHERE maSanPham = ?";
         String checkCartSql = "SELECT COUNT(*) FROM chi_tiet_gio_hang WHERE maSanPham = ?";
+        String checkTinTucSql = "SELECT maTinTuc FROM tin_tuc WHERE maSanPham = ?";
         String checkKhuyenMaiSql = "SELECT maKhuyenMai FROM khuyen_mai WHERE maSanPham = ?";
         String deleteSql = "DELETE FROM san_pham WHERE maSanPham = ?";
+        
         try (Connection conn = DBConnection.getConnection()) {
             // Kiểm tra chi tiết đơn hàng
             try (PreparedStatement ps = conn.prepareStatement(checkOrderSql)) {
@@ -77,20 +79,35 @@ public class AdminSanPhamDAO implements IAdminSanPham {
                     }
                 }
             }
+         // Kiểm tra tin tức liên quan đến sản phẩm
+            List<Integer> tinTucIds = new ArrayList<>();
+            try (PreparedStatement ps = conn.prepareStatement(checkTinTucSql)) {
+                ps.setInt(1, maSanPham);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        tinTucIds.add(rs.getInt("maTinTuc"));
+                    }
+                }
+            }
+            if (!tinTucIds.isEmpty()) {
+                String tinTucIdList = String.join(", ", tinTucIds.stream().map(String::valueOf).toList());
+                throw new SQLException("Không thể xóa sản phẩm vì đang được sử dụng trong tin tức. Mã tin tức là: " + tinTucIdList);
+            }
             // Kiểm tra khuyến mãi
-            List<Integer> promotionIds = new ArrayList<>();
+            List<Integer> khuyenMaiIds = new ArrayList<>();
             try (PreparedStatement ps = conn.prepareStatement(checkKhuyenMaiSql)) {
                 ps.setInt(1, maSanPham);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        promotionIds.add(rs.getInt("maKhuyenMai"));
+                    	khuyenMaiIds.add(rs.getInt("maKhuyenMai"));
                     }
                 }
             }
-            if (!promotionIds.isEmpty()) {
-                String promotionIdList = String.join(", ", promotionIds.stream().map(String::valueOf).toList());
-                throw new SQLException("Vui lòng xóa khuyến mãi ra khỏi sản phẩm. Mã khuyến mãi là: " + promotionIdList);
+            if (!khuyenMaiIds.isEmpty()) {
+                String khuyenMaiIdList = String.join(", ", khuyenMaiIds.stream().map(String::valueOf).toList());
+                throw new SQLException("Vui lòng xóa khuyến mãi ra khỏi sản phẩm. Mã khuyến mãi là: " + khuyenMaiIdList);
             }
+            
             // Xóa sản phẩm
             try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
                 ps.setInt(1, maSanPham);
