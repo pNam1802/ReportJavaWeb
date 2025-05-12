@@ -28,7 +28,7 @@ public class DatHangController extends HttpServlet {
 
    
     private static class TrangThai {
-        static final String CHUA_THANH_TOAN = "Chưa thanh toán";
+        static final String CHO_XU_LY = "Chờ xử lý";
     }
 
     private DatHangDAO datHangDAO;
@@ -109,7 +109,7 @@ public class DatHangController extends HttpServlet {
             // Tạo đơn hàng
             DonHang donHang = new DonHang();
             donHang.setNgayLap(new Date());
-            donHang.setTrangThai(TrangThai.CHUA_THANH_TOAN); // Thanh toán khi giao hàng (COD)
+            donHang.setTrangThai(TrangThai.CHO_XU_LY); // Thanh toán khi giao hàng (COD)
             donHang.setTongTien(tongTien);
             donHang.setMaNguoiDung(maNguoiDung);
 
@@ -216,7 +216,7 @@ public class DatHangController extends HttpServlet {
             // Tạo đơn hàng
             DonHang donHang = new DonHang();
             donHang.setNgayLap(new Date());
-            donHang.setTrangThai(TrangThai.CHUA_THANH_TOAN);
+            donHang.setTrangThai(TrangThai.CHO_XU_LY);
             donHang.setTongTien(tongTien);
             donHang.setMaNguoiDung(maNguoiDung);
 
