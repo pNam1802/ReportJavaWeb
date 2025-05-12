@@ -95,7 +95,7 @@ public class SanPhamController extends HttpServlet {
         }
 
   
-     // Xử lý phân trang (giữ nguyên như cũ)
+        // Xử lý phân trang (giữ nguyên như cũ)
         int page = 1;
         int limit = 6;
         String pageParam = request.getParameter("page");
@@ -108,36 +108,15 @@ public class SanPhamController extends HttpServlet {
         }
         int offset = (page - 1) * limit;
 
-        String danhMuc = request.getParameter("danhMuc");
-        List<SanPham> sanPhams;
-        int totalSanPhams;
-        int totalPages;
-
-        if (danhMuc != null && !danhMuc.isEmpty()) {
-            // Ánh xạ danhMuc sang maDanhMuc (số)
-            int maDanhMuc;
-            switch (danhMuc.toLowerCase()) {
-                case "sofa": maDanhMuc = 1; break;
-                case "ban-tra": maDanhMuc = 2; break;
-                case "tu-giuong": maDanhMuc = 3; break;
-                case "ban-an": maDanhMuc = 4; break;
-                case "ghe-thu-gian": maDanhMuc = 5; break;
-                default: maDanhMuc = Integer.parseInt(danhMuc); // Nếu không khớp, giữ nguyên (có thể gây lỗi)
-            }
-            sanPhams = sanPhamDAO.getSanPhamTheoDanhMuc(maDanhMuc, offset, limit);
-            totalSanPhams = sanPhamDAO.getTotalSanPhamTheoDanhMuc(maDanhMuc);
-            totalPages = (int) Math.ceil((double) totalSanPhams / limit);
-        } else {
-            sanPhams = sanPhamDAO.getSanPhams(offset, limit);
-            totalSanPhams = sanPhamDAO.getTotalSanPham();
-            totalPages = (int) Math.ceil((double) totalSanPhams / limit);
-        }
+        List<SanPham> sanPhams = sanPhamDAO.getSanPhams(offset, limit);
+        int totalSanPhams = sanPhamDAO.getTotalSanPham();
+        int totalPages = (int) Math.ceil((double) totalSanPhams / limit);
 
         request.setAttribute("sanPhams", sanPhams);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("danhMuc", danhMuc); // Giữ danhMuc gốc để hiển thị trong phân trang
         request.getRequestDispatcher("views/TrangChu.jsp").forward(request, response);
+
     }
 
     @Override

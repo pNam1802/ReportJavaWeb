@@ -73,10 +73,29 @@ public class DanhMucDAO implements IDanhMuc {
     }
 
     // Phương thức tìm kiếm DanhMuc theo maDanhMuc
-    public DanhMuc getById(int maDanhMuc) {
+    public DanhMuc getId(int maDanhMuc) {
         String sql = "SELECT * FROM danh_muc WHERE maDanhMuc = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maDanhMuc);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    DanhMuc danhMuc = new DanhMuc();
+                    danhMuc.setMaDanhMuc(rs.getInt("maDanhMuc"));
+                    danhMuc.setTenDanhMuc(rs.getString("tenDanhMuc"));
+                    danhMuc.setMoTa(rs.getString("moTa"));
+                    return danhMuc;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public DanhMuc getTenDanhMuc(String tenDanhMuc) {
+        String sql = "SELECT * FROM danh_muc WHERE tenDanhMuc = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenDanhMuc);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     DanhMuc danhMuc = new DanhMuc();

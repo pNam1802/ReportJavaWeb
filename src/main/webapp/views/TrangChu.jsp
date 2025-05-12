@@ -3,22 +3,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Danh sách Sản Phẩm</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Danh sách Sản Phẩm</title>
 
-
-<!-- Bootstrap CSS từ CDN -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-	crossorigin="anonymous">
-<!-- Font Awesome để dùng icon -->
-<link rel="stylesheet" 
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Style của chính mình -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	<!-- Bootstrap CSS từ CDN -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+		integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome để dùng icon -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Style của chính mình -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 	<header>
@@ -91,11 +88,11 @@
 									role="button" data-toggle="dropdown" aria-haspopup="true"
 									aria-expanded="false"> Danh mục </a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=sofa">Sofa</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-tra">Bàn trà</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=tu-giuong">Tủ Giường</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-an">Bàn ăn</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ghe-thu-gian">Ghế thư giãn</a>
+										<a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Sofa">Sofa</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Bàn trà">Bàn trà</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Bàn ăn">Bàn ăn</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Tủ Giường">Tủ Giường</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Ghế thư giãn">Ghế thư giãn</a>
 									</div></li>
 								<li class="nav-item"><a class="nav-link"
 									href="views/GioiThieu.jsp">Giới Thiệu</a></li>
@@ -106,8 +103,7 @@
 										class="sr-only">(current)</span></a></li>
 								<li class="nav-item"><a class="nav-link" href="https://www.facebook.com/isofafurniture">Facebook</a>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="views/LienHe.jsp">Liên
-										hệ</a></li>
+								<li class="nav-item"><a class="nav-link" href="views/LienHe.jsp">Liên hệ</a></li>
 							</ul>
 						</div>
 					</nav>
@@ -116,7 +112,35 @@
 			<!-- Kết thúc thanh menu -->
 		</section>
 	</header>
+	
+	<!-- Banner -->
+	<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+  		<div class="carousel-indicators">
+    		<button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+    		<button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    		<button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  		</div>
+  		<div class="carousel-inner">
+    		<div class="carousel-item active">
+      			<img src="images/banner1.jpg" class="d-block w-100" alt="Banner 1">
+    		</div>
+    		<div class="carousel-item">
+      			<img src="images/banner2.jpg" class="d-block w-100" alt="Banner 2">
+      			<div class="carousel-caption">
+        			<h5>THIẾT KẾ TINH TẾ</h5>
+        			<h5>SANG TRỌNG ÊM ÁI</h5>
+      			</div>
+    		</div>
+    		<div class="carousel-item">
+      			<img src="images/banner3.jpg" class="d-block w-100" alt="Banner 3">
+      			<div class="carousel-caption">
+        			<h5>ĐẲNG CẤP TỪ MỌI GÓC NHÌN</h5>
+      			</div>
+    		</div>
+  		</div>
+	</div>
 
+	<!--  -->
 	<div class="main-wrapper">
 		<section class="product-sales">
 			<h3 class="title-page text-center mb-4">SẢN PHẨM</h3>
@@ -305,10 +329,9 @@
 	<!-- jQuery (BẮT BUỘC - Bootstrap 4 cần jQuery) -->
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<!-- Popper.js (BẮT BUỘC - để dropdown, tooltip hoạt động) -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 	<!-- Bootstrap JS (file chính của Bootstrap) -->
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
