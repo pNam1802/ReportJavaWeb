@@ -8,5 +8,6 @@ public interface IDanhMuc {
     boolean update(DanhMuc danhMuc);
     boolean delete(int maDanhMuc);
     List<DanhMuc> getAll();
-    DanhMuc getById(int maDanhMuc);
+    DanhMuc getId(int maDanhMuc);
+    DanhMuc getTenDanhMuc(String tenDanhMuc);
 }

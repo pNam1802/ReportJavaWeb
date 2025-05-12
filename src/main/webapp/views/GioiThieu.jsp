@@ -103,16 +103,16 @@
 								<li class="nav-item"><a class="nav-link"
 									href="<%=request.getContextPath()%>/san-pham">Trang chủ</a></li>
 								<li class="nav-item dropdown"><a
-									class="nav-link dropdown-toggle" href="<%=request.getContextPath()%>/san-pham" id="navbarDropdown"
-									role="button" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false"> Danh mục </a>
-									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=sofa">Sofa</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-tra">Bàn trà</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=tu-giuong">Tủ Giường</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ban-an">Bàn ăn</a>
-										<a class="dropdown-item" href="<%=request.getContextPath()%>/san-pham?danhMuc=ghe-thu-gian">Ghế thư giãn</a>
-									</div></li>
+                                    class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"> Danh mục </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Sofa">Sofa</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Bàn trà">Bàn trà</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Bàn ăn">Bàn ăn</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Tủ Giường">Tủ Giường</a>
+                                        <a class="dropdown-item" href="<%=request.getContextPath()%>/danh-muc?tenDanhMuc=Ghế thư giãn">Ghế thư giãn</a>
+                                    </div></li>
 								<li class="nav-item"><a class="nav-link"
 									href="#">Giới Thiệu</a></li>
 								<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/san-pham?action=daGiao">Sản

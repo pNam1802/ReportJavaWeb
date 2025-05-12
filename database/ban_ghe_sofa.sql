@@ -1,4 +1,4 @@
-drop database ban_ghe_sofa;
+DROP DATABASE ban_ghe_sofa;
 CREATE DATABASE IF NOT EXISTS ban_ghe_sofa;
 USE ban_ghe_sofa;
 
@@ -234,20 +234,22 @@ VALUES
 ('Sofa', 'Các loại ghế sofa cao cấp và hiện đại.'),
 ('Bàn trà', 'Bàn trà nhỏ gọn dùng cho phòng khách.'),
 ('Bàn ăn', 'Bàn ăn gia đình với nhiều kích thước.'),
-('Ghế thư giãn', 'Ghế ngồi thoải mái dùng để thư giãn.'),
-('Tủ giường', 'Tủ kết hợp giường giúp tiết kiệm không gian.');
+('Tủ giường', 'Tủ kết hợp giường giúp tiết kiệm không gian.'),
+('Ghế thư giãn', 'Ghế ngồi thoải mái dùng để thư giãn.');
+
 INSERT INTO san_pham (tenSanPham, chiTiet, giaGoc, giaKhuyenMai, tinhTrang, idDanhMuc, soLuongTonKho, hinhAnh)
 VALUES 
-('Sofa Góc L', 'Sofa góc L chất liệu da cao cấp.', 12000000, 10000000, 'Còn hàng', 1, 5, 'sofa1.jpg'),
-('Sofa Băng', 'Sofa băng vải bố, màu xám hiện đại.', 9500000, 8700000, 'Còn hàng', 1, 3, 'sofa2.jpg'),
-('Bàn Trà Tròn', 'Bàn trà tròn chân gỗ sồi.', 2500000, 2200000, 'Còn hàng', 2, 10, 'sofa3.jpg'),
-('Bàn Trà Vuông', 'Bàn trà vuông mặt kính đen.', 2700000, 2400000, 'Còn hàng', 2, 7, 'sofa4.jpg'),
-('Bàn Ăn 6 Ghế', 'Bàn ăn gỗ tự nhiên, kèm 6 ghế.', 8500000, 7800000, 'Còn hàng', 3, 4, 'sofa5.jpg'),
-('Bàn Ăn Tròn', 'Bàn ăn tròn xoay, tiết kiệm không gian.', 7900000, 7200000, 'Còn hàng', 3, 3, 'sofa6.jpg'),
-('Ghế Thư Giãn Gỗ', 'Ghế gỗ cong kiểu Nhật.', 4200000, 3900000, 'Còn hàng', 4, 6, 'sofa7.jpg'),
-('Ghế Thư Giãn Da', 'Ghế bọc da ngả lưng thư giãn.', 4800000, 4500000, 'Còn hàng', 4, 2, 'sofa8.jpg'),
-('Tủ Giường Gấp', 'Giường gấp kết hợp tủ treo.', 15000000, 13500000, 'Còn hàng', 5, 3, 'sofa9.png'),
-('Tủ Giường Kéo', 'Giường kéo với ngăn chứa đồ.', 11000000, 9800000, 'Còn hàng', 5, 4, 'sofa10.png');
+('Sofa Góc L', 'Sofa góc L chất liệu da cao cấp.', 12000000, 10000000, 'Còn hàng', 1, 5, 'sofa14.jpg'),
+('Sofa Băng', 'Sofa băng vải bố, màu xám hiện đại.', 9500000, 8700000, 'Còn hàng', 1, 3, 'sofa11.jpg'),
+('Bàn Trà Tròn', 'Bàn trà tròn chân gỗ sồi.', 2500000, 2200000, 'Còn hàng', 2, 10, 'bantra2.jpg'),
+('Bàn Trà Vuông', 'Bàn trà vuông mặt kính đen.', 2700000, 2400000, 'Còn hàng', 2, 7, 'bantra1.jpg'),
+('Bàn Ăn 4 Ghế', 'Bàn ăn gỗ bạch đàn tự nhiên, kèm 4 ghế.', 8500000, 7800000, 'Còn hàng', 3, 4, 'banan2.png'),
+('Bàn Ăn Tròn', 'Bàn ăn tròn xoay, tiết kiệm không gian.', 7900000, 7200000, 'Còn hàng', 3, 3, 'banan3.png'),
+('Tủ Giường Gấp', 'Giường gấp kết hợp tủ treo.', 15000000, 13500000, 'Còn hàng', 4, 3, 'giuong1.png'),
+('Tủ Giường Kéo', 'Giường kéo với ngăn chứa đồ.', 11000000, 9800000, 'Còn hàng', 4, 4, 'giuong2.png'),
+('Ghế Thư Giãn Gỗ', 'Ghế gỗ cong kiểu Nhật.', 4200000, 3900000, 'Còn hàng', 5, 6, 'sofa7.jpg'),
+('Ghế Thư Giãn Da', 'Ghế bọc da ngả lưng thư giãn.', 4800000, 4500000, 'Còn hàng', 5, 2, 'ghethugian.jpg');
+
 INSERT INTO nguoi_dung (hoTen, sdt, email, diaChi, vaiTro, tenDangNhap, matKhau)
 VALUES 
 ('Nguyễn Văn A', '0912345678', 'nguyenvana@gmail.com', 'Hà Nội', 'user', NULL, NULL),
