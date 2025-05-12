@@ -160,8 +160,7 @@ body {
                                 <label class="btn btn-outline-primary rounded-start" for="cash" style="transition: all 0.3s;">Tiền mặt</label>
                                 <input type="radio" class="btn-check" name="paymentMethod" id="banking" autocomplete="off">
                                 <label class="btn btn-outline-primary rounded-end" for="banking" style="transition: all 0.3s;">Chuyển khoản</label>
-                            </div>
-                            <small class="text-muted">*Phương thức thanh toán hiện chưa được xử lý trong hệ thống</small>
+                            </div>                       
                         </div>
 
                         <!-- Trường ẩn -->

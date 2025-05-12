@@ -30,7 +30,8 @@ public class DonHangController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+    	request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
         String action = request.getParameter("action");
         if (action == null) action = "";
 
@@ -110,14 +111,13 @@ public class DonHangController extends HttpServlet {
         // Kiểm tra nếu trangThai là null hoặc rỗng thì gọi getAllDonHang
         if (trangThai == null || trangThai.trim().isEmpty()) {
             donHangs = donHangDAO.getAllDonHang();
-        } else if ("Đã thanh toán".equalsIgnoreCase(trangThai) || "Chưa thanh toán".equalsIgnoreCase(trangThai)) {
-            // Lọc theo trạng thái thanh toán
-            donHangs = donHangDAO.getDonHangsByTrangThaiThanhToan(trangThai);
-        } else {
-            // Bao gồm luôn cả trường hợp "Tất cả" đã xử lý trong DAO
-            donHangs = donHangDAO.getDonHangsByTrangThai(trangThai);
+        } else  {
+            // Lọc theo trạng thái       	
+        	donHangs = donHangDAO.getDonHangsByTrangThai(trangThai);
+        
         }
-
+       
+       
         request.setAttribute("donHangs", donHangs);
         request.setAttribute("trangThaiDaChon", trangThai);
 

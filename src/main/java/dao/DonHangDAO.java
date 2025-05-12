@@ -5,9 +5,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import interfaces.IQuanLyDonHang;
 import model.*;
 
-public class DonHangDAO {
+public class DonHangDAO implements IQuanLyDonHang {
     private Connection connection;
 
     public DonHangDAO() {
@@ -48,7 +50,7 @@ public class DonHangDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     DonHang donHang = new DonHang(
-                        rs.getInt("maDonHang"),
+                        rs.getInt("maDonHang"),                      
                         rs.getDate("ngayLap"),
                         rs.getString("trangThai"),
                         rs.getDouble("tongTien"),
@@ -57,8 +59,7 @@ public class DonHangDAO {
                     donHangs.add(donHang);
                 }
             }
-        }
-
+        }   
         return donHangs;
     }
 
@@ -389,8 +390,5 @@ public class DonHangDAO {
         }
     }
     
-
-
-
 
 }

@@ -151,14 +151,15 @@ public class DatHangController extends HttpServlet {
 
     private void processCartOrder(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy dữ liệu từ form
+
+        // Lấy thông tin từ form
         String fullName = request.getParameter("fullName");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         String note = request.getParameter("note");
 
-        // Kiểm tra dữ liệu đầu vào
+        // Kiểm tra thông tin bắt buộc
         if (isEmpty(fullName, phone, email, address)) {
             throw new ServletException("Vui lòng điền đầy đủ thông tin đặt hàng.");
         }
@@ -171,20 +172,18 @@ public class DatHangController extends HttpServlet {
             throw new ServletException("Số điện thoại không hợp lệ.");
         }
 
+        // Lấy danh sách sản phẩm từ form
+        String[] maSanPhamStr = request.getParameterValues("maSanPham[]");
+        String[] tenSanPham = request.getParameterValues("tenSanPham[]");
+        String[] soLuongStr = request.getParameterValues("soLuong[]");
+        String[] donGiaStr = request.getParameterValues("donGia[]");
+
+        if (maSanPhamStr == null || tenSanPham == null || soLuongStr == null || donGiaStr == null
+                || maSanPhamStr.length == 0) {
+            throw new ServletException("Giỏ hàng rỗng hoặc dữ liệu không hợp lệ.");
+        }
+
         try {
-            // Lấy danh sách sản phẩm từ form
-            String[] maSanPhamStr = request.getParameterValues("maSanPham[]");
-            String[] tenSanPham = request.getParameterValues("tenSanPham[]");
-            String[] soLuongStr = request.getParameterValues("soLuong[]");
-            String[] donGiaStr = request.getParameterValues("donGia[]");
-
-            // Kiểm tra mảng rỗng
-            if (maSanPhamStr == null || tenSanPham == null || soLuongStr == null || donGiaStr == null ||
-                maSanPhamStr.length == 0) {
-                throw new ServletException("Giỏ hàng rỗng hoặc dữ liệu không hợp lệ.");
-            }
-
-            // Thêm hoặc lấy người dùng
             int maNguoiDung = datHangDAO.themHoacLayNguoiDung(fullName, phone, email, address);
             if (maNguoiDung <= 0) {
                 throw new ServletException("Không thể tạo hoặc lấy thông tin người dùng.");
@@ -192,9 +191,7 @@ public class DatHangController extends HttpServlet {
 
             List<ChiTietDonHang> dsChiTiet = new ArrayList<>();
             double tongTien = 0;
-            List<Map<String, Object>> chiTietDonHangList = new ArrayList<>();
 
-            // Xử lý từng sản phẩm trong giỏ hàng
             for (int i = 0; i < maSanPhamStr.length; i++) {
                 int maSanPham = Integer.parseInt(maSanPhamStr[i]);
                 int soLuong = Integer.parseInt(soLuongStr[i]);
@@ -207,30 +204,29 @@ public class DatHangController extends HttpServlet {
                     throw new ServletException("Đơn giá không hợp lệ cho sản phẩm: " + tenSanPham[i]);
                 }
 
-                tongTien += donGia * soLuong;
-
-                // Thêm chi tiết đơn hàng
                 ChiTietDonHang chiTiet = new ChiTietDonHang();
                 chiTiet.setMaSanPham(maSanPham);
                 chiTiet.setSoLuong(soLuong);
                 chiTiet.setDonGia(donGia);
+
                 dsChiTiet.add(chiTiet);
+                tongTien += donGia * soLuong;
             }
 
             // Tạo đơn hàng
             DonHang donHang = new DonHang();
             donHang.setNgayLap(new Date());
-            donHang.setTrangThai(TrangThai.CHUA_THANH_TOAN); // Thanh toán khi giao hàng (COD)
+            donHang.setTrangThai(TrangThai.CHUA_THANH_TOAN);
             donHang.setTongTien(tongTien);
             donHang.setMaNguoiDung(maNguoiDung);
 
-            // Đặt hàng
-            boolean success = datHangDAO.placeOrder(donHang, dsChiTiet);
-            if (!success) {
+            // Gửi đơn hàng
+            boolean datHangThanhCong = datHangDAO.placeOrder(donHang, dsChiTiet);
+            if (!datHangThanhCong) {
                 throw new ServletException("Không thể đặt hàng. Vui lòng thử lại.");
             }
 
-            // Chuyển sang trang cảm ơn
+            // Chuyển đến trang cảm ơn
             request.setAttribute("fullName", fullName);
             request.setAttribute("phone", phone);
             request.setAttribute("email", email);
@@ -241,13 +237,14 @@ public class DatHangController extends HttpServlet {
             request.getRequestDispatcher(THANK_YOU_PAGE).forward(request, response);
 
         } catch (SQLException e) {
-            LOGGER.severe("Lỗi SQL khi xử lý giỏ hàng: " + e.getMessage());
-            throw new ServletException("Lỗi cơ sở dữ liệu: " + e.getMessage());
+            LOGGER.severe("Lỗi SQL khi xử lý đơn hàng: " + e.getMessage());
+            throw new ServletException("Lỗi khi truy cập cơ sở dữ liệu.");
         } catch (NumberFormatException e) {
             LOGGER.severe("Lỗi định dạng số: " + e.getMessage());
             throw new ServletException("Dữ liệu số không hợp lệ.");
         }
     }
+
 // kiểm tra các thông tin chuẩn dạng hay chưa
     private boolean isEmpty(String... values) {
         for (String value : values) {

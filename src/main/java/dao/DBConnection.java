@@ -9,7 +9,7 @@ public class DBConnection {
 
     private static final String USER = "root";
 
-    private static final String PASSWORD = "12345"; // sửa theo cấu hình của bạn
+    private static final String PASSWORD = "123456"; // sửa theo cấu hình của bạn
 
     public static Connection getConnection() {
         try {

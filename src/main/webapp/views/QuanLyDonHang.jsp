@@ -84,10 +84,10 @@
             <form action="${pageContext.request.contextPath}/don-hang" method="get" class="flex flex-col sm:flex-row gap-4 mb-6">
                 <div class="flex-1">
                     <select name="trangThai" class="form-select w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">
-                        <option value="">Tất cả đơn hàng</option>
-                        <option value="Đang xử lý" <%= "Đang xử lý".equals(trangThaiChon) ? "selected" : "" %>>Đang xử lý</option>
-                        <option value="Đã giao" <%= "Đã giao".equals(trangThaiChon) ? "selected" : "" %>>Đã giao</option>
-                        <option value="Đã hủy" <%= "Đã hủy".equals(trangThaiChon) ? "selected" : "" %>>Đã hủy</option>
+                        <option  value="">Tất cả đơn hàng</option>
+                        <option  value="Chờ xử lý" <%= "Chờ xử lý".equals(trangThaiChon) ? "selected" : "" %>>Chờ xử lý</option>
+                        <option  value="Hoàn thành" <%= "Hoàn thành".equals(trangThaiChon) ? "selected" : "" %>>Hoàn thành</option>
+                        <option  value="Hủy" <%= "Hủy".equals(trangThaiChon) ? "selected" : "" %>>Đã hủy</option>
                     </select>
                 </div>
                 <button type="submit" class="btn-primary px-4 py-2 rounded-md flex items-center">

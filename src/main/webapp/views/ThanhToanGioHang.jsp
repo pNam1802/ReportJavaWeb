@@ -3,6 +3,14 @@
 <%@ page import="dao.*" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
+<%
+// Lấy dữ liệu từ session nếu có lỗi
+String fullName = (String) session.getAttribute("fullName");
+String phone = (String) session.getAttribute("phone");
+String email = (String) session.getAttribute("email");
+String address = (String) session.getAttribute("address");
+String note = (String) session.getAttribute("note");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,31 +103,31 @@ body {
         <div class="row">
 
             <!-- THÔNG TIN KHÁCH HÀNG -->
-            <div class="col-md-6 mb-4">
-                <div class="form-section">
-                    <h3 class="mb-4 text-secondary">Thông tin khách hàng</h3>
-                    <div class="mb-3">
-                        <label class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" name="fullName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Số điện thoại</label>
-                        <input type="tel" class="form-control" name="phone" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" name="address" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ghi chú</label>
-                        <textarea class="form-control" name="note" rows="2"></textarea>
+         <div class="col-md-6 mb-4">
+                    <div class="form-section">
+                        <h3 class="mb-4" style="color: var(--secondary-color);">Thông tin khách hàng</h3>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" name="fullName" value="<%= fullName != null ? fullName : "" %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" name="phone" value="<%= phone != null ? phone : "" %>" pattern="[0-9]{10,11}" title="Số điện thoại phải có 10-11 chữ số" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="<%= email != null ? email : "" %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <textarea class="form-control" name="address" rows="3" required><%= address != null ? address : "" %></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="note" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" name="note" rows="2"><%= note != null ? note : "" %></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
 
             <!-- GIỎ HÀNG -->
             <div class="col-md-6 mb-4">
@@ -201,6 +209,27 @@ body {
         </div>
     </form>
 </div>
+ <script>
+        // Kiểm tra định dạng phía client
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            const phone = document.querySelector('input[name="phone"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const phoneRegex = /^[0-9]{10,11}$/;
+            const emailRegex = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/;
+
+            if (!phoneRegex.test(phone)) {
+                alert('Số điện thoại phải có 10-11 chữ số.');
+                event.preventDefault();
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert('Email không hợp lệ.');
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
