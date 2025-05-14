@@ -148,6 +148,58 @@
         </div>
     <% } %>
 </div>
+<footer>
+		<div class="container">
+			<div class="row contact">
+				<div class="col-md-3">
+					<h4>Isofa</h4>
+					<ul>
+						<li>Công ty chuyên sản xuất kinh doanh sofa hiện đại với
+							thiết kế từ Italia với hơn 20 năm kinh nghiệm</li>
+					</ul>
+				</div>
+				<div class="col-md-3">
+					<h4>Về Chúng Tôi</h4>
+					<ul>
+						<li>Lịch sử hình thành</li>
+						<li>Triết lý kinh doanh</li>
+						<li>Nghiên cứu và phát triển</li>
+						<li>Năng lực và nhân sự</li>
+					</ul>
+				</div>
+				<div class="col-md-3">
+					<h4>Chính sách</h4>
+					<ul>
+						<li>Chính sách vận chuyển</li>
+						<li>Chính sách bảo hành</li>
+						<li>Chính sách đổi trả</li>
+						<li>Chính sách thanh toán</li>
+					</ul>
+				</div>
+				<div class="col-md-3 p-0">
+					<h4>Kết Nối Với AQ</h4>
+					<ul>
+						<li><a
+							href="https://www.facebook.com/profile.php?id=100022420882328">Facebook</a></li>
+						<li><a href="#">Zalo</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row address-store">
+				<div class="col-md-4">
+					<h4>
+						<i class="fa fa-map-marker me-2" aria-hidden="true"></i> SIÊU THỊ
+						NỘI THẤT 1
+					</h4>
+					<ul>
+						<li>Địa chỉ: 205-207 Tôn Đức Thắng - TP. Đà Nẵng</li>
+						<li>Hotline: 07777777</li>
+						<li>Email: hntnghia.20it8@vku.udn.vn</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
 <!-- Modal thông báo -->
 	<div class="modal fade" id="adminLoginModal" tabindex="-1" role="dialog" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
     	<div class="modal-dialog" role="document">
