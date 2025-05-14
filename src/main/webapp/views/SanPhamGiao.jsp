@@ -60,14 +60,16 @@
 								<h5>0348363413 - 077777777</h5>
 							</div>
 						</div>
-						<div class="col-md-2">
-							<form action="<%=request.getContextPath()%>/giohang"
-								method="post">
-								<button type="submit" class="btn btn-cart">
-									<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> <span>Giỏ
-										hàng</span>
-								</button>
-							</form>
+						<div class="col-md-2 d-flex align-items-center justify-content-end">
+    						<form action="<%=request.getContextPath()%>/giohang" method="post">
+        						<button type="submit" class="btn btn-cart d-flex align-items-center">
+            						<i class="fa fa-cart-plus mr-2" aria-hidden="true"></i> 
+            						<span class="d-inline-block">Giỏ hàng</span>
+        						</button>
+    						</form>
+    						<button class="btn btn-user ml-2" data-toggle="modal" data-target="#adminLoginModal">
+        						<i class="fa fa-user-circle" aria-hidden="true"></i>
+    						</button>
 						</div>
 					</div>
 				</div>
@@ -146,7 +148,32 @@
         </div>
     <% } %>
 </div>
+<!-- Modal thông báo -->
+	<div class="modal fade" id="adminLoginModal" tabindex="-1" role="dialog" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+    	<div class="modal-dialog" role="document">
+        	<div class="modal-content">
+            	<div class="modal-header">
+                	<h5 class="modal-title" id="adminLoginModalLabel">Thông báo</h5>
+                	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    	<span aria-hidden="true">&times;</span>
+                	</button>
+            	</div>
+            	<div class="modal-body">
+                	Bạn chỉ có thể thực hiện chức năng này khi là admin. Bạn vẫn muốn tiếp tục?
+            	</div>
+            	<div class="modal-footer">
+                	<a href="<%=request.getContextPath()%>/login-admin" class="btn btn-primary">Đăng nhập</a>
+                	<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            	</div>
+        	</div>
+    	</div>
+	</div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Popper -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<!-- Bootstrap 4 JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
