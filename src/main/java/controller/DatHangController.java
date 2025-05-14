@@ -225,6 +225,8 @@ public class DatHangController extends HttpServlet {
             if (!datHangThanhCong) {
                 throw new ServletException("Không thể đặt hàng. Vui lòng thử lại.");
             }
+            HttpSession session = request.getSession();
+            session.removeAttribute("gioHang"); // hoặc tên giỏ hàng bạn đang dùng
 
             // Chuyển đến trang cảm ơn
             request.setAttribute("fullName", fullName);

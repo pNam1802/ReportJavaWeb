@@ -18,6 +18,12 @@ public class SanPhamDAO implements ISanPham {
 
     public SanPhamDAO(Connection conn) {
         this.conn = conn;
+        if (conn == null) {
+            System.out.println("⚠️ Kết nối MySQL thất bại (conn == null)");
+        } else {
+            System.out.println("✅ Kết nối MySQL thành công");
+        }
+
     }
 
     // Lấy sản phẩm theo ID

@@ -35,15 +35,15 @@ public class GioHangController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
+        String action = request.getParameter("action");
         // Lấy giỏ hàng từ session
         GioHang gioHang = (GioHang) session.getAttribute("gioHang");
-        if (gioHang == null) {
+        if (gioHang == null && action != null) {
             gioHang = new GioHang(); // Nếu giỏ hàng không tồn tại, tạo mới
             session.setAttribute("gioHang", gioHang);
         }
 
-        String action = request.getParameter("action");
+       
 
         if ("them".equals(action)) {
             // Thêm sản phẩm vào giỏ
@@ -86,6 +86,10 @@ public class GioHangController extends HttpServlet {
             }
             return;
         }
+        if (gioHang != null) {
+            session.setAttribute("gioHang", gioHang); // chỉ lưu lại nếu có thay đổi
+        }
+
 
         // Lưu lại giỏ hàng vào session sau khi thay đổi
         session.setAttribute("gioHang", gioHang);
