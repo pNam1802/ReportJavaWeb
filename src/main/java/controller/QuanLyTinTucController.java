@@ -62,7 +62,9 @@ public class QuanLyTinTucController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+    	req.setCharacterEncoding("UTF-8");
+    	resp.setContentType("text/html; charset=UTF-8");
+    	String action = req.getParameter("action");
         if (action == null) {
             action = "list";
         }
