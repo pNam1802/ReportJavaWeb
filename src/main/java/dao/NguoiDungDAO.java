@@ -150,4 +150,20 @@ public class NguoiDungDAO implements IAdminNguoiDung {
             throw e;
         }
     }
+    public boolean validateAdminLogin(String tenDangNhap, String matKhau) {
+        String sql = "SELECT * FROM nguoi_dung WHERE tenDangNhap = ? AND matKhau = ? AND vaiTro = 'admin'";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, tenDangNhap);
+            stmt.setString(2, matKhau);
+
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // Có dữ liệu => tài khoản đúng
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
