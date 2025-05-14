@@ -104,24 +104,50 @@ public class DonHangController extends HttpServlet {
 
     private void showDonHangs(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        // Thiết lập mã hóa
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
 
+        // Lấy tham số trạng thái và trang
         String trangThai = request.getParameter("trangThai");
-        List<DonHang> donHangs;
+        int currentPage = 1;
+        int itemsPerPage = 10; // Số đơn hàng mỗi trang
 
-        // Kiểm tra nếu trangThai là null hoặc rỗng thì gọi getAllDonHang
-        if (trangThai == null || trangThai.trim().isEmpty()) {
-            donHangs = donHangDAO.getAllDonHang();
-        } else  {
-            // Lọc theo trạng thái       	
-        	donHangs = donHangDAO.getDonHangsByTrangThai(trangThai);
-        
+        // Lấy trang hiện tại từ tham số
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.trim().isEmpty()) {
+            try {
+                currentPage = Integer.parseInt(pageParam);
+                if (currentPage < 1) currentPage = 1;
+            } catch (NumberFormatException e) {
+                currentPage = 1; // Mặc định là trang 1 nếu tham số không hợp lệ
+            }
         }
-       
-       
+
+        // Tính toán OFFSET
+        int offset = (currentPage - 1) * itemsPerPage;
+
+        // Lấy danh sách đơn hàng và tổng số đơn hàng
+        List<DonHang> donHangs;
+        int totalItems;
+        if (trangThai == null || trangThai.trim().isEmpty()) {
+            donHangs = donHangDAO.getAllDonHang(offset, itemsPerPage);
+            totalItems = donHangDAO.getTotalDonHangs();
+        } else {
+            donHangs = donHangDAO.getDonHangsByTrangThai(trangThai, offset, itemsPerPage);
+            totalItems = donHangDAO.getTotalDonHangsByTrangThai(trangThai);
+        }
+
+        // Tính tổng số trang
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+
+        // Đặt các thuộc tính để sử dụng trong JSP
         request.setAttribute("donHangs", donHangs);
         request.setAttribute("trangThaiDaChon", trangThai);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
 
-        // Trả về trang views/QuanLyDonHang.jsp (sử dụng Bootstrap)
+        // Chuyển hướng đến trang JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/QuanLyDonHang.jsp");
         dispatcher.forward(request, response);
     }

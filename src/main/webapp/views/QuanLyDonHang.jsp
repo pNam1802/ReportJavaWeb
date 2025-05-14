@@ -15,7 +15,7 @@
 
 <!DOCTYPE html>
 <html lang="vi">
- <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard - iSofa</title>
@@ -23,10 +23,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Font Awesome for icons (used in filter and action buttons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminStyles.css">
 </head>
 <body class="min-h-screen flex">
-       <!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
         <div class="header">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="logo" onerror="this.src='${pageContext.request.contextPath}/images/default-logo.png';">
@@ -84,13 +86,13 @@
             <form action="${pageContext.request.contextPath}/don-hang" method="get" class="flex flex-col sm:flex-row gap-4 mb-6">
                 <div class="flex-1">
                     <select name="trangThai" class="form-select w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">
-                        <option  value="">Tất cả đơn hàng</option>
-                        <option  value="Chờ xử lý" <%= "Chờ xử lý".equals(trangThaiChon) ? "selected" : "" %>>Chờ xử lý</option>
-                        <option  value="Hoàn thành" <%= "Hoàn thành".equals(trangThaiChon) ? "selected" : "" %>>Hoàn thành</option>
-                        <option  value="Hủy" <%= "Hủy".equals(trangThaiChon) ? "selected" : "" %>>Đã hủy</option>
+                        <option value="">Tất cả đơn hàng</option>
+                        <option value="Chờ xử lý" <%= "Chờ xử lý".equals(trangThaiChon) ? "selected" : "" %>>Chờ xử lý</option>
+                        <option value="Hoàn thành" <%= "Hoàn thành".equals(trangThaiChon) ? "selected" : "" %>>Hoàn thành</option>
+                        <option value="Hủy" <%= "Hủy".equals(trangThaiChon) ? "selected" : "" %>>Đã hủy</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-primary px-4 py-2 rounded-md flex items-center">
+                <button type="submit" class="btn-primary px-4 py-2 rounded-md flex items-center bg-blue-500 text-white hover:bg-blue-600">
                     <i class="fas fa-filter mr-2"></i>Lọc
                 </button>
             </form>
@@ -125,14 +127,14 @@
                             <td class="p-3"><%= currencyFormatter.format(dh.getTongTien()) %></td>
                             <td class="p-3"><%= dh.getMaNguoiDung() %></td>
                             <td class="p-3 flex gap-2">
-                                <a href="don-hang?action=chitiet&maDonHang=<%= dh.getMaDonHang() %>" class="btn-info px-3 py-1 rounded text-sm flex items-center">
+                                <a href="don-hang?action=chitiet&maDonHang=<%= dh.getMaDonHang() %>" class="btn-info px-3 py-1 rounded text-sm flex items-center bg-blue-500 text-white hover:bg-blue-600">
                                     <i class="fas fa-eye mr-1"></i>Chi tiết
                                 </a>
                                 <form action="don-hang" method="post">
                                     <input type="hidden" name="action" value="huy">
                                     <input type="hidden" name="maDonHang" value="<%= dh.getMaDonHang() %>">
                                     <input type="hidden" name="trangThaiMoi" value="<%= trangThaiMoi %>">
-                                    <button type="submit" class="btn-danger px-3 py-1 rounded text-sm flex items-center" onclick="return confirm('Bạn chắc chắn muốn hủy đơn này?')">
+                                    <button type="submit" class="btn-danger px-3 py-1 rounded text-sm flex items-center bg-red-500 text-white hover:bg-red-600" onclick="return confirm('Bạn chắc chắn muốn hủy đơn này?')">
                                         <i class="fas fa-trash mr-1"></i>Hủy
                                     </button>
                                 </form>
@@ -150,6 +152,50 @@
                         %>
                     </tbody>
                 </table>
+
+                <!-- Phân trang -->
+                <div class="flex justify-between items-center mt-4">
+                    <div>
+                        <p class="text-gray-600">
+                            Trang <%= request.getAttribute("currentPage") != null ? request.getAttribute("currentPage") : 1 %> / 
+                            <%= request.getAttribute("totalPages") != null ? request.getAttribute("totalPages") : 1 %>
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <%
+                            int currentPage = request.getAttribute("currentPage") != null ? (Integer) request.getAttribute("currentPage") : 1;
+                            int totalPages = request.getAttribute("totalPages") != null ? (Integer) request.getAttribute("totalPages") : 1;
+                            String trangThai = request.getParameter("trangThai");
+                            String baseUrl = request.getContextPath() + "/don-hang?";
+                            if (trangThai != null && !trangThai.isEmpty()) {
+                                baseUrl += "trangThai=" + URLEncoder.encode(trangThai, "UTF-8") + "&";
+                            }
+
+                            // Nút Trang trước
+                            if (currentPage > 1) {
+                        %>
+                        <a href="<%= baseUrl %>page=<%= currentPage - 1 %>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800">Trước</a>
+                        <%
+                            }
+
+                            // Các số trang
+                            int startPage = Math.max(1, currentPage - 2);
+                            int endPage = Math.min(totalPages, currentPage + 2);
+                            for (int i = startPage; i <= endPage; i++) {
+                        %>
+                        <a href="<%= baseUrl %>page=<%= i %>" class="px-3 py-1 rounded <%= i == currentPage ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300 text-gray-800" %>"><%= i %></a>
+                        <%
+                            }
+
+                            // Nút Trang sau
+                            if (currentPage < totalPages) {
+                        %>
+                        <a href="<%= baseUrl %>page=<%= currentPage + 1 %>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800">Sau</a>
+                        <%
+                            }
+                        %>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
