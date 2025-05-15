@@ -61,8 +61,8 @@ public class AdminNguoiDungController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	request.setCharacterEncoding("UTF-8");
-    	response.setContentType("text/html; charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("admin") == null) {
             response.sendRedirect(request.getContextPath() + "/login-admin");
@@ -72,33 +72,11 @@ public class AdminNguoiDungController extends HttpServlet {
         String action = request.getParameter("action");
         try {
             if ("add".equals(action)) {
-                NguoiDung nguoiDung = new NguoiDung();
-                nguoiDung.setHoTen(request.getParameter("hoTen"));
-                nguoiDung.setSdt(request.getParameter("sdt"));
-                nguoiDung.setEmail(request.getParameter("email"));
-                nguoiDung.setDiaChi(request.getParameter("diaChi"));
-				/*
-				 * nguoiDung.setTenDangNhap(request.getParameter("tenDangNhap"));
-				 * nguoiDung.setMatKhau(request.getParameter("matKhau"));
-				 * nguoiDung.setVaiTro(request.getParameter("vaiTro"));
-				 */
-                nguoiDungDAO.addNguoiDung(nguoiDung);
+                addNguoiDung(request, response);
             } else if ("update".equals(action)) {
-                NguoiDung nguoiDung = new NguoiDung();
-                nguoiDung.setMaNguoiDung(Integer.parseInt(request.getParameter("maNguoiDung")));
-                nguoiDung.setHoTen(request.getParameter("hoTen"));
-                nguoiDung.setSdt(request.getParameter("sdt"));
-                nguoiDung.setEmail(request.getParameter("email"));
-                nguoiDung.setDiaChi(request.getParameter("diaChi"));
-				/*
-				 * nguoiDung.setTenDangNhap(request.getParameter("tenDangNhap"));
-				 * nguoiDung.setMatKhau(request.getParameter("matKhau"));
-				 * nguoiDung.setVaiTro(request.getParameter("vaiTro"));
-				 */
-                nguoiDungDAO.updateNguoiDung(nguoiDung);
+                updateNguoiDung(request, response);
             } else if ("delete".equals(action)) {
-                int maNguoiDung = Integer.parseInt(request.getParameter("maNguoiDung"));
-                nguoiDungDAO.deleteNguoiDung(maNguoiDung);
+                deleteNguoiDung(request, response);
             }
             response.sendRedirect(request.getContextPath() + "/admin/nguoi-dung");
         } catch (SQLException e) {
@@ -106,5 +84,34 @@ public class AdminNguoiDungController extends HttpServlet {
             request.setAttribute("errorMessage", "Lỗi xử lý: " + e.getMessage());
             doGet(request, response);
         }
+    }
+
+    private void addNguoiDung(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        NguoiDung nguoiDung = new NguoiDung();
+        nguoiDung.setHoTen(request.getParameter("hoTen"));
+        nguoiDung.setSdt(request.getParameter("sdt"));
+        nguoiDung.setEmail(request.getParameter("email"));
+        nguoiDung.setDiaChi(request.getParameter("diaChi"));
+
+        nguoiDungDAO.addNguoiDung(nguoiDung);
+    }
+
+    private void updateNguoiDung(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        NguoiDung nguoiDung = new NguoiDung();
+        nguoiDung.setMaNguoiDung(Integer.parseInt(request.getParameter("maNguoiDung")));
+        nguoiDung.setHoTen(request.getParameter("hoTen"));
+        nguoiDung.setSdt(request.getParameter("sdt"));
+        nguoiDung.setEmail(request.getParameter("email"));
+        nguoiDung.setDiaChi(request.getParameter("diaChi"));
+
+        nguoiDungDAO.updateNguoiDung(nguoiDung);
+    }
+
+    private void deleteNguoiDung(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int maNguoiDung = Integer.parseInt(request.getParameter("maNguoiDung"));
+        nguoiDungDAO.deleteNguoiDung(maNguoiDung);
     }
 }
