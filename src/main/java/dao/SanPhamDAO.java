@@ -90,6 +90,7 @@ public class SanPhamDAO implements ISanPham {
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
                      "FROM san_pham sp " +
                      "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
+                     "ORDER BY sp.maSanPham " +
                      "LIMIT ? OFFSET ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
