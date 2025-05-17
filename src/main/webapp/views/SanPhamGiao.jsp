@@ -33,8 +33,9 @@
 					<div class="row align-items-center">
 						<div class="col-md-3">
 							<div class="logo">
-								<img src="<%=request.getContextPath() + "/images/logo.png"%>"
-									alt="Logo" />
+								<a href="<%=request.getContextPath()%>/san-pham">
+									<img src="<%=request.getContextPath() + "/images/logo.png"%>" alt="Logo" />
+								</a>
 							</div>
 						</div>
 						<div class="col-md-4">
