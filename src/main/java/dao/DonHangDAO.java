@@ -14,6 +14,7 @@ public class DonHangDAO implements IQuanLyDonHang {
         this.connection = DBConnection.getConnection();
     }
 
+
     // Phương thức ánh xạ ResultSet sang DonHang để tái sử dụng
     private DonHang mapResultSetToDonHang(ResultSet rs) throws SQLException {
         return new DonHang(

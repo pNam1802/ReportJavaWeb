@@ -12,6 +12,36 @@
     double tongTien = 0;
     int index = 1;
 %>
+<%
+    String updateStatus = request.getParameter("updateStatus");
+    String removeStatus = request.getParameter("removeStatus");
+    String quantityStatus = request.getParameter("quantityStatus");
+
+    String message = null;
+    String alertClass = null;
+
+    if ("success".equals(updateStatus)) {
+        message = "Cập nhật thông tin đơn hàng thành công!";
+        alertClass = "bg-green-500";
+    } else if ("fail".equals(updateStatus)) {
+        message = "Cập nhật thông tin đơn hàng thất bại!";
+        alertClass = "bg-red-500";
+    } else if ("success".equals(removeStatus)) {
+        message = "Sản phẩm đã được xóa thành công!";
+        alertClass = "bg-green-500";
+    } else if ("fail".equals(removeStatus)) {
+        message = "Xóa sản phẩm thất bại!";
+        alertClass = "bg-red-500";
+    } else if ("success".equals(quantityStatus)) {
+        message = "Cập nhật số lượng thành công!";
+        alertClass = "bg-green-500";
+    } else if ("fail".equals(quantityStatus)) {
+        message = "Cập nhật số lượng thất bại!";
+        alertClass = "bg-red-500";
+    }
+%>
+
+
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -28,7 +58,20 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminStyles.css">
 </head>
 <body class="min-h-screen flex">
-    <!-- Sidebar -->
+   <%-- THÔNG BÁO --%>
+<% if (message != null) { %>
+    <div id="notification"
+         class="fixed top-4 right-4 z-50 p-4 rounded-md shadow-md text-white <%= alertClass %>">
+        <%= message %>
+    </div>
+    <script>
+        setTimeout(() => {
+            const notif = document.getElementById("notification");
+            if (notif) notif.style.display = "none";
+        }, 3000);
+    </script>
+<% } %>
+
     <!-- Sidebar -->
     <div class="sidebar fixed top-0 left-0 h-full sidebar-hidden lg:translate-x-0 z-50">
         <div class="header">
@@ -138,7 +181,7 @@
                     </div>
                     <div class="text-end mt-4">
                         <button type="submit" class="btn-primary px-4 py-2 rounded-md flex items-center">
-                            <i classquirrel fas fa-save mr-2"></i>Cập nhật thông tin
+                            <i class="fas fa-save mr-2"></i>Cập nhật thông tin
                         </button>
                     </div>
                 </form>
@@ -195,7 +238,7 @@
                             <td class="p-3 text-center">
                                 <form action="<%= request.getContextPath() %>/don-hang" method="post"
                                       onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">
-                                    <input type="hidden" name="action" value="deleteProduct">
+                                    <input type="hidden" name="action" value="removeProduct">
                                     <input type="hidden" name="maDonHang" value="<%= donHang.getMaDonHang() %>">
                                     <input type="hidden" name="maSanPham" value="<%= matchedSanPham.getMaSanPham() %>">
                                     <button type="submit" class="btn-outline-danger px-3 py-1 rounded text-sm flex items-center mx-auto">
@@ -222,6 +265,15 @@
             </div>
         </div>
     </div>
+<script>
+    function showToast(msg, type = 'success') {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-md shadow-md text-white ${type == 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        alertDiv.innerText = msg;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 3000);
+    }
+</script>
 
     <script>
         function toggleSidebar() {
