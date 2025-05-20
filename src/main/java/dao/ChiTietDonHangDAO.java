@@ -56,4 +56,17 @@ public class ChiTietDonHangDAO {
             stmt.executeUpdate();
         }
     }
+    public void capNhatSoLuong(int maDonHang, int maSanPham, int soLuong) {
+        String sql = "UPDATE chi_tiet_don_hang SET soLuong = ? WHERE maDonHang = ? AND maSanPham = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, soLuong);
+            ps.setInt(2, maDonHang);
+            ps.setInt(3, maSanPham);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

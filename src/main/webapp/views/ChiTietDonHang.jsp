@@ -259,7 +259,7 @@
 
             <!-- Back Button -->
             <div class="text-end mt-6">
-                <a href="<%= request.getContextPath() %>/don-hang" class="btn-primary px-4 py-2 rounded-md flex items-center inline-flex">
+                <a href="<%=request.getContextPath() %>/don-hang" class="btn-primary px-4 py-2 rounded-md flex items-center inline-flex">
                     <i class="fas fa-arrow-left mr-2"></i>Trở về Quản lý Đơn hàng
                 </a>
             </div>

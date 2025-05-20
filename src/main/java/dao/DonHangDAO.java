@@ -426,4 +426,25 @@ public class DonHangDAO implements IQuanLyDonHang {
             connection.setAutoCommit(true);
         }
     }
+    public void capNhatTongTien(int maDonHang) {
+        String sql = """
+            UPDATE don_hang
+            SET tongTien = (
+                SELECT SUM(soLuong * donGia)
+                FROM chi_tiet_don_hang
+                WHERE maDonHang = ?
+            )
+            WHERE maDonHang = ?
+        """;
+
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, maDonHang);
+            ps.setInt(2, maDonHang);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

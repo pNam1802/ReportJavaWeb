@@ -83,7 +83,9 @@ public class DonHangController extends HttpServlet {
                 case "removeProduct":
                     removeProductFromOrder(request, response);
                     break;
-
+                case "updateQuantity": // 
+                    updateQuantity(request, response);
+                    break;    
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Hành động không được hỗ trợ");
                     break;
@@ -273,6 +275,26 @@ public class DonHangController extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi xóa sản phẩm khỏi đơn hàng");
+        }
+    }
+    private void updateQuantity(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        try {
+            int maDonHang = Integer.parseInt(request.getParameter("maDonHang"));
+            int maSanPham = Integer.parseInt(request.getParameter("maSanPham"));
+            int soLuong = Integer.parseInt(request.getParameter("soLuong"));
+
+            ChiTietDonHangDAO chiTietDAO = new ChiTietDonHangDAO();
+            chiTietDAO.capNhatSoLuong(maDonHang, maSanPham, soLuong);
+
+            DonHangDAO donHangDAO = new DonHangDAO();
+            donHangDAO.capNhatTongTien(maDonHang);
+
+            // Redirect an toàn theo contextPath
+            response.sendRedirect(request.getContextPath() + "/don-hang?action=chitiet&maDonHang=" + maDonHang + "&quantityStatus=success");
+
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dữ liệu không hợp lệ");
         }
     }
 
