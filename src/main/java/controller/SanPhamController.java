@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.SanPhamDAO;
+import interfaces.ISanPham;
 import model.DanhGiaSanPham;
 import model.GioHang;
 import model.GioHangItem;
@@ -21,7 +22,7 @@ import model.SanPham;
 @WebServlet("/san-pham")
 public class SanPhamController extends HttpServlet {
     private static final long serialVersionUID = 1L;    
-    private SanPhamDAO sanPhamDAO;
+    private ISanPham sanPhamDAO;
 
     @Override
     public void init() throws ServletException {
