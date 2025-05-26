@@ -38,7 +38,8 @@ public class AdminLoginController extends HttpServlet {
         if (isValid) {
             HttpSession session = request.getSession();
             session.setAttribute("admin", user);
-            response.sendRedirect(request.getContextPath() + "/views/AdminDashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin-dashboard");
+
         } else {
             request.setAttribute("errorMessage", "Đăng nhập thất bại! Sai tên hoặc mật khẩu.");
             request.getRequestDispatcher("views/AdminLogin.jsp").forward(request, response);
