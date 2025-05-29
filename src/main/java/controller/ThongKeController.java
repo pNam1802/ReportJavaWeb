@@ -96,7 +96,7 @@ public class ThongKeController extends HttpServlet {
             response.setHeader("Content-Disposition", "attachment; filename=bao_cao_thong_ke.xlsx");
 
             try (org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook()) {
-                org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Dashboard");
+                org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Thống kê");
 
                 int rowNum = 0;
                 org.apache.poi.ss.usermodel.Row row;
