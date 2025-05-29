@@ -139,8 +139,15 @@
                 Ngày đăng: <%=dateFormat.format(tinTuc.getNgayDang())%>
             </p>
             <div class="content mb-4 px-md-5">
-                <p><%=tinTuc.getNoiDung()%></p>
-            </div>
+			    <%
+			    String[] paragraphs = tinTuc.getNoiDung().split("\n\n");
+			    for (String paragraph : paragraphs) {
+				    %>
+				    <p><%=paragraph.replace("\n", "<br>")%></p>
+				    <%
+			    }
+			    %>
+			</div>
             <div class="text-center">
                 <a href="<%=request.getContextPath()%>/tin-tuc" class="btn btn-sm btn-main">Quay lại danh sách tin tức</a>
             </div>
