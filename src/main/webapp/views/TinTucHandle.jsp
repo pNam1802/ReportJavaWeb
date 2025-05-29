@@ -48,6 +48,10 @@
                class="nav-link ${request.getServletPath() eq '/san-pham' ? 'active' : ''}">
                <i class="bi bi-box"></i> Trang sản phẩm
             </a>
+            <a href="${pageContext.request.contextPath}/thong-ke" 
+            	class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+            	<i class="bi bi-graph-up"></i> Thống kê
+	    	</a>
             <a href="${pageContext.request.contextPath}/admin-san-pham" 
                class="nav-link ${request.getServletPath() eq '/admin-san-pham' ? 'active' : ''}">
                <i class="bi bi-box-seam"></i> Quản lý Sản phẩm
