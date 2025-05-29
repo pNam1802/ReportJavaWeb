@@ -1,7 +1,8 @@
 package interfaces;
 
-import model.KhuyenMai;
 import java.util.List;
+
+import model.KhuyenMai;
 
 public interface IAdminKhuyenMai {
     void add(KhuyenMai km);

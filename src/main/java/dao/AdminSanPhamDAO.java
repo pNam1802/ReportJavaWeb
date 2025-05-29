@@ -1,8 +1,5 @@
 package dao;
 
-import interfaces.IAdminSanPham;
-import model.SanPham;
-import model.DanhMuc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,8 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.IAdminSanPham;
+import model.SanPham;
+
 public class AdminSanPhamDAO implements IAdminSanPham {
-    public void add(SanPham sanPham) throws SQLException {
+    @Override
+	public void add(SanPham sanPham) throws SQLException {
         String sql = "INSERT INTO san_pham (maSanPham, tenSanPham, idDanhMuc, giaGoc, giaKhuyenMai, tinhTrang, soLuongTonKho, hinhAnh, chiTiet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -32,7 +33,8 @@ public class AdminSanPhamDAO implements IAdminSanPham {
         }
     }
 
-    public void update(SanPham sanPham) throws SQLException {
+    @Override
+	public void update(SanPham sanPham) throws SQLException {
         String sql = "UPDATE san_pham SET tenSanPham = ?, idDanhMuc = ?, giaGoc = ?, giaKhuyenMai = ?, tinhTrang = ?, soLuongTonKho = ?, hinhAnh = ?, chiTiet = ? WHERE maSanPham = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -53,12 +55,13 @@ public class AdminSanPhamDAO implements IAdminSanPham {
         }
     }
 
-    public void delete(int maSanPham) throws SQLException {
+    @Override
+	public void delete(int maSanPham) throws SQLException {
         String checkDonHangSql = "SELECT maDonHang FROM chi_tiet_don_hang WHERE maSanPham = ?";
         String checkTinTucSql = "SELECT maTinTuc FROM tin_tuc WHERE maSanPham = ?";
         String checkKhuyenMaiSql = "SELECT maKhuyenMai FROM khuyen_mai WHERE maSanPham = ?";
         String deleteSql = "DELETE FROM san_pham WHERE maSanPham = ?";
-        
+
         try (Connection conn = DBConnection.getConnection()) {
             // Kiểm tra chi tiết đơn hàng
         	List<Integer> donHangIds = new ArrayList<>();
@@ -66,7 +69,7 @@ public class AdminSanPhamDAO implements IAdminSanPham {
                 ps.setInt(1, maSanPham);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                    	donHangIds.add(rs.getInt("maDonHang"));  
+                    	donHangIds.add(rs.getInt("maDonHang"));
                     }
                 }
             }
@@ -102,7 +105,7 @@ public class AdminSanPhamDAO implements IAdminSanPham {
                 String khuyenMaiIdList = String.join(", ", khuyenMaiIds.stream().map(String::valueOf).toList());
                 throw new SQLException("Vui lòng xóa khuyến mãi ra khỏi sản phẩm. Mã khuyến mãi là: " + khuyenMaiIdList);
             }
-            
+
             // Xóa sản phẩm
             try (PreparedStatement ps = conn.prepareStatement(deleteSql)) {
                 ps.setInt(1, maSanPham);

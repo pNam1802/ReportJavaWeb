@@ -1,15 +1,9 @@
 package controller;
 
-import dao.DanhMucDAO;
-import dao.SanPhamDAO;
-import interfaces.IDanhMuc;
-import interfaces.ISanPham;
-import model.DanhMuc;
-import model.SanPham;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,19 +11,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.DanhMucDAO;
+import dao.SanPhamDAO;
+import interfaces.IDanhMuc;
+import interfaces.ISanPham;
+import model.DanhMuc;
+import model.SanPham;
+
 @WebServlet("/danh-muc")
 public class DanhMucController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private IDanhMuc danhMucDAO;
     private ISanPham sanPhamDAO;
 
-    public void init() {
+    @Override
+	public void init() {
         danhMucDAO = new DanhMucDAO();
         sanPhamDAO = new SanPhamDAO();
     }
 
     // Hiển thị danh sách DanhMuc
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tenDanhMuc = request.getParameter("tenDanhMuc");
 
         // Nếu có tenDanhMuc, lọc sản phẩm theo danh mục
@@ -81,7 +84,8 @@ public class DanhMucController extends HttpServlet {
     }
 
     // Xử lý thêm DanhMuc
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tenDanhMuc = request.getParameter("tenDanhMuc");
         String moTa = request.getParameter("moTa");
 

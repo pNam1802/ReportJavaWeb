@@ -1,20 +1,21 @@
 package controller;
 
-import interfaces.IQuanLyTinTuc;
-import dao.QuanLyTinTucDAO;
-import model.TinTuc;
-import model.SanPham;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+
+import dao.QuanLyTinTucDAO;
+import interfaces.IQuanLyTinTuc;
+import model.SanPham;
+import model.TinTuc;
 
 @WebServlet("/QuanLyTinTuc")
 public class QuanLyTinTucController extends HttpServlet {

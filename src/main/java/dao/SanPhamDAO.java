@@ -1,13 +1,17 @@
 package dao;
 
-import interfaces.ISanPham;
-import model.SanPham;
-import model.DanhGiaSanPham;
-import model.DanhMuc;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import interfaces.ISanPham;
+import model.DanhGiaSanPham;
+import model.DanhMuc;
+import model.SanPham;
 
 public class SanPhamDAO implements ISanPham {
     private Connection conn;
@@ -27,13 +31,14 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Lấy sản phẩm theo ID
-    public SanPham getById(int id) {
+    @Override
+	public SanPham getById(int id) {
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
                      "FROM san_pham sp " +
                      "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc " +
                      "WHERE sp.maSanPham = ?";
-        
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -49,14 +54,15 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Lấy tất cả sản phẩm
-    public List<SanPham> getAll() {
+    @Override
+	public List<SanPham> getAll() {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
                      "FROM san_pham sp " +
                      "JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc";
 
-        try (Statement stmt = conn.createStatement(); 
+        try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 sanPhams.add(mapResultSetToSanPham(rs));
@@ -69,7 +75,8 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Lấy tổng số sản phẩm
-    public int getTotalSanPham() {
+    @Override
+	public int getTotalSanPham() {
         String sql = "SELECT COUNT(*) FROM san_pham";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -84,7 +91,8 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Lấy sản phẩm phân trang
-    public List<SanPham> getSanPhams(int offset, int limit) {
+    @Override
+	public List<SanPham> getSanPhams(int offset, int limit) {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
@@ -107,9 +115,10 @@ public class SanPhamDAO implements ISanPham {
         }
         return sanPhams;
     }
-    
+
     // Tìm kiếm sản phẩm theo tên
-    public List<SanPham> searchByName(String keyword, int offset, int limit) {
+    @Override
+	public List<SanPham> searchByName(String keyword, int offset, int limit) {
         List<SanPham> sanPhams = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
@@ -135,7 +144,8 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Lấy tổng số sản phẩm theo tên
-    public int getTotalSanPhamByName(String keyword) {
+    @Override
+	public int getTotalSanPhamByName(String keyword) {
         String sql = "SELECT COUNT(*) FROM san_pham WHERE tenSanPham LIKE ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
@@ -150,9 +160,10 @@ public class SanPhamDAO implements ISanPham {
         }
         return 0;
     }
-    
+
     // Lấy sản phẩm theo danh mục (có phân trang)
-    public List<SanPham> getSanPhamTheoDanhMuc(int maDanhMuc, int offset, int limit) {
+    @Override
+	public List<SanPham> getSanPhamTheoDanhMuc(int maDanhMuc, int offset, int limit) {
         List<SanPham> list = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, " +
                      "sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
@@ -176,9 +187,10 @@ public class SanPhamDAO implements ISanPham {
         }
         return list;
     }
-    
+
     // Lấy tổng số sản phẩm theo danh mục
-    public int getTotalSanPhamTheoDanhMuc(int maDanhMuc) {
+    @Override
+	public int getTotalSanPhamTheoDanhMuc(int maDanhMuc) {
         String sql = "SELECT COUNT(*) FROM san_pham WHERE idDanhMuc = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maDanhMuc);
@@ -193,8 +205,9 @@ public class SanPhamDAO implements ISanPham {
         }
         return 0;
     }
-    
-    public List<DanhGiaSanPham> layDanhSachDanhGiaDaGiao() {
+
+    @Override
+	public List<DanhGiaSanPham> layDanhSachDanhGiaDaGiao() {
         List<DanhGiaSanPham> danhSach = new ArrayList<>();
         String sql = """
             SELECT sp.tenSanPham, nd.hoTen, dg.diemDanhGia, dg.noiDung, dg.ngayDanhGia
@@ -245,7 +258,8 @@ public class SanPhamDAO implements ISanPham {
     }
 
     // Đóng kết nối
-    public void closeConnection() {
+    @Override
+	public void closeConnection() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();

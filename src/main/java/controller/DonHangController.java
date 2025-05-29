@@ -1,5 +1,17 @@
 package controller;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import dao.ChiTietDonHangDAO;
 import dao.DonHangDAO;
 import dao.SanPhamDAO;
@@ -7,16 +19,6 @@ import model.DonHang;
 import model.DonHangWithUser;
 import model.SanPham;
 import model.SanPhamInDonHang;
-
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet("/don-hang")
 public class DonHangController extends HttpServlet {
@@ -29,7 +31,7 @@ public class DonHangController extends HttpServlet {
         donHangDAO = new DonHangDAO();
         chiTietDonHangDAO = new ChiTietDonHangDAO();
     }
-    
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +39,9 @@ public class DonHangController extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String action = request.getParameter("action");
-        if (action == null) action = "";
+        if (action == null) {
+			action = "";
+		}
 
         try {
             switch (action) {
@@ -64,7 +68,9 @@ public class DonHangController extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
 
         String action = request.getParameter("action");
-        if (action == null) action = "";
+        if (action == null) {
+			action = "";
+		}
 
         try {
             switch (action) {
@@ -83,9 +89,9 @@ public class DonHangController extends HttpServlet {
                 case "removeProduct":
                     removeProductFromOrder(request, response);
                     break;
-                case "updateQuantity": // 
+                case "updateQuantity": //
                     updateQuantity(request, response);
-                    break;    
+                    break;
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Hành động không được hỗ trợ");
                     break;
@@ -95,8 +101,8 @@ public class DonHangController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Đã xảy ra lỗi xử lý yêu cầu");
         }
     }
-    
-    
+
+
     private void huyDonHang(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int maDonHang = Integer.parseInt(request.getParameter("maDonHang"));
@@ -127,7 +133,9 @@ public class DonHangController extends HttpServlet {
         if (pageParam != null && !pageParam.trim().isEmpty()) {
             try {
                 currentPage = Integer.parseInt(pageParam);
-                if (currentPage < 1) currentPage = 1;
+                if (currentPage < 1) {
+					currentPage = 1;
+				}
             } catch (NumberFormatException e) {
                 currentPage = 1; // Mặc định là trang 1 nếu tham số không hợp lệ
             }
@@ -170,7 +178,7 @@ public class DonHangController extends HttpServlet {
             List<SanPhamInDonHang> sanPhamList = donHangDAO.getSanPhamInDonHang(maDonHang);
             List<DonHangWithUser> donHangWithUsers = donHangDAO.getDonHangWithUser(maDonHang);
 
-           
+
 
             if (donHangWithUsers == null || donHangWithUsers.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy đơn hàng.");
@@ -250,7 +258,7 @@ public class DonHangController extends HttpServlet {
             // Cập nhật thông tin trong cơ sở dữ liệu
             donHangDAO.updateTrangThaiDonHang(maDonHang, trangThai);
             donHangDAO.updatePaymentStatus(maDonHang, trangThaiThanhToan);
-            donHangDAO.updateDiaChiNguoiDungTheoMaDonHang(maDonHang, diaChi);        
+            donHangDAO.updateDiaChiNguoiDungTheoMaDonHang(maDonHang, diaChi);
             // Chuyển hướng về trang chi tiết đơn hàng với thông báo thành công
             response.sendRedirect(request.getContextPath() + "/don-hang?action=chitiet&maDonHang=" + maDonHang + "&updateStatus=success");
         } catch (NumberFormatException e) {
@@ -303,7 +311,7 @@ public class DonHangController extends HttpServlet {
     public void destroy() {
         donHangDAO = null;
     }
-    
+
 
 
 

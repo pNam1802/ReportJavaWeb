@@ -2,11 +2,14 @@ package interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import model.NguoiDung;
 
 public interface IAdminNguoiDung {
     List<NguoiDung> getNguoiDungsByPage(int page, int pageSize) throws SQLException;
+    List<NguoiDung> getNguoiDungsByRoleAndPage(String vaiTro, int page, int pageSize) throws SQLException;
     int getTotalNguoiDungs() throws SQLException;
+    int getTotalNguoiDungsByRole(String vaiTro) throws SQLException;
     NguoiDung getNguoiDungById(int maNguoiDung) throws SQLException;
     void addNguoiDung(NguoiDung nguoiDung) throws SQLException;
     void updateNguoiDung(NguoiDung nguoiDung) throws SQLException;

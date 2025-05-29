@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +19,7 @@ import model.SanPham;
 
 @WebServlet("/san-pham")
 public class SanPhamController extends HttpServlet {
-    private static final long serialVersionUID = 1L;    
+    private static final long serialVersionUID = 1L;
     private ISanPham sanPhamDAO;
 
     @Override
@@ -95,7 +93,7 @@ public class SanPhamController extends HttpServlet {
             return;
         }
 
-  
+
         // Xử lý phân trang (giữ nguyên như cũ)
         int page = 1;
         int limit = 6;
@@ -123,9 +121,9 @@ public class SanPhamController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    	
+
         String action = request.getParameter("action");
-        
+
         // đặt hàng
         if("datHang".equals(action)) {
         	String id = request.getParameter("id");
@@ -198,8 +196,8 @@ public class SanPhamController extends HttpServlet {
             response.sendRedirect("san-pham");
             return;
         }
-     
-       
+
+
     }
 
     @Override

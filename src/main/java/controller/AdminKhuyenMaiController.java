@@ -3,16 +3,18 @@ package controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import interfaces.IAdminKhuyenMai;
-import interfaces.ISanPham;
+
 import dao.AdminKhuyenMaiDAO;
 import dao.SanPhamDAO;
+import interfaces.IAdminKhuyenMai;
+import interfaces.ISanPham;
 import model.KhuyenMai;
 import model.SanPham;
 
@@ -110,7 +112,9 @@ public class AdminKhuyenMaiController extends HttpServlet {
 
             String pageParam = request.getParameter("page");
             int page = pageParam != null ? Integer.parseInt(pageParam) : 1;
-            if (page < 1) page = 1;
+            if (page < 1) {
+				page = 1;
+			}
 
             int offset = (page - 1) * PROMOTIONS_PER_PAGE;
             int totalPromotions = adminKhuyenMaiDAO.getTotalPromotions();

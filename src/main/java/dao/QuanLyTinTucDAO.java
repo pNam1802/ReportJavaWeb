@@ -1,10 +1,5 @@
 package dao;
 
-import interfaces.IQuanLyTinTuc;
-import model.TinTuc;
-import model.SanPham;
-import model.DanhMuc;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.IQuanLyTinTuc;
+import model.DanhMuc;
+import model.SanPham;
+import model.TinTuc;
+
 public class QuanLyTinTucDAO implements IQuanLyTinTuc {
 
     // Lấy danh sách tin tức theo trang
-    public List<TinTuc> getTinTucByPage(int page, int pageSize) {
+    @Override
+	public List<TinTuc> getTinTucByPage(int page, int pageSize) {
         List<TinTuc> tinTucs = new ArrayList<>();
         String sql = "SELECT * FROM tin_tuc ORDER BY ngayDang DESC LIMIT ? OFFSET ?";
         int offset = (page - 1) * pageSize;
@@ -43,7 +44,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Lấy tổng số tin tức
-    public int getTotalTinTuc() {
+    @Override
+	public int getTotalTinTuc() {
         String sql = "SELECT COUNT(*) FROM tin_tuc";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -59,7 +61,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Lấy tin tức theo ID
-    public TinTuc getTinTucById(int maTinTuc) {
+    @Override
+	public TinTuc getTinTucById(int maTinTuc) {
         String sql = "SELECT * FROM tin_tuc WHERE maTinTuc = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -83,7 +86,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Thêm tin tức
-    public void addTinTuc(TinTuc news) {
+    @Override
+	public void addTinTuc(TinTuc news) {
         String sql = "INSERT INTO tin_tuc (tieuDe, noiDung, ngayDang, maSanPham) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -100,7 +104,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Sửa tin tức
-    public void updateTinTuc(TinTuc news) {
+    @Override
+	public void updateTinTuc(TinTuc news) {
         String sql = "UPDATE tin_tuc SET tieuDe = ?, noiDung = ?, ngayDang = ?, maSanPham = ? WHERE maTinTuc = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -121,7 +126,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Xóa tin tức
-    public void deleteTinTuc(int maTinTuc) {
+    @Override
+	public void deleteTinTuc(int maTinTuc) {
         String sql = "DELETE FROM tin_tuc WHERE maTinTuc = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -139,7 +145,8 @@ public class QuanLyTinTucDAO implements IQuanLyTinTuc {
     }
 
     // Lấy danh sách sản phẩm
-    public List<SanPham> getAllProducts() {
+    @Override
+	public List<SanPham> getAllProducts() {
         List<SanPham> products = new ArrayList<>();
         String sql = "SELECT sp.maSanPham, sp.tenSanPham, sp.chiTiet, sp.giaGoc, sp.giaKhuyenMai, sp.tinhTrang, sp.soLuongTonKho, sp.hinhAnh, sp.idDanhMuc, dm.maDanhMuc, dm.tenDanhMuc, dm.moTa " +
                      "FROM san_pham sp LEFT JOIN danh_muc dm ON sp.idDanhMuc = dm.maDanhMuc";

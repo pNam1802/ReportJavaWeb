@@ -38,7 +38,7 @@
            <i class="bi bi-box"></i> Trang sản phẩm
         </a>
         <a href="${pageContext.request.contextPath}/thong-ke" 
-            class="nav-link ${request.getServletPath() eq '/admin-dashboard' ? 'active' : ''}">
+            class="nav-link ${request.getServletPath() eq '/thong-ke' ? 'active' : ''}">
             <i class="bi bi-graph-up"></i> Thống kê
 	    </a>
         <a href="${pageContext.request.contextPath}/admin-san-pham" 
@@ -77,7 +77,7 @@
                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                    Xuất PDF
                 </a>
-                <a href="${pageContext.request.contextPath}/admin-dashboard?export=excel" 
+                <a href="${pageContext.request.contextPath}/thong-ke?export=excel" 
                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                    Xuất Excel
                 </a>

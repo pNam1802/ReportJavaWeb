@@ -1,10 +1,16 @@
 package dao;
 
-import interfaces.IAdminKhuyenMai;
-import model.KhuyenMai;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import interfaces.IAdminKhuyenMai;
+import model.KhuyenMai;
 
 public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
     private Connection conn;
@@ -29,7 +35,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         }
     }
 
-    public void add(KhuyenMai km) {
+    @Override
+	public void add(KhuyenMai km) {
         String sql = "INSERT INTO khuyen_mai (maSanPham, ngayBatDau, ngayKetThuc, giaKhuyenMai) VALUES (?, ?, ?, ?)";
         try {
             checkConnection();
@@ -45,7 +52,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         }
     }
 
-    public void update(KhuyenMai km) {
+    @Override
+	public void update(KhuyenMai km) {
         String sql = "UPDATE khuyen_mai SET maSanPham = ?, ngayBatDau = ?, ngayKetThuc = ?, giaKhuyenMai = ? WHERE maKhuyenMai = ?";
         try {
             checkConnection();
@@ -62,7 +70,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         }
     }
 
-    public void delete(int id) {
+    @Override
+	public void delete(int id) {
         String sql = "DELETE FROM khuyen_mai WHERE maKhuyenMai = ?";
         try {
             checkConnection();
@@ -75,7 +84,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         }
     }
 
-    public KhuyenMai getById(int id) {
+    @Override
+	public KhuyenMai getById(int id) {
         String sql = "SELECT * FROM khuyen_mai WHERE maKhuyenMai = ?";
         try {
             checkConnection();
@@ -99,7 +109,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         return null;
     }
 
-    public List<KhuyenMai> getAll() {
+    @Override
+	public List<KhuyenMai> getAll() {
         List<KhuyenMai> khuyenMais = new ArrayList<>();
         String sql = "SELECT * FROM khuyen_mai";
         try {
@@ -122,7 +133,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         return khuyenMais;
     }
 
-    public int getTotalPromotions() {
+    @Override
+	public int getTotalPromotions() {
         String sql = "SELECT COUNT(*) FROM khuyen_mai";
         try {
             checkConnection();
@@ -138,7 +150,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         return 0;
     }
 
-    public List<KhuyenMai> getPromotions(int offset, int limit) {
+    @Override
+	public List<KhuyenMai> getPromotions(int offset, int limit) {
         List<KhuyenMai> khuyenMais = new ArrayList<>();
         String sql = "SELECT * FROM khuyen_mai ORDER BY maKhuyenMai ASC LIMIT ? OFFSET ?";
         try {
@@ -164,7 +177,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         return khuyenMais;
     }
 
-    public void updateExpiredPromotions() {
+    @Override
+	public void updateExpiredPromotions() {
         String sqlUpdate = "UPDATE san_pham sp " +
                           "SET sp.giaKhuyenMai = sp.giaGoc " +
                           "WHERE EXISTS (" +
@@ -194,7 +208,8 @@ public class AdminKhuyenMaiDAO implements IAdminKhuyenMai {
         }
     }
 
-    public void closeConnection() {
+    @Override
+	public void closeConnection() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();

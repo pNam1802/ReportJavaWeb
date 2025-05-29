@@ -1,16 +1,23 @@
 package controller;
 
-import dao.DatHangDAO;
-import model.ChiTietDonHang;
-import model.DonHang;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Logger;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dao.DatHangDAO;
+import model.ChiTietDonHang;
+import model.DonHang;
 
 
 @WebServlet("/dat-hang")
@@ -20,13 +27,13 @@ public class DatHangController extends HttpServlet {
     private static final String ERROR_PAGE = "views/ErrorPage.jsp";
     private static final String THANK_YOU_PAGE = "views/CamOn.jsp";
 
- 
+
     private static class Action {
         static final String DAT_HANG = "datHang";
         static final String GIO_HANG_THANH_TOAN = "GioHangThanhToan";
     }
 
-   
+
     private static class TrangThai {
         static final String CHO_XU_LY = "Chờ xử lý";
     }

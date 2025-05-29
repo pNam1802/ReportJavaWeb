@@ -3,22 +3,24 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import interfaces.IAdminSanPham;
-import interfaces.ISanPham;
-import interfaces.IDanhMuc;
+
 import dao.AdminSanPhamDAO;
-import dao.SanPhamDAO;
 import dao.DanhMucDAO;
-import model.SanPham;
+import dao.SanPhamDAO;
+import interfaces.IAdminSanPham;
+import interfaces.IDanhMuc;
+import interfaces.ISanPham;
 import model.DanhMuc;
+import model.SanPham;
 
 @WebServlet("/admin-san-pham")
 @MultipartConfig

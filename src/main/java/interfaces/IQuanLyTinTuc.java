@@ -1,8 +1,9 @@
 package interfaces;
 
-import model.TinTuc;
-import model.SanPham;
 import java.util.List;
+
+import model.SanPham;
+import model.TinTuc;
 
 public interface IQuanLyTinTuc {
     void addTinTuc(TinTuc news);

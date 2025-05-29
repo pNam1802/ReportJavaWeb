@@ -1,13 +1,15 @@
 package controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.TinTuc;
+
 import dao.TinTucDAO;
+import model.TinTuc;
 
 @WebServlet("/chi-tiet-tin-tuc")
 public class ChiTietTinTucController extends HttpServlet {
@@ -50,7 +52,7 @@ public class ChiTietTinTucController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Không thể tải chi tiết tin tức: " + e.getMessage());
-            
+
         }
     }
 }

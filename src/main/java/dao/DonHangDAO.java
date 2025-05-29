@@ -1,11 +1,18 @@
 package dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IQuanLyDonHang;
-import model.*;
+import model.ChiTietDonHang;
+import model.DonHang;
+import model.DonHangWithUser;
+import model.SanPhamInDonHang;
 
 public class DonHangDAO implements IQuanLyDonHang {
     private Connection connection;
@@ -96,7 +103,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy tất cả đơn hàng (không phân trang)
-    public List<DonHang> getAllDonHang() throws SQLException {
+    @Override
+	public List<DonHang> getAllDonHang() throws SQLException {
         List<DonHang> donHangs = new ArrayList<>();
         String query = "SELECT * FROM don_hang ORDER BY ngayLap DESC";
 
@@ -110,7 +118,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy đơn hàng theo trạng thái (không phân trang)
-    public List<DonHang> getDonHangsByTrangThai(String trangThai) throws SQLException {
+    @Override
+	public List<DonHang> getDonHangsByTrangThai(String trangThai) throws SQLException {
         if (trangThai == null || trangThai.trim().isEmpty()) {
             throw new IllegalArgumentException("Trạng thái không được null hoặc rỗng");
         }
@@ -130,7 +139,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy đơn hàng theo trạng thái thanh toán
-    public List<DonHang> getDonHangsByTrangThaiThanhToan(String trangThaiThanhToan) throws SQLException {
+    @Override
+	public List<DonHang> getDonHangsByTrangThaiThanhToan(String trangThaiThanhToan) throws SQLException {
         if (trangThaiThanhToan == null || trangThaiThanhToan.trim().isEmpty()) {
             throw new IllegalArgumentException("Trạng thái thanh toán không được null hoặc rỗng");
         }
@@ -156,7 +166,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy đơn hàng theo ngày lập
-    public List<DonHang> getDonHangsByNgayLap(Date ngayLap) throws SQLException {
+    @Override
+	public List<DonHang> getDonHangsByNgayLap(Date ngayLap) throws SQLException {
         if (ngayLap == null) {
             throw new IllegalArgumentException("Ngày lập không được null");
         }
@@ -176,7 +187,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy đơn hàng theo mã người dùng
-    public List<DonHang> getDonHangsByMaNguoiDung(int maNguoiDung) throws SQLException {
+    @Override
+	public List<DonHang> getDonHangsByMaNguoiDung(int maNguoiDung) throws SQLException {
         if (maNguoiDung <= 0) {
             throw new IllegalArgumentException("Mã người dùng không hợp lệ");
         }
@@ -196,7 +208,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy danh sách sản phẩm trong đơn hàng
-    public List<SanPhamInDonHang> getSanPhamInDonHang(int maDonHang) throws SQLException {
+    @Override
+	public List<SanPhamInDonHang> getSanPhamInDonHang(int maDonHang) throws SQLException {
         if (maDonHang <= 0) {
             throw new IllegalArgumentException("Mã đơn hàng không hợp lệ");
         }
@@ -225,7 +238,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy thông tin đơn hàng kèm thông tin người dùng
-    public List<DonHangWithUser> getDonHangWithUser(int maDonHang) throws SQLException {
+    @Override
+	public List<DonHangWithUser> getDonHangWithUser(int maDonHang) throws SQLException {
         if (maDonHang <= 0) {
             throw new IllegalArgumentException("Mã đơn hàng không hợp lệ");
         }
@@ -262,7 +276,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Cập nhật trạng thái đơn hàng
-    public void updateTrangThaiDonHang(int maDonHang, String trangThaiMoi) throws SQLException {
+    @Override
+	public void updateTrangThaiDonHang(int maDonHang, String trangThaiMoi) throws SQLException {
         if (maDonHang <= 0 || trangThaiMoi == null || trangThaiMoi.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng hoặc trạng thái mới không hợp lệ");
         }
@@ -279,7 +294,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy trạng thái đơn hàng
-    public String getTrangThaiDonHang(int maDonHang) throws SQLException {
+    @Override
+	public String getTrangThaiDonHang(int maDonHang) throws SQLException {
         if (maDonHang <= 0) {
             throw new IllegalArgumentException("Mã đơn hàng không hợp lệ");
         }
@@ -297,7 +313,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Cập nhật trạng thái thanh toán
-    public void updatePaymentStatus(int maDonHang, String thanhToanTrangThai) throws SQLException {
+    @Override
+	public void updatePaymentStatus(int maDonHang, String thanhToanTrangThai) throws SQLException {
         if (maDonHang <= 0 || thanhToanTrangThai == null || thanhToanTrangThai.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng hoặc trạng thái thanh toán không hợp lệ");
         }
@@ -314,7 +331,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Thêm chi tiết đơn hàng
-    public void addChiTietDonHang(int maDonHang, int maSanPham, int soLuong, Double donGia) throws SQLException {
+    @Override
+	public void addChiTietDonHang(int maDonHang, int maSanPham, int soLuong, Double donGia) throws SQLException {
         if (maDonHang <= 0 || maSanPham <= 0 || soLuong <= 0 || donGia == null || donGia <= 0) {
             throw new IllegalArgumentException("Dữ liệu đầu vào không hợp lệ");
         }
@@ -330,7 +348,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Cập nhật địa chỉ người dùng theo mã đơn hàng
-    public void updateDiaChiNguoiDungTheoMaDonHang(int maDonHang, String diaChiMoi) throws SQLException {
+    @Override
+	public void updateDiaChiNguoiDungTheoMaDonHang(int maDonHang, String diaChiMoi) throws SQLException {
         if (maDonHang <= 0 || diaChiMoi == null || diaChiMoi.trim().isEmpty()) {
             throw new IllegalArgumentException("Mã đơn hàng hoặc địa chỉ mới không hợp lệ");
         }
@@ -356,7 +375,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Lấy chi tiết đơn hàng
-    public List<ChiTietDonHang> getChiTietDonHang(int maDonHang) throws SQLException {
+    @Override
+	public List<ChiTietDonHang> getChiTietDonHang(int maDonHang) throws SQLException {
         if (maDonHang <= 0) {
             throw new IllegalArgumentException("Mã đơn hàng không hợp lệ");
         }
@@ -381,7 +401,8 @@ public class DonHangDAO implements IQuanLyDonHang {
     }
 
     // Hủy đơn hàng
-    public void huyDonHang(int maDonHang) throws SQLException {
+    @Override
+	public void huyDonHang(int maDonHang) throws SQLException {
         if (maDonHang <= 0) {
             throw new IllegalArgumentException("Mã đơn hàng không hợp lệ");
         }

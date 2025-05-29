@@ -1,8 +1,9 @@
 package interfaces;
 
-import model.SanPham;
-import model.DanhGiaSanPham;
 import java.util.List;
+
+import model.DanhGiaSanPham;
+import model.SanPham;
 
 public interface ISanPham {
     SanPham getById(int id);

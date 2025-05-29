@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.InventoryData.Inventory;
+import model.OrderStatusData.Status;
 import model.RatingData.Rating;
 import model.RevenueData.Revenue;
 import model.TopProductData.Product;
-import model.InventoryData.Inventory;
-import model.OrderStatusData.Status;
 
 public class RevenueDataDAO {
 	   public static List<Revenue> getRevenueData() {
@@ -27,7 +28,7 @@ public class RevenueDataDAO {
 	            e.printStackTrace();
 	        }
 	        return data;
-	    }	
+	    }
 
 	public static List<Product> getTopProducts() {
 	    List<Product> data = new ArrayList<>();

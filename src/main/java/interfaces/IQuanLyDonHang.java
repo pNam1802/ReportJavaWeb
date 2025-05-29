@@ -1,13 +1,13 @@
 package interfaces;
 
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
+
 import model.ChiTietDonHang;
 import model.DonHang;
 import model.DonHangWithUser;
 import model.SanPhamInDonHang;
-
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.List;
 
 public interface IQuanLyDonHang {
     List<DonHang> getAllDonHang() throws SQLException;

@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.NguoiDungDAO;
-
-import java.io.IOException;
 
 @WebServlet("/login-admin")
 public class AdminLoginController extends HttpServlet {

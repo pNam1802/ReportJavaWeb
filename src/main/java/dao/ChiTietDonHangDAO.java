@@ -1,14 +1,12 @@
 package dao;
-import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
-import model.*;
+import java.sql.SQLException;
 public class ChiTietDonHangDAO {
 
     private Connection connection;
-    
+
     public ChiTietDonHangDAO() {
         this.connection = DBConnection.getConnection();
     }

@@ -1,7 +1,8 @@
 package interfaces;
 
-import model.DanhMuc;
 import java.util.List;
+
+import model.DanhMuc;
 
 public interface IDanhMuc {
     boolean add(DanhMuc danhMuc);

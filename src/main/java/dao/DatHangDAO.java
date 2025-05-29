@@ -1,11 +1,16 @@
 package dao;
 
-import model.DonHang;
-import model.ChiTietDonHang;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.List;
 import java.util.logging.Logger;
+
+import model.ChiTietDonHang;
+import model.DonHang;
 
 
 
@@ -15,7 +20,7 @@ public class DatHangDAO {
     private final Connection connection;
 
     //Các trạng thái cố định dùng trong hệ thống
-    
+
     public static class TrangThai {
         public static final String CHUA_THANH_TOAN = "Chưa thanh toán";
         public static final String DA_THANH_TOAN = "Đã thanh toán";
@@ -23,7 +28,7 @@ public class DatHangDAO {
     }
 
     //Các hình thức thanh toán
-    
+
     public static class HinhThucThanhToan {
         public static final String COD = "COD";
     }
@@ -74,7 +79,7 @@ public class DatHangDAO {
     }
 
     //Thêm thông tin thanh toán cho đơn hàng.
-     
+
     public boolean addPayment(DonHang donHang) throws SQLException {
         if (donHang == null || donHang.getMaDonHang() <= 0) {
             throw new IllegalArgumentException("Đơn hàng không hợp lệ!");
@@ -95,7 +100,7 @@ public class DatHangDAO {
     }
 
     // Xử lý toàn bộ quy trình đặt hàng, bao gồm thêm đơn hàng, chi tiết đơn hàng, cập nhật tồn kho, và thanh toán.
-   
+
     public boolean placeOrder(DonHang donHang, List<ChiTietDonHang> dsChiTiet) throws SQLException {
         if (donHang == null || dsChiTiet == null || dsChiTiet.isEmpty()) {
             throw new IllegalArgumentException("Đơn hàng hoặc chi tiết đơn hàng không hợp lệ!");
@@ -153,7 +158,7 @@ public class DatHangDAO {
     }
 
     //Thêm đơn hàng vào cơ sở dữ liệu.
-     
+
     private int insertOrder(DonHang donHang) throws SQLException {
         String sql = "INSERT INTO don_hang (ngayLap, trangThai, tongTien, maNguoiDung) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -175,7 +180,7 @@ public class DatHangDAO {
     }
 
     //Thêm danh sách chi tiết đơn hàng vào cơ sở dữ liệu.
- 
+
     private void insertOrderDetails(int maDonHang, List<ChiTietDonHang> dsChiTiet) throws SQLException {
         String sql = "INSERT INTO chi_tiet_don_hang (maDonHang, maSanPham, soLuong, donGia) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -199,7 +204,7 @@ public class DatHangDAO {
     }
 
     // Cập nhật số lượng tồn kho dựa trên chi tiết đơn hàng.
- 
+
     private void updateStock(List<ChiTietDonHang> dsChiTiet) throws SQLException {
         String sql = "UPDATE san_pham SET soLuongTonKho = soLuongTonKho - ? WHERE maSanPham = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

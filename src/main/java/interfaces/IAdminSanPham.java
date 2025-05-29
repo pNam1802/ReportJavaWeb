@@ -1,7 +1,8 @@
 package interfaces;
 
-import model.SanPham;
 import java.sql.SQLException;
+
+import model.SanPham;
 
 public interface IAdminSanPham {
     void add(SanPham sanPham) throws SQLException;

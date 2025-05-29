@@ -23,11 +23,12 @@ import model.RatingData;
 import model.RevenueData;
 import model.TopProductData;
 
-@WebServlet("/admin-dashboard")
+@WebServlet("/thong-ke")
 public class ThongKeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
@@ -152,7 +153,7 @@ public class ThongKeController extends HttpServlet {
             }
             return;
         }
-        
+
 
 
         request.getRequestDispatcher("/views/ThongKe.jsp").forward(request, response);
