@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard - iSofa</title>
+    <title>Thống kê - iSofa</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Bootstrap Icons -->
@@ -75,7 +75,11 @@
                 <h1 class="text-2xl font-bold">Tổng quan thống kê</h1>
                 <a href="${pageContext.request.contextPath}/thong-ke?export=pdf" 
                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                   Xuất báo cáo PDF
+                   Xuất PDF
+                </a>
+                <a href="${pageContext.request.contextPath}/admin-dashboard?export=excel" 
+                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                   Xuất Excel
                 </a>
             </div>
 

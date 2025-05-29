@@ -23,7 +23,7 @@ import model.RatingData;
 import model.RevenueData;
 import model.TopProductData;
 
-@WebServlet("/thong-ke")
+@WebServlet("/admin-dashboard")
 public class ThongKeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -90,6 +90,70 @@ public class ThongKeController extends HttpServlet {
             }
             return;
         }
+        if ("excel".equals(export)) {
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=bao_cao_thong_ke.xlsx");
+
+            try (org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook()) {
+                org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Dashboard");
+
+                int rowNum = 0;
+                org.apache.poi.ss.usermodel.Row row;
+                org.apache.poi.ss.usermodel.Cell cell;
+
+                // 1. Doanh thu
+                row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue("1. Doanh thu theo tháng:");
+                for (RevenueData.Revenue revenue : revenueData) {
+                    row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(revenue.getMonth());
+                    row.createCell(1).setCellValue(revenue.getAmount());
+                }
+
+                // 2. Top sản phẩm
+                row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue("2. Top 5 sản phẩm bán chạy:");
+                for (TopProductData.Product product : topProducts) {
+                    row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(product.getName());
+                    row.createCell(1).setCellValue(product.getQuantity());
+                }
+
+                // 3. Trạng thái đơn hàng
+                row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue("3. Tỷ lệ trạng thái đơn hàng:");
+                for (OrderStatusData.Status status : orderStatusData) {
+                    row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(status.getStatus());
+                    row.createCell(1).setCellValue(status.getPercentage() + "%");
+                }
+
+                // 4. Đánh giá
+                row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue("4. Phân bố điểm đánh giá:");
+                for (RatingData.Rating rating : ratingData) {
+                    row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(rating.getRating());
+                    row.createCell(1).setCellValue(rating.getCount());
+                }
+
+                // 5. Tồn kho
+                row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue("5. Tồn kho theo danh mục:");
+                for (InventoryData.Inventory inventory : inventoryData) {
+                    row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(inventory.getCategory());
+                    row.createCell(1).setCellValue(inventory.getStock());
+                }
+
+                workbook.write(response.getOutputStream());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        
+
 
         request.getRequestDispatcher("/views/ThongKe.jsp").forward(request, response);
     }
